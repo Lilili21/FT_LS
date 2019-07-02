@@ -1,0 +1,31 @@
+args:
+	-l
+	-R !!!!!! think about implications!! on the begin
+	-a
+	-r
+	-t
+
+! if "-l" is not in args –> then no multiple column format
+! no errors and leaks
+! error mngmnt: why? like no that file or dir, no permitted, permission denied etc
+
+
+bonuses:
+	A, C, L
+	mngmnt of columt without "-l" option (man 4 tty)
+	-u, -f, -g, -d
+	-G (color for type?:)
+	optimization   %)
+
+f:
+◦ write ◦ opendir ◦ readdir ◦ closedir
+◦ stat ◦ lstat ◦ getpwuid 
+◦ getgrgid ◦ listxattr ◦ getxattr ◦ time
+◦ ctime ◦ readlink ◦ malloc ◦ free
+◦ perror ◦ strerror ◦ exit
+
+• You are allowed to use other functions to carry out
+the bonus part as long as their use is justified
+during your defence. For example, 
+to use tcgetattr is justified in certain case, 
+to use printf because you are lazy isn’t. Be smart!
