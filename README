@@ -17,7 +17,8 @@ bonuses:
 	-G (color for type?:)
 	optimization   %)
 
-f:
+
+allowed functions:
 ◦ write ◦ opendir ◦ readdir ◦ closedir
 ◦ stat ◦ lstat ◦ getpwuid 
 ◦ getgrgid ◦ listxattr ◦ getxattr ◦ time
