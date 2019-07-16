@@ -6,7 +6,7 @@
 /*   By: kkatelyn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/16 19:57:03 by kkatelyn          #+#    #+#             */
-/*   Updated: 2019/07/16 18:02:05 by kkatelyn         ###   ########.fr       */
+/*   Updated: 2019/07/16 19:29:36 by kkatelyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 # define LSFT_H
 # include "libft.h"
 # include <dirent.h>
+# include <stdio.h>
 
 #endif
