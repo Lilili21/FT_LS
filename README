@@ -1,3 +1,10 @@
+TODO:
+	! we need non-recursive algorithm of ls -R, 
+	then anything;
+
+
+--use .xml file (open with  www.draw.io) to edit block-scheme;
+
 --__MARKS:
 1)
 	ls -l afile bdir:
