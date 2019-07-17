@@ -1,4 +1,4 @@
---MARKS:
+--__MARKS:
 1)
 	ls -l afile bdir:
 	~	~		afile
@@ -9,6 +9,7 @@
 	~	~		bdir
 
 	but in the directory they are already sorted;
+--__
 
 --flags:
 	-l
