@@ -7,8 +7,8 @@ void	ft_ls(char **av)
 
 	if (av == NULL)
 		ft_putendl("eq 0");
-	if (!(d = opendir(".")))
-		perror(ft_strjoin("ft_ls: ", av[0]));
+	if (!(d = opendir(*av)))
+		perror(ft_strjoin("ft_ls: ", *av));
 	else
 		while ((rd = readdir(d))) // || rd == NULL && errno )
 		{
@@ -22,8 +22,9 @@ void	ft_ls(char **av)
 
 int		main(int ac, char **av)
 {
-	printf("%d\n", ac);
-	//if (ac > 1)
-	//	ft_putendl(av[0]);
-		//ft_ls(av);
+	char home[2] = ".";
+
+	if (ac == 1)
+		*av = home;
+	ft_ls(++av);
 }

@@ -1,13 +1,16 @@
-ls -l afile bdir:
-~	~		afile
-~	~		bdir
+--MARKS:
+1)
+	ls -l afile bdir:
+	~	~		afile
+	~	~		bdir
 
-ls -l bdir afile:
-~	~		afile
-~	~		bdir
+	ls -l bdir afile:
+	~	~		afile
+	~	~		bdir
 
+	but in the directory they are already sorted;
 
-args:
+--flags:
 	-l
 	-R !!!!!! think about implications!! on the begin
 	-a
@@ -19,7 +22,7 @@ args:
 ! error mngmnt: why? like no that file or dir, no permitted, permission denied etc
 
 
-bonuses:
+--bonuses:
 	A, C, L
 	mngmnt of columt without "-l" option (man 4 tty)
 	-u, -f, -g, -d
@@ -27,7 +30,7 @@ bonuses:
 	optimization   %)
 
 
-allowed functions:
+--allowed functions:
 ◦ write ◦ opendir ◦ readdir ◦ closedir
 ◦ stat ◦ lstat ◦ getpwuid 
 ◦ getgrgid ◦ listxattr ◦ getxattr ◦ time
