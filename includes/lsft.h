@@ -25,16 +25,32 @@ typedef struct	s_q
 	struct s_q	*next;
 }				t_q;
 
+typedef struct s_date {
+	char *month;
+	char *day;
+	char *hour;
+	char *minute;
+	char *year;
+}			t_date;
+
 typedef	struct s_curr
 {
-	void	*content;
-	int		type;
+	int		type; //1-folder, 0-file
+	char	*rights;
+	int		links;
+	char	*user;
+	char	*groop;
+	int 	size;
+	t_date	date;
+	char 	*name;
 	struct s_q *next;
 }				t_curr;
 
+
 #endif
 
-// -R -l -a -r -t -rt
+//man for dir stat https://www.ibm.com/developerworks/ru/library/au-unix-readdir/index.html
+// -R -l -a -r -t
 /*
  * R Включить рекурсивную выдачу списка каталогов
  *
