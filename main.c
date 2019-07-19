@@ -22,9 +22,11 @@ void	ft_ls(char **av)
 
 int		main(int ac, char **av)
 {
-	char home[2] = ".";
-
-	if (ac == 1)
-		*av = home;
-	ft_ls(++av);
+	/*
+	flags_to global;
+	#ac without flags(wac), if zero, then av == "." && ac = 1;
+	sort av (type, then time) --> t_q;
+	*/
+	
+	while ()
 }
