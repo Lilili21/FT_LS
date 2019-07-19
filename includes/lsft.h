@@ -23,8 +23,6 @@ typedef struct	s_q
 	struct s_q	*next;
 }				t_q;
 
-
-
 typedef struct	s_ls
 {
 	int 		*flags;
