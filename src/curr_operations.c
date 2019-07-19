@@ -34,8 +34,7 @@ void	ft_add(t_curr **curr_dir, t_curr *new)
 {
 	if (!curr_dir || !new)
 		return ;
-	new->next = (*curr_dir);
-	(*curr_dir) = new;
+
 }
 
 void ft_add_sorted(t_curr **curr_dir, dirent	*rd)
@@ -55,7 +54,10 @@ void ft_add_sorted(t_curr **curr_dir, dirent	*rd)
 	else
 	{
 		if (sort_order * ft_strcmp(current->name, new->name) > 0)
-		ft_add(curr_dir, new);
+		{
+			new->next = (*curr_dir);
+			(*curr_dir) = new;
+		}
 		else
 		{
 			while (current->next != NULL && sort_order * ft_strcmp(current->next->name, new->name) < 0)

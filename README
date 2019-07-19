@@ -45,9 +45,18 @@ TODO:
 ◦ ctime ◦ readlink ◦ malloc ◦ free
 ◦ perror ◦ strerror ◦ exit
 
+man for dir stat https://www.ibm.com/developerworks/ru/library/au-unix-readdir/index.html
 • You are allowed to use other functions to carry out
 the bonus part as long as their use is justified
 during your defence. For example, 
 to use tcgetattr is justified in certain case, 
 to use printf because you are lazy isn’t. Be smart!
 https://forum.intra.42.fr/topics/16298/messages/1\#64737
+
+
+
+logs:
+@Liza
+* in LSFT_H defined current structure more detailed
+* in src add functions with t_curr: 1. function new t_curr 2. add new t_curr in correct order
+
