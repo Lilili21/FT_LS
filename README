@@ -54,6 +54,18 @@ to use printf because you are lazy isn’t. Be smart!
 https://forum.intra.42.fr/topics/16298/messages/1\#64737
 
 
+!
+to get files from other branch to yours:
+
+$ git branch
+master
+*savva
+lilili21
+
+$ git checkout lilili21 includes/lsft.h README fimain.c
+
+$ git add, git commit
+:)
 
 logs:
 @Liza
