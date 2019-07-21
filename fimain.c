@@ -20,8 +20,9 @@ int		ft_ls(t_q **que, t_q **lev, t_curr **cur)
 	else
 		while ((rd = readdir(d))) // || rd == NULL && errno )
 		{
-			if (global_flags[1] == 0)
-
+			if (!fl_a && (!ft_strncmp(rd->d_name, ".", PATH_MAX) ||
+			!ft_strncmp(rd->d_name, "..", PATH_MAX)))
+				continue ;
 			ft_add_sorted(cur, rd); // sorted, rdy2print
 	/// note, if D_TYPE == 10 (symb.link), we need info about SLINK FILE, not endfile !!!
 	/// so we have to use lstat;

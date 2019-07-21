@@ -1,7 +1,11 @@
 #include "lsft.h"
 
-
-int		main(int ac, char **av)
+int	main()
+{
+	ft_putnbr(PATH_MAX);
+	//ft_putnbr(ft_strncmp(".", ".", 2));
+}
+/*int		main(int ac, char **av)
 {
 	DIR *d;
 	struct dirent *rd;
@@ -21,3 +25,4 @@ int		main(int ac, char **av)
 		perror("blane close");
 	
 }
+*/

@@ -15,6 +15,7 @@
 # include "libft.h"
 # include <dirent.h>
 # include <stdio.h>
+# include <sys/syslimits.h>
 
 extern int *global_flags;
 
