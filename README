@@ -65,3 +65,4 @@ logs:
 created a logic and algo of our program %))
 started function "flags_n_sort" for parsing, first print of reg.files
 and add dirs to que;
+* tried to test extern int, it didn't work as we supposed to (
