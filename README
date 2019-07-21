@@ -60,3 +60,8 @@ logs:
 * in LSFT_H defined current structure more detailed
 * in src add functions with t_curr: 1. function new t_curr 2. add new t_curr in correct order
 
+@savva
+* a bit of ft_ls and main (in fimain);
+created a logic and algo of our program %))
+started function "flags_n_sort" for parsing, first print of reg.files
+and add dirs to que;

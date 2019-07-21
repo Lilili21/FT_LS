@@ -37,7 +37,7 @@ void	ft_add(t_curr **curr_dir, t_curr *new)
 
 }
 
-void ft_add_sorted(t_curr **curr_dir, dirent	*rd)
+void ft_add_sorted(t_curr **curr_dir, struct dirent *rd)
 {
 	t_curr *current;
 	t_curr *new;

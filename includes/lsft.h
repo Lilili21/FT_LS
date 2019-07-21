@@ -16,7 +16,7 @@
 # include <dirent.h>
 # include <stdio.h>
 
-extern int global_flags;
+extern int *global_flags;
 
 typedef struct	s_q
 {
@@ -45,6 +45,14 @@ typedef	struct s_curr
 	char 	*name;
 	struct s_q *next;
 }				t_curr;
+
+void	ft_add_sorted(t_curr **cur, struct dirent *rd); 
+/*
+sorted, rdy2print
+note, if D_TYPE == 10 (symb.link), we need info about SLINK FILE, 
+not endfile !!!
+so we have to use lstat;
+*/
 
 #endif
 

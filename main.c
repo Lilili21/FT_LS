@@ -1,5 +1,6 @@
 #include "lsft.h"
 
+
 int		main(int ac, char **av)
 {
 	DIR *d;

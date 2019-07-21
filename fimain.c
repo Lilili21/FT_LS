@@ -11,10 +11,7 @@ int		ft_ls(t_q **que, t_q **lev, t_curr **cur)
 	struct dirent	*rd;
 	char 			*av;
 
-	if (lev->abspath != NULL)
-		av = lev->abspath;
-	else
-		av = que->abspath;
+	av = ((*lev)->abspath != NULL ? (*lev)->abspath : (*que)->abspath);
 	if (av == NULL) //finish of program
 		return (0);
 
@@ -23,7 +20,9 @@ int		ft_ls(t_q **que, t_q **lev, t_curr **cur)
 	else
 		while ((rd = readdir(d))) // || rd == NULL && errno )
 		{
-			to_cur(rd->d_type, rd->d_name, cur); // sorted, rdy2print
+			if (global_flags[1] == 0)
+
+			ft_add_sorted(cur, rd); // sorted, rdy2print
 	/// note, if D_TYPE == 10 (symb.link), we need info about SLINK FILE, not endfile !!!
 	/// so we have to use lstat;
 			if(rd->d_type == 4)
