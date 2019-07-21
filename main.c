@@ -12,8 +12,7 @@ int		main(int ac, char **av)
 		while ((rd = readdir(d)))
 		{
 			ft_putstr(rd->d_name);
-			if (rd->d_type == 4)
-				ft_putnbr(rd->d_type);
+			ft_putnbr(rd->d_type);
 			write(1, "\n", 1);
 		}
 	}

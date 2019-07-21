@@ -18,7 +18,9 @@ int		ft_ls(t_q **que, t_q **lev, t_curr **cur)
 	else
 		while ((rd = readdir(d))) // || rd == NULL && errno )
 		{
-			to_cur(rd, rd->d_name, cur);
+			to_cur(rd->d_type, rd->d_name, cur); // sorted, rdy2print
+	/// note, if D_TYPE == 10 (symb.link), we need info about SLINK FILE, not endfile!!!!
+	/// so we have to use lstat;
 			if(rd->d_type == 4)
 				to_que(rd->d_name, lev);
 		}
