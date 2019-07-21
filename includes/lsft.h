@@ -46,7 +46,6 @@ typedef	struct s_curr
 	struct s_q *next;
 }				t_curr;
 
-
 #endif
 
 //man for dir stat https://www.ibm.com/developerworks/ru/library/au-unix-readdir/index.html
