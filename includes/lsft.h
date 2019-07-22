@@ -19,6 +19,15 @@
 
 extern int *global_flags;
 
+typedef struct	s_fl
+{
+	char l;
+	char a;
+	char rr;
+	char t;
+	char r;
+}				t_fla;
+
 typedef struct	s_q
 {
 	int			level; // ?
