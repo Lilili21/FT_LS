@@ -1,12 +1,17 @@
 #include "lsft.h"
 
+
 int		main(int ac, char **av)
 {
 	DIR *d;
 	struct dirent *rd;
 
 	if (!(d = opendir(av[1])))
-		perror("sukaneotkrit");
+	{
+		ft_putendl_fd("bla", 2);
+		//perror("sukaneotkrit");
+		exit(1);
+	}
 	else
 	{
 		while ((rd = readdir(d)))
@@ -20,3 +25,4 @@ int		main(int ac, char **av)
 		perror("blane close");
 	
 }
+

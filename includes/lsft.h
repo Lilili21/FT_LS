@@ -26,7 +26,7 @@ typedef struct	s_fl
 	char rr;
 	char t;
 	char r;
-}				t_fla;
+}				t_fl;
 
 typedef struct	s_q
 {
