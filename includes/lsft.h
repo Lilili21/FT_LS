@@ -15,8 +15,13 @@
 # include "libft.h"
 # include <dirent.h>
 # include <stdio.h>
+# include <stdlib.h>
 # include <sys/syslimits.h>
+#include <sys/stat.h>
 # include <sys/errno.h>
+# include <uuid/uuid.h>
+# include <pwd.h>
+# include <grp.h>
 
 extern int *global_flags;
 
