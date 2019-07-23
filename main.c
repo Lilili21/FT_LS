@@ -1,19 +1,5 @@
 #include "lsft.h"
 
-void func(int i)
-{
-	ft_putnbr(i);
-}
-
-int main()
-{
-
-	ft_putstr_fd("ls: illegal option -- ", 2);
-	write(2, "a", 1);
-	ft_putendl_fd("\nusage: ls [-Ralrt] [file ...]", 2);
-}
-
-/*
 int		main(int ac, char **av)
 {
 	DIR *d;
@@ -22,7 +8,8 @@ int		main(int ac, char **av)
 	if (!(d = opendir(av[1])))
 	{
 		ft_putendl_fd("bla", 2);
-		//perror("sukaneotkrit");
+		perror("sukaneotkrit");
+		ft_putnbr(errno);
 		exit(1);
 	}
 	else
@@ -38,4 +25,3 @@ int		main(int ac, char **av)
 		perror("blane close");
 	
 }
-*/

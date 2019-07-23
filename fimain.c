@@ -38,7 +38,7 @@ void	flags(char av, t_fl **fl)
 
 int 	flag_parse(char *av, t_fl **fl)
 {
-	if (*av++ == '-')
+	if (av && (*av++ == '-'))
 	{
 		if (*av == ' ')
 			return (-1); //ok, but this is AV, exit of parse flags!
@@ -62,6 +62,14 @@ int 	flag_parse(char *av, t_fl **fl)
 	return (-1);
 }
 
+/* flags_n_sort
+
+1+ first add flags to structure;
+2- split terminal av to files(cur) and dirs(que); if 0, then que = "."
+	! if we can't open a file or dir (like no existing, we need print error first
+	! and then list ls task (probably opening a file or dir, instantly print err);
+3- que list has2be sorted, as cur has2be sorted n ready to print;
+*/
 void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 {
 	int ac;
@@ -69,17 +77,21 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	ac = 1;
 	while (!flag_parse(av[ac], fl))
 		ac++;
+	//(1+)
 	//now ac is on terminal files and dirs
-
+	if (!av[ac])
+		to_que(".", que);
+	else
+	{
+		//parse & split
+		while ()
+	}
+	
+	
+	
 
 }
-/*
-1+ first add flags to structure;
-2- split terminal av to files(cur) and dirs(que); if 0, then que = "."
-	! if we can't open a file or dir (like no existing, we need print error first
-	! and then list ls task (probably opening a file or dir, instantly print err);
-3- que list has2be sorted, as cur has2be sorted n ready to print; 
-*/
+
 
 
 int		ft_ls(t_q **que, t_q **lev, t_curr **cur, t_fl **fl)
@@ -100,13 +112,16 @@ int		ft_ls(t_q **que, t_q **lev, t_curr **cur, t_fl **fl)
 			if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", PATH_MAX) ||
 			!ft_strncmp(rd->d_name, "..", PATH_MAX)))
 				continue ;
-			ft_add_sorted(cur, rd); // sorted, rdy2print
+		//add for .* (-a flag)
+			ft_add_sorted(cur, rd, fl); // sorted, rdy2print
 	/// note, if D_TYPE == 10 (symb.link), we need info about SLINK FILE, not endfile !!!
 	/// so we have to use lstat;
 			if((*fl)->rr && rd->d_type == 4)
 				to_que(rd->d_name, lev);
+				//sort by name
 		}
-	print_cur(cur);
+	//av ready to print (for ft_add_sorted, print_cur, depending on path and dirs..)
+	print_cur(cur, av); 
 	//if (closedir(d))
 	//	perror(0);
 	return (1);

@@ -16,6 +16,7 @@
 # include <dirent.h>
 # include <stdio.h>
 # include <sys/syslimits.h>
+# include <sys/errno.h>
 
 extern int *global_flags;
 
