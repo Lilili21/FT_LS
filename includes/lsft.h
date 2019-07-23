@@ -21,11 +21,11 @@ extern int *global_flags;
 
 typedef struct	s_fl
 {
-	char l;
-	char a;
 	char rr;
-	char t;
+	char a;
+	char l;
 	char r;
+	char t;
 }				t_fl;
 
 typedef struct	s_q

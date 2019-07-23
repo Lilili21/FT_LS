@@ -1,6 +1,19 @@
 #include "lsft.h"
 
+void func(int i)
+{
+	ft_putnbr(i);
+}
 
+int main()
+{
+
+	ft_putstr_fd("ls: illegal option -- ", 2);
+	write(2, "a", 1);
+	ft_putendl_fd("\nusage: ls [-Ralrt] [file ...]", 2);
+}
+
+/*
 int		main(int ac, char **av)
 {
 	DIR *d;
@@ -25,4 +38,4 @@ int		main(int ac, char **av)
 		perror("blane close");
 	
 }
-
+*/

@@ -36,27 +36,30 @@ void	flags(char av, t_fl **fl)
 
 	*/
 
-int 	flag_parse(char *av, t_fl **fl, int i)
+int 	flag_parse(char *av, t_fl **fl)
 {
 	if (*av++ == '-')
 	{
 		if (*av == ' ')
-			return (0); //ok, but this is AV, exit of parse flags!
+			return (-1); //ok, but this is AV, exit of parse flags!
 		else if (*av == 'l' || *av == 'a' || *av == 'R' ||
 			*av == 't' || *av == 'r')
 		{
 			while (*av && (*av == 'l' || *av == 'a' || *av == 'R' ||
 			*av == 't' || *av == 'r'))
-				flags(*av, fl);
-				//ok and we need add flags to struct;
+				flags(*av++, fl); //ok and we need add flags to struct;
+			if (!(*av))
+				return (0);
 		}
-		else
+		if (*av)
 		{
-			ft_putendl_fd(ft_strjoin("ls: illegal option -- ", *av), 2);
-			ft_putendl_fd("\nusage: ls [-laRtr] [file ...]\n", 2);
+			ft_putstr_fd("ls: illegal option -- ", 2);
+			write(2, *av, 1);
+			ft_putendl_fd("\nusage: ls [-Ralrt] [file ...]", 2);
+			exit (1); //check for leaks on flag_struct!
 		}
 	}
-	return (0);
+	return (-1);
 }
 
 void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
@@ -64,19 +67,20 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	int ac;
 
 	ac = 1;
-	while (flag_parse(av[ac++], fl, 0))
-		;
-	ac = flags(av, fl, 0, 0);
+	while (!flag_parse(av[ac], fl))
+		ac++;
+	//now ac is on terminal files and dirs
 
 
+}
 /*
-1- first add flags to structure;
+1+ first add flags to structure;
 2- split terminal av to files(cur) and dirs(que); if 0, then que = "."
 	! if we can't open a file or dir (like no existing, we need print error first
 	! and then list ls task (probably opening a file or dir, instantly print err);
 3- que list has2be sorted, as cur has2be sorted n ready to print; 
 */
-}
+
 
 int		ft_ls(t_q **que, t_q **lev, t_curr **cur, t_fl **fl)
 {
