@@ -1,17 +1,27 @@
 #include "lsft.h"
 
-void	flags(char av, t_fl **fl)
+void	flags(char av, t_fl **fl, int i)
 {
-	if (av == 'l')
-		(*fl)->l = 1;
-	if (av == 'a')
-		(*fl)->a = 1;
-	if (av == 'R')
-		(*fl)->rr = 1;
-	if (av == 't')
-		(*fl)->t = 1;
-	if (av == 'r')
-		(*fl)->r = 1;
+	if (i == 1)
+	{
+		if (av == 'l')
+			(*fl)->l = 1;
+		if (av == 'a')
+			(*fl)->a = 1;
+		if (av == 'R')
+			(*fl)->rr = 1;
+		if (av == 't')
+			(*fl)->t = 1;
+		if (av == 'r')
+			(*fl)->r = 1;
+		return ;
+	}
+	(*fl) = (t_fl*)malloc(sizeof(t_fl));
+	(*fl)->rr = 0;
+	(*fl)->a = 0;
+	(*fl)->l = 0;
+	(*fl)->r = 0;
+	(*fl)->t = 0;
 }
 	/*
 
@@ -47,7 +57,7 @@ int 	flag_parse(char *av, t_fl **fl)
 		{
 			while (*av && (*av == 'l' || *av == 'a' || *av == 'R' ||
 			*av == 't' || *av == 'r'))
-				flags(*av++, fl); //ok and we need add flags to struct;
+				flags(*av++, fl, 1 ); //ok and we need add flags to struct;
 			if (!(*av))
 				return (0);
 		}
@@ -74,25 +84,27 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 {
 	int ac;
 
+	flags(0, 0, 0); //to initialize flag struct to zero
 	ac = 1;
 	while (!flag_parse(av[ac], fl))
 		ac++;
 	//(1+)
-	//now ac is on terminal files and dirs
+	//now ac point to terminal files and dirs
 	if (!av[ac])
 		to_que(".", que);
 	else
 	{
-		//parse & split
-		while ()
+		//parse & split on files(to cur) & dirs(que);
+		//dirs have to be also sorted, independed on -R flag.
+		while (av[ac])
+		{
+			//if file to cur (sorted)
+			if (av[ac])
+
+			//if dir to que (sorted)
+		}
 	}
-	
-	
-	
-
 }
-
-
 
 int		ft_ls(t_q **que, t_q **lev, t_curr **cur, t_fl **fl)
 {
@@ -109,10 +121,8 @@ int		ft_ls(t_q **que, t_q **lev, t_curr **cur, t_fl **fl)
 	else
 		while ((rd = readdir(d))) // || rd == NULL && errno )
 		{
-			if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", PATH_MAX) ||
-			!ft_strncmp(rd->d_name, "..", PATH_MAX)))
+			if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", 1)))
 				continue ;
-		//add for .* (-a flag)
 			ft_add_sorted(cur, rd, fl); // sorted, rdy2print
 	/// note, if D_TYPE == 10 (symb.link), we need info about SLINK FILE, not endfile !!!
 	/// so we have to use lstat;
