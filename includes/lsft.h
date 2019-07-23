@@ -15,8 +15,19 @@
 # include "libft.h"
 # include <dirent.h>
 # include <stdio.h>
+# include <sys/syslimits.h>
+# include <sys/errno.h>
 
-extern int global_flags;
+extern int *global_flags;
+
+typedef struct	s_fl
+{
+	char rr;
+	char a;
+	char l;
+	char r;
+	char t;
+}				t_fl;
 
 typedef struct	s_q
 {
@@ -46,6 +57,13 @@ typedef	struct s_curr
 	struct s_q *next;
 }				t_curr;
 
+void	ft_add_sorted(t_curr **cur, struct dirent *rd); 
+/*
+sorted, rdy2print
+note, if D_TYPE == 10 (symb.link), we need info about SLINK FILE, 
+not endfile !!!
+so we have to use lstat;
+*/
 
 #endif
 

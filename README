@@ -54,9 +54,34 @@ to use printf because you are lazy isn’t. Be smart!
 https://forum.intra.42.fr/topics/16298/messages/1\#64737
 
 
+!
+to get files from other branch to yours:
+
+$ git branch
+master
+*savva
+lilili21
+
+$ git checkout lilili21 includes/lsft.h README fimain.c
+
+$ git add, git commit
+:)
 
 logs:
 @Liza
 * in LSFT_H defined current structure more detailed
 * in src add functions with t_curr: 1. function new t_curr 2. add new t_curr in correct order
+- merge sort(ft_add_sorted(cur, rd, fl)), cur struct is ready to print;
+		test on `/usr/share/man/man3`
+- print_cur(cur, av) – just print depending on column (allignemnt)
+				& free cur struct;
+	*av*		/Users/kkatelyn/sometests/1:
+	*count size* total 0
+- to_que(rd->d_name, (lev/que));
 
+@savva
++_+ flag parsing, added to struct, check for errors on flags (check4leaks);
+* making a logic and algo of our program %))
+* making parse of terminal files and dirs
+	split on dirs(to que) and files(to cur(for print))
+~TODO:
