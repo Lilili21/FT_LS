@@ -83,6 +83,8 @@ int 	flag_parse(char *av, t_fl **fl)
 void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 {
 	int ac;
+	int l;
+	struct stat buf;
 
 	flags(0, 0, 0); //to initialize flag struct to zero
 	ac = 1;
@@ -98,10 +100,13 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 		//dirs have to be also sorted, independed on -R flag.
 		while (av[ac])
 		{
-			//if file to cur (sorted)
-			if (av[ac])
-
+			l = lstat(av[ac], &buf);
 			//if dir to que (sorted)
+			if (S_ISDIR(buf.st_mode))
+				ft_add_sorted(0, que, av[ac], fl);
+			//if file to cur (sorted)
+			else
+				ft_add_sorted(cur, 0, av[ac], fl);
 		}
 	}
 }
@@ -123,11 +128,11 @@ int		ft_ls(t_q **que, t_q **lev, t_curr **cur, t_fl **fl)
 		{
 			if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", 1)))
 				continue ;
-			ft_add_sorted(cur, rd, fl); // sorted, rdy2print
+			ft_add_sorted(cur, 0, rd->d_name, fl); // sorted, rdy2print
 	/// note, if D_TYPE == 10 (symb.link), we need info about SLINK FILE, not endfile !!!
 	/// so we have to use lstat;
 			if((*fl)->rr && rd->d_type == 4)
-				to_que(rd->d_name, lev);
+				ft_add_sorted(0, lev, rd->d_name, fl);
 				//sort by name
 		}
 	//av ready to print (for ft_add_sorted, print_cur, depending on path and dirs..)
