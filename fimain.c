@@ -1,5 +1,21 @@
 #include "lsft.h"
 
+void	ft_lstaddqu(t_q **alst, t_q *new)
+{
+	if (!alst || !new)
+		return ;
+	new->next = (*alst);
+	(*alst) = new;
+}
+
+void	ft_lstaddcu(t_curr **alst, t_curr *new)
+{
+	if (!alst || !new)
+		return ;
+	new->next = (*alst);
+	(*alst) = new;
+}
+
 void	flags(char av, t_fl **fl, int i)
 {
 	if (i == 1)
@@ -22,7 +38,6 @@ void	flags(char av, t_fl **fl, int i)
 	(*fl)->l = 0;
 	(*fl)->r = 0;
 	(*fl)->t = 0;
-	(*fl)->lev = 0;
 }
 	/*
 
@@ -83,9 +98,10 @@ int 	flag_parse(char *av, t_fl **fl)
 */
 void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 {
-	int ac;
-	int l;
-	struct stat buf;
+	int			ac;
+	int			l;
+	struct stat	buf;
+	t_q			*err;
 
 	flags(0, 0, 0); //to initialize flag struct to zero
 	ac = 1;
@@ -94,23 +110,26 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	//(1+)
 	//now ac point to terminal files and dirs
 	if (!av[ac])
-		to_que(".", que);
+		to_list(0, que, ".");
 	else
 	{
 		//parse & split on files(to cur) & dirs(que);
-		//dirs have to be also sorted, independed on -R flag.
 		while (av[ac])
 		{
 			l = lstat(av[ac], &buf);
+			//if file or dir doesn;t exists
 			if (errno)
-				perror("a? : ");
+				er_list(err, av[1], strerror(errno));
 			//if dir to que (sorted)
-			if (S_ISDIR(buf.st_mode))
-				ft_add_sorted(0, que, av[ac], fl);
+			else if (S_ISDIR(buf.st_mode))
+				to_list(0, que, av[ac]);
 			//if file to cur (sorted)
 			else
-				ft_add_sorted(cur, 0, av[ac], fl);
+				to_list(cur, 0, av[ac]);
+			ac++;
 		}
+		er_list(err, 0, 0);
+		ft_add_sorted(cur, que, 0, fl); // just sort list on flags
 	}
 }
 
@@ -122,22 +141,21 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl)
 
 	if (!(av = (*que)->abspath)) //finish of program
 		return (0);
-
+	ft_putendl(ft_strjoin(av, ": "));
 	if (!(d = opendir(av)))
 	{
-		perror(ft_strjoin("ft_ls: ", av));
+		perror(ft_strjoin(ft_strjoin("ls: ", av), ": "));
 		return (1);
 	}
 	while ((rd = readdir(d))) // || rd == NULL && errno )
 	{
 		if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", 1)))
 			continue ;
-		ft_add_sorted(cur, 0, rd->d_name, fl);
-	/// sorted, rdy2print
-	/// note, if D_TYPE == 10 (symb.link), we need info about SLINK FILE, not endfile !!!
-	/// so we have to use lstat;
+		to_list(cur, 0, rd->d_name);
+		//from current sorted to que?
 	}
-	ft_add_sorted(0, que, rd->d_name, fl); //signal to sort, and if dir, add to que.!
+	ft_add_sorted(cur, que, av, fl); //signal to sort, and if dir, add to que.!
+	//add av to abspath!
 	//av ready to print (for ft_add_sorted, print_cur, depending on path and dirs..)
 	print_cur(cur, av); 
 	//if (closedir(d))
@@ -145,11 +163,47 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl)
 	return (1);
 }
 
+void	er_list(t_q **err, char *av, char *er)
+{
+	if (av && er)
+	{
+		//make sort in list on by name!
+		return ;
+	}
+	// print errors 2 FD !!!
+}
+
+void	to_list(t_curr **cur, t_q **que, char *av)
+{
+	t_curr	*cu;
+	t_q		*qu;
+
+	if (!que)
+	{
+		if (!(cu = (t_curr*)malloc(sizeof(t_curr))))
+		{
+			perror("ls: ");
+			exit(errno);
+		}
+		cu->name = av;
+		ft_lstaddcu(cur, cu);
+		return ;
+	}
+	if (!(qu = (t_q*)malloc(sizeof(t_q)))) // 0 level, av = abspath of av
+	{
+		perror("ls: ");
+		exit(errno);
+	}
+	qu->path = 0;
+	qu->next = 0;
+	qu->abspath = av;
+	ft_lstaddqu(que, qu);
+}
+
 int		main(int ac, char **av)
 {
 	int		state;
 	t_q		*que; //terminal que
-	t_q		*lev; //for recursive
 	t_curr	*cur; //print reg.files from dir or terminal ("ls file1 dir1 fil2" -->
 					// file1, file2
 					// dir1: 
@@ -159,7 +213,6 @@ int		main(int ac, char **av)
 	fl = NULL;
 	cur = NULL;
 	que = NULL;
-	lev = NULL;
 	state = 1;
 	flags_n_fsort(av, &que, &cur, &fl); //parse global flags;
 				// add to que sorted argv's from terminal; 

@@ -5,15 +5,19 @@ int main(int ac, char **av)
 	struct stat buf;
 	int l;
 
+	
 	l = lstat(av[1], &buf);
 	if (errno)
-		perror("a? : ");
+		ft_putendl(ft_strjoin(ft_strjoin(ft_strjoin("ls: ", av[1]), ": "), strerror(errno)));
 	if (S_ISLNK(buf.st_mode))
 		ft_putendl("link by l");
 	if (S_ISREG(buf.st_mode))
 		ft_putendl("reg by l");
+	exit(1000000);
 }
+
 /*
+
 int		main(int ac, char **av)
 {
 	DIR *d;
