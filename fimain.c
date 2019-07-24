@@ -22,6 +22,7 @@ void	flags(char av, t_fl **fl, int i)
 	(*fl)->l = 0;
 	(*fl)->r = 0;
 	(*fl)->t = 0;
+	(*fl)->lev = 0;
 }
 	/*
 
@@ -111,30 +112,35 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	}
 }
 
-int		ft_ls(t_q **que, t_q **lev, t_curr **cur, t_fl **fl)
+int		ft_ls(t_q **que, t_curr **cur, t_fl **fl)
 {
 	DIR				*d;
 	struct dirent	*rd;
 	char 			*av;
 
-	av = (*lev)->abspath != NULL ? (*lev)->abspath : (*que)->abspath;
-	if (av == NULL) //finish of program
+	if (!(av = (*que)->abspath)) //finish of program
 		return (0);
 
 	if (!(d = opendir(av)))
 		perror(ft_strjoin("ft_ls: ", av));
 	else
+	{
+		(*que)->lev++;
 		while ((rd = readdir(d))) // || rd == NULL && errno )
 		{
 			if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", 1)))
 				continue ;
-			ft_add_sorted(cur, 0, rd->d_name, fl); // sorted, rdy2print
+			ft_add_sorted(cur, 0, rd->d_name, fl);
+	/// sorted, rdy2print
 	/// note, if D_TYPE == 10 (symb.link), we need info about SLINK FILE, not endfile !!!
 	/// so we have to use lstat;
-			if((*fl)->rr && rd->d_type == 4)
-				ft_add_sorted(0, lev, rd->d_name, fl);
+			if ((*fl)->rr && rd->d_type == 4)
+				ft_add_sorted(0, que, rd->d_name, fl);
 				//sort by name
 		}
+		if (!(*que)->abspath)
+			(*que)->lev--;
+	}
 	//av ready to print (for ft_add_sorted, print_cur, depending on path and dirs..)
 	print_cur(cur, av); 
 	//if (closedir(d))

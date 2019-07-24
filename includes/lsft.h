@@ -21,16 +21,16 @@
 
 typedef struct	s_fl
 {
-	char rr;
-	char a;
-	char l;
-	char r;
-	char t;
+	char	rr;
+	char	a;
+	char	l;
+	char	r;
+	char	t;
 }				t_fl;
 
 typedef struct	s_q
 {
-	int			level;
+	int			lev;
 	char		*abspath;
 	struct s_q	*next;
 }				t_q;
