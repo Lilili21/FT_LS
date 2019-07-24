@@ -4,6 +4,11 @@ void	ft_lstaddqu(t_q **alst, t_q *new)
 {
 	if (!alst || !new)
 		return ;
+	if (!(*alst))
+	{
+		*alst = new;
+		return ;
+	}
 	new->next = (*alst);
 	(*alst) = new;
 }
@@ -12,6 +17,11 @@ void	ft_lstaddcu(t_curr **alst, t_curr *new)
 {
 	if (!alst || !new)
 		return ;
+	if (!(*alst))
+	{
+		*alst = new;
+		return ;
+	}
 	new->next = (*alst);
 	(*alst) = new;
 }
@@ -29,14 +39,14 @@ void	flags(char av, t_fl **fl, int i)
 		if (av == 't')
 			(*fl)->t = 1;
 		if (av == 'r')
-			(*fl)->r = 1;
+			(*fl)->r = -1;
 		return ;
 	}
 	(*fl) = (t_fl*)malloc(sizeof(t_fl));
 	(*fl)->rr = 0;
 	(*fl)->a = 0;
 	(*fl)->l = 0;
-	(*fl)->r = 0;
+	(*fl)->r = 1;
 	(*fl)->t = 0;
 }
 	/*
@@ -110,7 +120,7 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	//(1+)
 	//now ac point to terminal files and dirs
 	if (!av[ac])
-		to_list(0, que, ".");
+		to_list(0, que, ".", fl);
 	else
 	{
 		//parse & split on files(to cur) & dirs(que);
@@ -120,16 +130,20 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 			//if file or dir doesn;t exists
 			if (errno)
 				er_list(err, av[1], strerror(errno));
-			//if dir to que (sorted)
+			//if dir to que 
 			else if (S_ISDIR(buf.st_mode))
-				to_list(0, que, av[ac]);
-			//if file to cur (sorted)
+				to_list(0, que, av[ac], fl);
+			//if file to cur
 			else
-				to_list(cur, 0, av[ac]);
+				to_list(cur, 0, av[ac], fl);
 			ac++;
 		}
 		er_list(err, 0, 0);
+
 		ft_add_sorted(cur, que, 0, fl); // just sort list on flags
+						// if av == 0, then just sort all lists
+						// and not considering que->path, only que->abspath
+						// 
 	}
 }
 
@@ -141,10 +155,11 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl)
 
 	if (!(av = (*que)->abspath)) //finish of program
 		return (0);
-	ft_putendl(ft_strjoin(av, ": "));
+	ft_putendl(ft_strjoin(av, ": ")); // if dirs > 1
 	if (!(d = opendir(av)))
 	{
 		perror(ft_strjoin(ft_strjoin("ls: ", av), ": "));
+		//del av-que !()
 		return (1);
 	}
 	while ((rd = readdir(d))) // || rd == NULL && errno )
@@ -157,7 +172,12 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl)
 	ft_add_sorted(cur, que, av, fl); //signal to sort, and if dir, add to que.!
 	//add av to abspath!
 	//av ready to print (for ft_add_sorted, print_cur, depending on path and dirs..)
-	print_cur(cur, av); 
+	//ft_strjoin(ft_strjoin(av, "/"), if cur(elem)==dir) to ft_add_sorted.
+	// ftAdd_sorted:
+	// curr is full, then sort_funct, then if cut(elem)==dir && fl->R ==> add to que, with
+	// path and abspath
+	// 
+	print_cur(cur); 
 	//if (closedir(d))
 	//	perror(0);
 	return (1);
@@ -173,19 +193,14 @@ void	er_list(t_q **err, char *av, char *er)
 	// print errors 2 FD !!!
 }
 
-void	to_list(t_curr **cur, t_q **que, char *av)
+void	to_list(t_curr **cur, t_q **que, char *av, t_fl **fl)
 {
 	t_curr	*cu;
 	t_q		*qu;
 
 	if (!que)
 	{
-		if (!(cu = (t_curr*)malloc(sizeof(t_curr))))
-		{
-			perror("ls: ");
-			exit(errno);
-		}
-		cu->name = av;
+		cu = ft_new_curr(av, fl);
 		ft_lstaddcu(cur, cu);
 		return ;
 	}
