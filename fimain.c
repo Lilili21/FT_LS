@@ -102,6 +102,8 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 		while (av[ac])
 		{
 			l = lstat(av[ac], &buf);
+			if (errno)
+				perror("a? : ");
 			//if dir to que (sorted)
 			if (S_ISDIR(buf.st_mode))
 				ft_add_sorted(0, que, av[ac], fl);
@@ -122,25 +124,20 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl)
 		return (0);
 
 	if (!(d = opendir(av)))
-		perror(ft_strjoin("ft_ls: ", av));
-	else
 	{
-		(*que)->lev++;
-		while ((rd = readdir(d))) // || rd == NULL && errno )
-		{
-			if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", 1)))
-				continue ;
-			ft_add_sorted(cur, 0, rd->d_name, fl);
+		perror(ft_strjoin("ft_ls: ", av));
+		return (1);
+	}
+	while ((rd = readdir(d))) // || rd == NULL && errno )
+	{
+		if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", 1)))
+			continue ;
+		ft_add_sorted(cur, 0, rd->d_name, fl);
 	/// sorted, rdy2print
 	/// note, if D_TYPE == 10 (symb.link), we need info about SLINK FILE, not endfile !!!
 	/// so we have to use lstat;
-			if ((*fl)->rr && rd->d_type == 4)
-				ft_add_sorted(0, que, rd->d_name, fl);
-				//sort by name
-		}
-		if (!(*que)->abspath)
-			(*que)->lev--;
 	}
+	ft_add_sorted(0, que, rd->d_name, fl); //signal to sort, and if dir, add to que.!
 	//av ready to print (for ft_add_sorted, print_cur, depending on path and dirs..)
 	print_cur(cur, av); 
 	//if (closedir(d))

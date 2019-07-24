@@ -5,17 +5,13 @@ int main(int ac, char **av)
 	struct stat buf;
 	int l;
 
-	l = stat(av[1], &buf);
-	if (S_ISLNK(buf.st_mode))
-		ft_putendl("link by stat");
-	if (S_ISREG(buf.st_mode))
-		ft_putendl("reg by stat");
 	l = lstat(av[1], &buf);
+	if (errno)
+		perror("a? : ");
 	if (S_ISLNK(buf.st_mode))
 		ft_putendl("link by l");
 	if (S_ISREG(buf.st_mode))
 		ft_putendl("reg by l");
-
 }
 /*
 int		main(int ac, char **av)
