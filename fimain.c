@@ -183,6 +183,34 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl)
 	return (1);
 }
 
+void	ft_add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl)
+{
+	t_q		*qu;
+	t_curr	*cu;
+	int		le;
+
+	sort(cur, fl);
+	if (av)
+	{
+		if ((*fl)->rr)
+		{
+			//dirs from cur to que
+			cu = *cur;
+			le = (*que)->lev + 1;
+			while(cu)
+				if (cu->type == d)
+				{
+					//new que node to beginning
+					qu->lev = le;
+					qu->path = av;
+					qu->abspath = ft_strjoin(cu->name, "/");
+					ft_lstaddqu(que, qu);
+				}
+			return ; //or add else and print all cur and erase then ;
+		}
+	}
+
+
 void	er_list(t_q **err, char *av, char *er)
 {
 	if (av && er)
