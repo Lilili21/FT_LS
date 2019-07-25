@@ -139,8 +139,7 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 			ac++;
 		}
 		er_list(err, 0, 0);
-
-		ft_add_sorted(cur, que, 0, fl); // just sort list on flags
+		sort(cur, que, fl); // just sort list on flags
 						// if av == 0, then just sort all lists
 						// and not considering que->path, only que->abspath
 						// 
@@ -169,18 +168,18 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl)
 		to_list(cur, 0, rd->d_name);
 		//from current sorted to que?
 	}
-	ft_add_sorted(cur, que, av, fl); //signal to sort, and if dir, add to que.!
-	//add av to abspath!
-	//av ready to print (for ft_add_sorted, print_cur, depending on path and dirs..)
-	//ft_strjoin(ft_strjoin(av, "/"), if cur(elem)==dir) to ft_add_sorted.
-	// ftAdd_sorted:
-	// curr is full, then sort_funct, then if cut(elem)==dir && fl->R ==> add to que, with
-	// path and abspath
-	// 
-	print_cur(cur); 
+	sort(cur, 0, fl);
+	if ((*fl)->rr)
+		ft_add_sorted(cur, )
+	print_cur(cur); //add total print and then erasing cur list;
 	//if (closedir(d))
 	//	perror(0);
 	return (1);
+}
+
+void	ft_lstaddqulev(que, qu) // to add node to que list end of level;
+{
+
 }
 
 void	ft_add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl)
@@ -188,27 +187,23 @@ void	ft_add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl)
 	t_q		*qu;
 	t_curr	*cu;
 	int		le;
-
-	sort(cur, fl);
-	if (av)
-	{
-		if ((*fl)->rr)
+	//dirs from cur to que
+	cu = *cur;
+	le = (*que)->lev + 1;
+	while(cu)
+		if (cu->type == 'd')
 		{
-			//dirs from cur to que
-			cu = *cur;
-			le = (*que)->lev + 1;
-			while(cu)
-				if (cu->type == d)
-				{
-					//new que node to beginning
-					qu->lev = le;
-					qu->path = av;
-					qu->abspath = ft_strjoin(cu->name, "/");
-					ft_lstaddqu(que, qu);
-				}
-			return ; //or add else and print all cur and erase then ;
-		}
-	}
+			qu = (t_q*)malloc(sizeof(t_q));
+			//new que node to beginning
+			qu->lev = le;
+			qu->path = av;
+			i = ft_strlen(cu->name);
+			qu->abspath = cu->name[ft_strlen(cu->name) - 1] == '/' ? 
+			cu->name : ft_strjoin(cu->name, "/"); //check for last-1 bit '/'
+			ft_lstaddqulev(que, qu);//to the end! change!
+			cu = cu->next;
+		}	
+}
 
 
 void	er_list(t_q **err, char *av, char *er)
