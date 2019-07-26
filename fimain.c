@@ -71,9 +71,9 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int col)
 		to_list(cur, 0, rd->d_name, fl);
 	}
 	sort(cur, 0, fl);
+	print_cur(cur);
 	if ((*fl)->rr)
 		add_sorted(cur, que, av, fl);
-	print_cur(cur);
 	//if (closedir(d))
 	//	perror(0);
 	return (1);
@@ -82,22 +82,28 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int col)
 void	add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl)
 {
 	t_q		*qu;
-	t_curr	*cu;
-	int		le;
-	//dirs from cur to que
-	cu = *cur;
-	le = (*que)->lev + 1;
-	av = av[ft_strlen(av) - 1] == '/' ? av : ft_strjoin(av, "/");
-	while(cu) //cu->next ?
+	t_q		*st;
+	t_curr	*re;
+
+	av = ft_strjoin(av, "/"); // add NULL check
+	while(*cur) //cu->next ?
 	{
-		if (cu->type == 'd')
+		if ((*cur)->type == 'd')
 		{
-			qu = (t_q*)malloc(sizeof(t_q)); //new que node to beginning
-			qu->lev = le;
-			qu->abspath = ft_strjoin(av, cu->name);
-			ft_lstaddqulev(que, qu);//to the end of list of level
+			qu = (t_q*)malloc(sizeof(t_q)); //add check for NULL
+			qu->abspath = ft_strjoin(av, (*cur)->name);
+			qu->next = NULL;
+			qu = qu->next;
+			que_end(&st, qu);
 		}
-		cu = cu->next;
+		re = (*cur)->next;
+		ft_free(&cur);
+		(*cur) = (*cur)->next;
+	}
+	if (qu)
+	{
+		qu->next = *que;
+		*que = qu;
 	}
 }
 

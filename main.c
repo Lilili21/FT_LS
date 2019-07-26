@@ -1,19 +1,31 @@
- //#include "lsft.h"
-#include <stdio.h>
-void fu()
-{
-	static int i;
-	int a;
+#include "lsft.h"
 
-	
-	printf("a = %d\n", a);	
-	printf("i%d\n", i);
+void giv_me(t_q **qu, t_curr **ad)
+{
+	*qu = (t_q*)malloc(sizeof(t_q));
+	*ad = (t_curr*)malloc(sizeof(t_curr));
+	(*ad)->user = (char*)malloc(sizeof(char) * 1000);
+	(*qu)->abspath = (char*)malloc(sizeof(char) * 1000);
+}
+void fef()
+{
+	char *a;
+
+	a = ft_strjoin(ft_strjoin("ok", "a"), "aggaaaa");
+
+	ft_putendl(a);
+	free(a);
 }
 
-int main()//int ac, char **av)
+int main()
 {
-	fu();
-	fu();
+	t_q *qu;
+	t_curr *ad;
+
+	
+	//giv_me(&qu, &ad);
+
+	fef();
 }
 
 /*

@@ -26,6 +26,7 @@
 # include <time.h>
 # include <fcntl.h>
 
+# define CHECM(x) if (!(x)) ft_putendl_fd("ls: malloc error", 2)
 
 typedef struct	s_fl
 {
@@ -38,7 +39,6 @@ typedef struct	s_fl
 
 typedef struct	s_q
 {
-	int			lev;
 	char		*abspath;
 	struct s_q	*next;
 }				t_q;

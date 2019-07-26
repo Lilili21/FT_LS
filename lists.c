@@ -52,13 +52,22 @@ void	to_list(t_curr **cur, t_q **que, char *av, t_fl **fl)
 		perror("ls: ");
 		exit(errno);
 	}
-	qu->lev = 0;
 	qu->next = 0;
 	qu->abspath = av;
-	ft_lstaddqu(que, qu);
+	que_end(que, qu);
 }
 
-void	ft_lstaddqulev(que, qu) // to add node to que list end of level;
+void	que_end(t_q **st, t_q *qu) // to add node to que list end of level;
 {
+	t_q *tmp;
 
+	if (!st)
+	{
+		*st = qu;
+		return ;
+	}
+	tmp = *st;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = qu;
 }
