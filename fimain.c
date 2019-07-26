@@ -154,7 +154,7 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl)
 
 	if (!(av = (*que)->abspath)) //finish of program
 		return (0);
-	ft_putendl(ft_strjoin(av, ": ")); // if dirs > 1
+	ft_putendl(ft_strjoin(av, ": ")); // if dirs > 1 //probably write to buffer!
 	if (!(d = opendir(av)))
 	{
 		perror(ft_strjoin(ft_strjoin("ls: ", av), ": "));
@@ -170,7 +170,7 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl)
 	}
 	sort(cur, 0, fl);
 	if ((*fl)->rr)
-		ft_add_sorted(cur, )
+		ft_add_sorted(cur, que, av, fl);
 	print_cur(cur); //add total print and then erasing cur list;
 	//if (closedir(d))
 	//	perror(0);
@@ -193,12 +193,10 @@ void	ft_add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl)
 	while(cu)
 		if (cu->type == 'd')
 		{
-			qu = (t_q*)malloc(sizeof(t_q));
-			//new que node to beginning
+			qu = (t_q*)malloc(sizeof(t_q)); //new que node to beginning
 			qu->lev = le;
 			qu->path = av;
-			i = ft_strlen(cu->name);
-			qu->abspath = cu->name[ft_strlen(cu->name) - 1] == '/' ? 
+			qu->abspath = cdcu->name[ft_strlen(cu->name) - 1] == '/' ? 
 			cu->name : ft_strjoin(cu->name, "/"); //check for last-1 bit '/'
 			ft_lstaddqulev(que, qu);//to the end! change!
 			cu = cu->next;
