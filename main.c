@@ -1,4 +1,22 @@
-#include "lsft.h"
+ //#include "lsft.h"
+#include <stdio.h>
+void fu()
+{
+	static int i;
+	int a;
+
+	
+	printf("a = %d\n", a);	
+	printf("i%d\n", i);
+}
+
+int main()//int ac, char **av)
+{
+	fu();
+	fu();
+}
+
+/*
 
 int		main(int ac, char **av)
 {
@@ -25,3 +43,4 @@ int		main(int ac, char **av)
 		perror("blane close");
 	
 }
+*/
