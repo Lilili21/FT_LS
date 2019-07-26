@@ -34,7 +34,6 @@ typedef struct	s_fl
 typedef struct	s_q
 {
 	int			lev;
-	char		*path;
 	char		*abspath;
 	struct s_q	*next;
 }				t_q;

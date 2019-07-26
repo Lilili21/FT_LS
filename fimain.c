@@ -1,104 +1,7 @@
 #include "lsft.h"
 
-void	ft_lstaddqu(t_q **alst, t_q *new)
-{
-	if (!alst || !new)
-		return ;
-	if (!(*alst))
-	{
-		*alst = new;
-		return ;
-	}
-	new->next = (*alst);
-	(*alst) = new;
-}
-
-void	ft_lstaddcu(t_curr **alst, t_curr *new)
-{
-	if (!alst || !new)
-		return ;
-	if (!(*alst))
-	{
-		*alst = new;
-		return ;
-	}
-	new->next = (*alst);
-	(*alst) = new;
-}
-
-void	flags(char av, t_fl **fl, int i)
-{
-	if (i == 1)
-	{
-		if (av == 'l')
-			(*fl)->l = 1;
-		if (av == 'a')
-			(*fl)->a = 1;
-		if (av == 'R')
-			(*fl)->rr = 1;
-		if (av == 't')
-			(*fl)->t = 1;
-		if (av == 'r')
-			(*fl)->r = -1;
-		return ;
-	}
-	(*fl) = (t_fl*)malloc(sizeof(t_fl));
-	(*fl)->rr = 0;
-	(*fl)->a = 0;
-	(*fl)->l = 0;
-	(*fl)->r = 1;
-	(*fl)->t = 0;
-}
-	/*
-
-		ls - 
-	OK
-		ls -zz
-	WRONG
-		ls -l -zz
-	OK
-
-	handle errors, like:
-
-		ls exfile aksjdka
-	ls: aksjdka: No such file or directory
-	exfile
-		ls \-zz
-	ls: illegal option -- z
-	usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]
-		ls a -zz
-	-zz
-	a
-
-	*/
-
-int 	flag_parse(char *av, t_fl **fl)
-{
-	if (av && (*av++ == '-'))
-	{
-		if (*av == ' ')
-			return (-1); //ok, but this is AV, exit of parse flags!
-		else if (*av == 'l' || *av == 'a' || *av == 'R' ||
-			*av == 't' || *av == 'r')
-		{
-			while (*av && (*av == 'l' || *av == 'a' || *av == 'R' ||
-			*av == 't' || *av == 'r'))
-				flags(*av++, fl, 1 ); //ok and we need add flags to struct;
-			if (!(*av))
-				return (0);
-		}
-		if (*av)
-		{
-			ft_putstr_fd("ls: illegal option -- ", 2);
-			write(2, *av, 1);
-			ft_putendl_fd("\nusage: ls [-Ralrt] [file ...]", 2);
-			exit (1); //check for leaks on flag_struct!
-		}
-	}
-	return (-1);
-}
-
-/* flags_n_sort
+/*
+flags_n_sort
 
 1+ first add flags to structure;
 2- split terminal av to files(cur) and dirs(que); if 0, then que = "."
@@ -106,6 +9,7 @@ int 	flag_parse(char *av, t_fl **fl)
 	! and then list ls task (probably opening a file or dir, instantly print err);
 3- que list has2be sorted, as cur has2be sorted n ready to print;
 */
+
 void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 {
 	int			ac;
@@ -113,7 +17,7 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	struct stat	buf;
 	t_q			*err;
 
-	flags(0, 0, 0); //to initialize flag struct to zero
+	flags(0, fl, 0); //to initialize flag struct to zero
 	ac = 1;
 	while (!flag_parse(av[ac], fl))
 		ac++;
@@ -139,50 +43,43 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 			ac++;
 		}
 		er_list(err, 0, 0);
-		sort(cur, que, fl); // just sort list on flags
-						// if av == 0, then just sort all lists
-						// and not considering que->path, only que->abspath
-						// 
+		sort(cur, que, fl);
 	}
 }
 
-int		ft_ls(t_q **que, t_curr **cur, t_fl **fl)
+int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int col)
 {
 	DIR				*d;
 	struct dirent	*rd;
 	char 			*av;
+	static int		col;
 
-	if (!(av = (*que)->abspath)) //finish of program
+	if (!(*que) || (av = (*que)->abspath)) //finish of program
 		return (0);
-	ft_putendl(ft_strjoin(av, ": ")); // if dirs > 1 //probably write to buffer!
+	if (col)
+		ft_putendl(ft_strjoin(av, ": ")); // probably write to buffer!
 	if (!(d = opendir(av)))
 	{
 		perror(ft_strjoin(ft_strjoin("ls: ", av), ": "));
-		//del av-que !()
+		del_node(que, av); //del av-que !()
 		return (1);
 	}
 	while ((rd = readdir(d))) // || rd == NULL && errno )
 	{
 		if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", 1)))
 			continue ;
-		to_list(cur, 0, rd->d_name);
-		//from current sorted to que?
+		to_list(cur, 0, rd->d_name, fl);
 	}
 	sort(cur, 0, fl);
 	if ((*fl)->rr)
-		ft_add_sorted(cur, que, av, fl);
-	print_cur(cur); //add total print and then erasing cur list;
+		add_sorted(cur, que, av, fl);
+	print_cur(cur);
 	//if (closedir(d))
 	//	perror(0);
 	return (1);
 }
 
-void	ft_lstaddqulev(que, qu) // to add node to que list end of level;
-{
-
-}
-
-void	ft_add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl)
+void	add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl)
 {
 	t_q		*qu;
 	t_curr	*cu;
@@ -190,50 +87,18 @@ void	ft_add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl)
 	//dirs from cur to que
 	cu = *cur;
 	le = (*que)->lev + 1;
-	while(cu)
+	av = av[ft_strlen(av) - 1] == '/' ? av : ft_strjoin(av, "/");
+	while(cu) //cu->next ?
+	{
 		if (cu->type == 'd')
 		{
 			qu = (t_q*)malloc(sizeof(t_q)); //new que node to beginning
 			qu->lev = le;
-			qu->path = av;
-			qu->abspath = cdcu->name[ft_strlen(cu->name) - 1] == '/' ? 
-			cu->name : ft_strjoin(cu->name, "/"); //check for last-1 bit '/'
-			ft_lstaddqulev(que, qu);//to the end! change!
-			cu = cu->next;
-		}	
-}
-
-
-void	er_list(t_q **err, char *av, char *er)
-{
-	if (av && er)
-	{
-		//make sort in list on by name!
-		return ;
+			qu->abspath = ft_strjoin(av, cu->name);
+			ft_lstaddqulev(que, qu);//to the end of list of level
+		}
+		cu = cu->next;
 	}
-	// print errors 2 FD !!!
-}
-
-void	to_list(t_curr **cur, t_q **que, char *av, t_fl **fl)
-{
-	t_curr	*cu;
-	t_q		*qu;
-
-	if (!que)
-	{
-		cu = ft_new_curr(av, fl);
-		ft_lstaddcu(cur, cu);
-		return ;
-	}
-	if (!(qu = (t_q*)malloc(sizeof(t_q)))) // 0 level, av = abspath of av
-	{
-		perror("ls: ");
-		exit(errno);
-	}
-	qu->path = 0;
-	qu->next = 0;
-	qu->abspath = av;
-	ft_lstaddqu(que, qu);
 }
 
 int		main(int ac, char **av)
@@ -245,16 +110,20 @@ int		main(int ac, char **av)
 					// dir1: 
 					// ......)
 	t_fl	*fl; // flag structure
+	int		col;
 
 	fl = NULL;
 	cur = NULL;
 	que = NULL;
 	state = 1;
+	col = 0;
 	flags_n_fsort(av, &que, &cur, &fl); //parse global flags;
 				// add to que sorted argv's from terminal; 
 				// if av == NULL, then av = ".";
 				// add to t_curr !!! reg. files to print, then folders to que;
-	print_cur(&cur);
+	print_cur(&cur); //add 'total' print and then erasing cur list;
+	if (que->next)  // if dirs > 1 from terminal, or there was print of dir previously (like last dir)
+		col = 1;
 	while (state > 0)
-		state = ft_ls(&que, &lev, &cur, &fl);
+		state = ft_ls(&que, &cur, &fl, col);
 }

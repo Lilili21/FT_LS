@@ -1,19 +1,19 @@
-#include "lsft.h"
-
-int main(int ac, char **av)
+ //#include "lsft.h"
+#include <stdio.h>
+void fu()
 {
-	struct stat buf;
-	int l;
+	static int i;
+	int a;
 
 	
-	l = lstat(av[1], &buf);
-	if (errno)
-		ft_putendl(ft_strjoin(ft_strjoin(ft_strjoin("ls: ", av[1]), ": "), strerror(errno)));
-	if (S_ISLNK(buf.st_mode))
-		ft_putendl("link by l");
-	if (S_ISREG(buf.st_mode))
-		ft_putendl("reg by l");
-	exit(1000000);
+	printf("a = %d\n", a);	
+	printf("i%d\n", i);
+}
+
+int main()//int ac, char **av)
+{
+	fu();
+	fu();
 }
 
 /*
