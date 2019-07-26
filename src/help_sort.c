@@ -35,11 +35,9 @@ t_q		*ft_new_q(t_curr *current, int lev)
 
 	if (!(new = (t_q *)malloc(sizeof(t_q))))
 		return (NULL);
-	new->path = NULL;
 	new->abspath = NULL;
 	new->next = NULL;
 	new->lev = lev;
-	ft_free(current);
 	return (new);
 }
 
@@ -51,18 +49,15 @@ void	ft_fill_que(t_curr **curr_dir, t_q **que)
 
 	curr = *curr_dir;
 	q_first = NULL;
-	while (curr->next)
+	while (curr)
 	{
 		if (curr->type == 'd' && q_first == NULL)
 			q_first = ft_new_q(curr, (*que)->lev + 1);
 		else if (curr->type == 'd' && q_first != NULL)
 			q_first->next = ft_new_q(curr, (*que)->lev + 1);
-		else
-		{
-			tmp = curr->next;
-			ft_free(curr);
-			curr = tmp;
-		}
+		tmp = curr->next;
+		ft_free(curr);
+		curr = tmp;
 	}
 	if (q_first != NULL)
 		q_first->next = *que;

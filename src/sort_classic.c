@@ -14,7 +14,7 @@
 
 int		ft_size_dirr(t_curr **curr_dir)
 {
-	int 	count;
+	int		count;
 	t_curr	*curr;
 
 	count = 0;
@@ -88,9 +88,4 @@ void	ft_sort(t_curr **curr_dir, int s_order, int type)
 		}
 		current->next = NULL;
 	}
-}
-
-void ft_sort2(t_curr **curr_dir, int s_order, int type)
-{
-
 }

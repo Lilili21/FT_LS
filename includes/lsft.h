@@ -14,14 +14,15 @@
 # define LSFT_H
 # include "libft.h"
 # include <dirent.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <sys/syslimits.h>
-#include <sys/stat.h>
+# include <sys/stat.h>
 # include <sys/errno.h>
+# include <sys/types.h>
 # include <uuid/uuid.h>
 # include <pwd.h>
 # include <grp.h>
+# include <time.h>
 
 extern int *global_flags;
 
@@ -36,30 +37,25 @@ typedef struct	s_fl
 
 typedef struct	s_q
 {
-	int			level; // ?
+	int			lev;
+	char		*path;
 	char		*abspath;
 	struct s_q	*next;
 }				t_q;
 
-typedef struct s_date {
-	char *month;
-	char *day;
-	char *hour;
-	char *minute;
-	char *year;
-}			t_date;
-
 typedef	struct s_curr
 {
-	int		type; //1-folder, 0-file
-	char	*rights;
-	int		links;
-	char	*user;
-	char	*groop;
-	int 	size;
-	t_date	date;
-	char 	*name;
-	struct s_q *next;
+	char		type;
+    char 		*name;
+	char		*rights;
+	int			links;
+	char		*user;
+	char		*groop;
+	int 		size;
+	int     	check_date;
+	int     	compare_date;
+	char		*print_date;
+	struct s_curr *next;
 }				t_curr;
 
 void	ft_add_sorted(t_curr **cur, struct dirent *rd); 
