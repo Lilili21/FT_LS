@@ -100,6 +100,5 @@ ft_add_sorted(+, +, av, +)
 }
 
 TOD0:
-- check que levels to end!
-- ft_ls //ft_strjoin leaks
 - NULL checks
+- C0NN3CT:ME
