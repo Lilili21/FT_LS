@@ -47,35 +47,44 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	}
 }
 
+int		err_write(char *av, int errno)
+{
+	char *b;
+	char *tmp;
+
+	if (!(b 
+}
+
 int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int col)
 {
 	DIR				*d;
 	struct dirent	*rd;
 	char 			*av;
 	static int		col;
+	char			*fr;
 
 	if (!(*que) || (av = (*que)->abspath)) //finish of program
 		return (0);
 	if (col)
 		ft_putendl(ft_strjoin(av, ": ")); // probably write to buffer!
 	if (!(d = opendir(av)))
-	{
 		perror(ft_strjoin(ft_strjoin("ls: ", av), ": "));
-		del_node(que, av); //del av-que !()
-		return (1);
-	}
-	while ((rd = readdir(d))) // || rd == NULL && errno )
+	else
 	{
-		if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", 1)))
-			continue ;
-		to_list(cur, 0, rd->d_name, fl);
+		while ((rd = readdir(d))) // || rd == NULL && errno )
+		{
+			if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", 1)))
+				continue ;
+			to_list(cur, 0, rd->d_name, fl);
+		}
+		sort(cur, 0, fl);
+		print_cur(cur);
+		if ((*fl)->rr)
+			add_sorted(cur, que, av, fl);
+		if (closedir(d))
+			perror(ft_strjoin(ft_strjoin("ls: ", av), ": "));
 	}
-	sort(cur, 0, fl);
-	print_cur(cur);
-	if ((*fl)->rr)
-		add_sorted(cur, que, av, fl);
-	//if (closedir(d))
-	//	perror(0);
+	del_node(que, cur, av); //del av-que !()
 	return (1);
 }
 
@@ -85,6 +94,7 @@ void	add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl)
 	t_q		*st;
 	t_curr	*re;
 
+	qu = NULL;
 	av = ft_strjoin(av, "/"); // add NULL check
 	while(*cur) //cu->next ?
 	{
@@ -103,7 +113,7 @@ void	add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl)
 	if (qu)
 	{
 		qu->next = *que;
-		*que = qu;
+		*que = st;
 	}
 }
 

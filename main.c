@@ -7,25 +7,25 @@ void giv_me(t_q **qu, t_curr **ad)
 	(*ad)->user = (char*)malloc(sizeof(char) * 1000);
 	(*qu)->abspath = (char*)malloc(sizeof(char) * 1000);
 }
+
+
 void fef()
 {
 	char *a;
 
-	a = ft_strjoin(ft_strjoin("ok", "a"), "aggaaaa");
+	a = ft_strjoin("a", "ok");
 
 	ft_putendl(a);
-	free(a);
+	
 }
 
 int main()
 {
-	t_q *qu;
-	t_curr *ad;
+	t_q *tmp;
+	t_curr *t;
 
-	
-	//giv_me(&qu, &ad);
-
-	fef();
+	giv_me(&tmp, &t);
+	exit(0);
 }
 
 /*

@@ -99,4 +99,7 @@ ft_add_sorted(+, +, av, +)
 		add_que->abspath == ft_strjoin(av, "/");
 }
 
-}
+TOD0:
+- check que levels to end!
+- ft_ls //ft_strjoin leaks
+- NULL checks

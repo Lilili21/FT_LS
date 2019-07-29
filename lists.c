@@ -13,17 +13,19 @@ void	ft_lstaddqu(t_q **alst, t_q *new)
 	(*alst) = new;
 }
 
-void	ft_lstaddcu(t_curr **alst, t_curr *new)
+void	ft_lstaddcu(t_curr **st, t_curr *new)
 {
-	if (!alst || !new)
-		return ;
-	if (!(*alst))
+	t_curr *tmp;
+
+	if (!st)
 	{
-		*alst = new;
+		*st = new;
 		return ;
 	}
-	new->next = (*alst);
-	(*alst) = new;
+	tmp = *st;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
 }
 
 void	er_list(t_q **err, char *av, char *er)
