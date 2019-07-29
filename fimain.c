@@ -47,12 +47,21 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	}
 }
 
-int		err_write(char *av, int errno)
+void	err_write(char *av, int errno)
 {
 	char *b;
 	char *tmp;
 
-	if (!(b 
+	b = ft_strjoin("ls: ", av);
+	tmp = b;
+	b = ft_strjoin(b, ": ");
+	free(tmp);
+	errno = 12;
+	tmp = b;
+	b = ft_strjoin(b, strerror(errno));
+	free(tmp);
+	write(2, b, ft_strlen(b));
+	free(b);
 }
 
 int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int col)
@@ -68,7 +77,7 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int col)
 	if (col)
 		ft_putendl(ft_strjoin(av, ": ")); // probably write to buffer!
 	if (!(d = opendir(av)))
-		perror(ft_strjoin(ft_strjoin("ls: ", av), ": "));
+		err_write(av, errno);
 	else
 	{
 		while ((rd = readdir(d))) // || rd == NULL && errno )
@@ -82,7 +91,7 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int col)
 		if ((*fl)->rr)
 			add_sorted(cur, que, av, fl);
 		if (closedir(d))
-			perror(ft_strjoin(ft_strjoin("ls: ", av), ": "));
+			err_write(av, errno);
 	}
 	del_node(que, cur, av); //del av-que !()
 	return (1);
