@@ -64,7 +64,7 @@ t_q	*ft_sorted_merge_q(t_q *a, t_q *b, int sort_order, int type)
 		return (b);
 	else if (b == NULL)
 		return (a);
-	if ((type == 0 && sort_order * ft_strcmp(a->name, b->name) > 0) ||
+	if ((type == 0 && sort_order * ft_strcmp(a->abspath, b->abspath) > 0) ||
 		(type == 1 && (sort_order * (a->compare_date - b->compare_date) > 0 ||
 	   (sort_order * (a->compare_date - b->compare_date) == 0 &&
 	   ft_strcmp(a->name, b->name) > 0))))

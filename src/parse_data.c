@@ -21,7 +21,7 @@ void	parse_rights(t_curr *new, char *d_name)
 	new->size = st.st_size;
 	new->user = getpwuid(st.st_uid)->pw_name;
 	new->groop = getgrgid(st.st_gid)->gr_name;
-	new->rights = (char *)malloc(10);
+	new->rights = (char *)malloc(11);
 	new->rights[0] = (new->type == 'f') ? '-' : new->type;
 	new->rights[1] = (st.st_mode & S_IRUSR) ? 'r' : '-';
 	new->rights[2] = (st.st_mode & S_IWUSR) ? 'w' : '-';
@@ -32,6 +32,7 @@ void	parse_rights(t_curr *new, char *d_name)
 	new->rights[7] = (st.st_mode & S_IROTH) ? 'r' : '-';
 	new->rights[8] = (st.st_mode & S_IWOTH) ? 'w' : '-';
 	new->rights[9] = (st.st_mode & S_IXOTH) ? 'x' : '-';
+	new->rights[10] = '\0';
 }
 
 char	*formatdate(char **str)

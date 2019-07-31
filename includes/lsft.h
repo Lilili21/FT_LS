@@ -46,18 +46,27 @@ typedef struct	s_q
 typedef	struct s_curr
 {
 	char		type;
-    char 		*name;
 	char		*rights;
 	int			links;
 	char		*user;
 	char		*groop;
 	int 		size;
+	char		*print_date;
+    char 		*name;
 	int     	check_date;
 	int     	compare_date;
-	char		*print_date;
 	struct s_curr *next;
 }				t_curr;
 
+typedef struct s_count
+{
+	size_t		s_name;
+	size_t 		s_links;
+	size_t 		s_user;
+	size_t 		s_groop;
+	size_t		s_size;
+	size_t		total;
+}				t_count;
 
 #endif
 

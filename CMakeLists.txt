@@ -7,5 +7,5 @@ include_directories(includes)
 
 add_executable(ft_ls2
         includes/lsft.h
-        src/sort_classic.c
+        src/test_f/sort_classic.c
         main.c)

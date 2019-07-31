@@ -52,15 +52,17 @@ void	ft_fill_que(t_curr **curr_dir, t_q **que)
 	while (curr)
 	{
 		if (curr->type == 'd' && q_first == NULL)
+		{
 			q_first = ft_new_q(curr, (*que)->lev + 1);
+			start = q_first;
+		}
 		else if (curr->type == 'd' && q_first != NULL)
 			q_first->next = ft_new_q(curr, (*que)->lev + 1);
+		q_first = q_first->next;
 		tmp = curr->next;
 		ft_free(curr);
 		curr = tmp;
 	}
 	if (q_first != NULL)
 		q_first->next = *que;
-	else
-		return ;
 }
