@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_merge.c                                       :+:      :+:    :+:   */
+/*   sort_merge_err.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfoote <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "lsft.h"
 
-int		ft_size_dirr(t_err **curr_dir)
+int		ft_size_dirr_err(t_err **curr_dir)
 {
 	int		count;
 	t_err		*curr;
@@ -29,7 +29,7 @@ int		ft_size_dirr(t_err **curr_dir)
 	return (count);
 }
 
-void	ft_front_back_split(t_err *source, t_err **front_l, t_err **back_l)
+void	ft_front_back_split_err(t_err *source, t_err **front_l, t_err **back_l)
 {
 	int		len;
 	int		i;
@@ -37,7 +37,7 @@ void	ft_front_back_split(t_err *source, t_err **front_l, t_err **back_l)
 	t_err	*current;
 
 	current = source;
-	len = ft_size_dirr(source);
+	len = ft_size_dirr_err(source);
 	i = -1;
 	if (len < 2)
 	{
@@ -55,7 +55,7 @@ void	ft_front_back_split(t_err *source, t_err **front_l, t_err **back_l)
 	}
 }
 
-t_err	*ft_sorted_merge(t_err *a, t_err *b)
+t_err	*ft_sorted_merge_err(t_err *a, t_err *b)
 {
 	t_err *result;
 
@@ -67,17 +67,17 @@ t_err	*ft_sorted_merge(t_err *a, t_err *b)
 	if (ft_strcmp(a->name, b->name) > 0)
 	{
 		result = a;
-		result->next = ft_sorted_merge(a->next, b);
+		result->next = ft_sorted_merge_err(a->next, b);
 	}
 	else
 	{
 		result = b;
-		result->next = ft_sorted_merge(a, b->next);
+		result->next = ft_sorted_merge_err(a, b->next);
 	}
 	return (result);
 }
 
-void	ft_merge_sort(t_err **que)
+void	ft_merge_sort_err(t_err **que)
 {
 	t_err *head;
 	t_err *a;
@@ -86,8 +86,8 @@ void	ft_merge_sort(t_err **que)
 	head = *que;
 	if ((head == NULL) || (head->next == NULL))
 		return ;
-	ft_front_back_split(head, &a, &b);
-	ft_merge_sort(&a);
-	ft_merge_sort(&b);
-	*que = ft_sorted_merge(a, b);
+	ft_front_back_split_err(head, &a, &b);
+	ft_merge_sort_err(&a);
+	ft_merge_sort_err(&b);
+	*que = ft_sorted_merge_err(a, b);
 }

@@ -64,8 +64,8 @@ t_curr	*ft_sorted_merge(t_curr *a, t_curr *b, int sort_order, int type)
 		return (b);
 	else if (b == NULL)
 		return (a);
-	if ((type == "name" && sort_order * ft_strcmp(a->name, b->name) > 0) ||
-	(type == "time" && (sort_order * (a->compare_date - b->compare_date) > 0 ||
+	if ((type == 0 && sort_order * ft_strcmp(a->name, b->name) > 0) ||
+	(type == 1 && (sort_order * (a->compare_date - b->compare_date) > 0 ||
 	(sort_order * (a->compare_date - b->compare_date) == 0
 	&& ft_strcmp(a->name, b->name) > 0))))
 	{
@@ -80,7 +80,7 @@ t_curr	*ft_sorted_merge(t_curr *a, t_curr *b, int sort_order, int type)
 	return (result);
 }
 
-void	ft_merge_sort(t_curr **curr_dir, int sort_order, int type)
+void	ft_merge_sort(t_curr **curr_dir, t_fl *fl)
 {
 	t_curr *head;
 	t_curr *a;
@@ -90,7 +90,7 @@ void	ft_merge_sort(t_curr **curr_dir, int sort_order, int type)
 	if ((head == NULL) || (head->next == NULL))
 		return ;
 	ft_front_back_split(head, &a, &b);
-	ft_merge_sort(&a, sort_order, type);
-	ft_merge_sort(&b, sort_order, type);
-	*curr_dir = ft_sorted_merge(a, b, sort_order, type);
+	ft_merge_sort(&a, fl);
+	ft_merge_sort(&b, fl);
+	*curr_dir = ft_sorted_merge(a, b, fl->r, fl->t);
 }
