@@ -20,13 +20,13 @@ void	ft_add_curr(t_curr **curr_dir, t_curr *new)
 	(*curr_dir) = new;
 }
 
-void	ft_free(t_curr *curr)
+void	ft_free(t_curr **curr)
 {
-	if (curr->rights != NULL)
-		free(curr->rights);
-	if (curr->check_date % 10 == 2)
-		free(curr->print_date);
-	free(curr);
+	if ((*curr)->rights != NULL)
+		free((*curr)->rights);
+	if ((*curr)->check_date % 10 == 2)
+		free((*curr)->print_date);
+	free((*curr));
 }
 
 t_q		*ft_new_q(t_curr *current, int lev)
@@ -37,11 +37,10 @@ t_q		*ft_new_q(t_curr *current, int lev)
 		return (NULL);
 	new->abspath = NULL;
 	new->next = NULL;
-	new->lev = lev;
 	return (new);
 }
-
-void	ft_fill_que(t_curr **curr_dir, t_q **que)
+/*
+void	ft_fill_que(t_curr **curr_dir, t_q **que, char *av)
 {
 	t_q		*q_first;
 	t_curr	*curr;
@@ -64,5 +63,6 @@ void	ft_fill_que(t_curr **curr_dir, t_q **que)
 		curr = tmp;
 	}
 	if (q_first != NULL)
-		q_first->next = *que;
+		q_first->next = *que;		
 }
+*/

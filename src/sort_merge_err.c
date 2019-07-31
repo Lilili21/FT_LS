@@ -59,7 +59,7 @@ t_err	*ft_sorted_merge_err(t_err *a, t_err *b)
 {
 	t_err *result;
 
-	*result = NULL;
+	result = NULL;
 	if (a == NULL)
 		return (b);
 	else if (b == NULL)

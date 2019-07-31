@@ -64,7 +64,7 @@ void 	ft_strprint_join(s_curr *current, int size, t_count *count)
 	free(result);
 }
 
-void ft_print(t_curr **curr_dir)
+void ft_print(t_curr **curr_dir, t_fl *fl)
 	{
 		t_count *count;
 		t_curr 	*curr;
@@ -73,11 +73,19 @@ void ft_print(t_curr **curr_dir)
 		count = ft_count_s(&curr_dir);
 		curr = *curr_dir;
 		while (curr)
-		{
-			size = 30 + count_col->s_links + count_col->s_user + count_col->s_groop
-				   + count_col->s_size + ft_str_len(curr->name) + 1; //учтен \n
-			ft_strprint_join(curr, size, count);
-			curr =curr->next;
+		{	if (fl->l == 1)
+			{
+				size = 30 + count->s_links + count->s_user + count->s_groop
+					   + count->s_size + ft_str_len(curr->name) + 1; //учтен \n
+				ft_strprint_join(curr, size, count);
+			}
+			else
+			{
+				size = ft_str_len(curr->name);
+				write(1, &curr->name,ft_str_len(curr->name));
+				write(1, '\n', 1);
+			}
+			curr = curr->next;
 		}
 		free(count);
 }

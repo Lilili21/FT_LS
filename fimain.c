@@ -15,7 +15,7 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	int			ac;
 	int			l;
 	struct stat	buf;
-	t_q			*err;
+	t_err		*err;
 
 	flags(0, fl, 0); //to initialize flag struct to zero
 	ac = 1;
@@ -33,7 +33,7 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 			l = lstat(av[ac], &buf);
 			//if file or dir doesn;t exists
 			if (errno)
-				er_list(err, av[1], strerror(errno));
+				er_list(&err, av[ac], strerror(errno));
 			//if dir to que 
 			else if (S_ISDIR(buf.st_mode))
 				to_list(0, que, av[ac], fl);
@@ -42,8 +42,18 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 				to_list(cur, 0, av[ac], fl);
 			ac++;
 		}
-		er_list(err, 0, 0);
-		sort(cur, que, fl);
+		er_list(&err, 0, 0);
+		ft_merge_sort(cur, *fl);
+		ft_merge_sort_q(que, *fl);
+	}
+}
+
+void	print_cur(t_curr *cur)
+{
+	while (cur)
+	{
+		ft_putendl(cur->name);
+		cur = cur->next;
 	}
 }
 
@@ -52,52 +62,59 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int col)
 	DIR				*d;
 	struct dirent	*rd;
 	char 			*av;
-	static int		col;
+	char			*fr;
 
 	if (!(*que) || (av = (*que)->abspath)) //finish of program
 		return (0);
 	if (col)
 		ft_putendl(ft_strjoin(av, ": ")); // probably write to buffer!
 	if (!(d = opendir(av)))
+		err_write(av, strerror(errno));
+	else
 	{
-		perror(ft_strjoin(ft_strjoin("ls: ", av), ": "));
-		del_node(que, av); //del av-que !()
-		return (1);
+		while ((rd = readdir(d))) // || rd == NULL && errno )
+		{
+			if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", 1)))
+				continue ;
+			to_list(cur, 0, rd->d_name, fl);
+		}
+		ft_merge_sort(cur, fl);
+		print_cur(*cur);
+		if ((*fl)->rr)
+			add_sorted(cur, que, av, fl);
+		if (closedir(d))
+			err_write(av, strerror(errno));
 	}
-	while ((rd = readdir(d))) // || rd == NULL && errno )
-	{
-		if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", 1)))
-			continue ;
-		to_list(cur, 0, rd->d_name, fl);
-	}
-	sort(cur, 0, fl);
-	if ((*fl)->rr)
-		add_sorted(cur, que, av, fl);
-	print_cur(cur);
-	//if (closedir(d))
-	//	perror(0);
+	del_node(que, cur, av); //del av-que !()
 	return (1);
 }
 
 void	add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl)
 {
 	t_q		*qu;
-	t_curr	*cu;
-	int		le;
-	//dirs from cur to que
-	cu = *cur;
-	le = (*que)->lev + 1;
-	av = av[ft_strlen(av) - 1] == '/' ? av : ft_strjoin(av, "/");
-	while(cu) //cu->next ?
+	t_q		*st;
+	t_curr	*re;
+
+	qu = NULL;
+	av = ft_strjoin(av, "/"); // add NULL check
+	while(*cur) //cu->next ?
 	{
-		if (cu->type == 'd')
+		if ((*cur)->type == 'd')
 		{
-			qu = (t_q*)malloc(sizeof(t_q)); //new que node to beginning
-			qu->lev = le;
-			qu->abspath = ft_strjoin(av, cu->name);
-			ft_lstaddqulev(que, qu);//to the end of list of level
+			qu = (t_q*)malloc(sizeof(t_q)); //add check for NULL
+			qu->abspath = ft_strjoin(av, (*cur)->name);
+			qu->next = NULL;
+			qu = qu->next;
+			que_end(&st, qu);
 		}
-		cu = cu->next;
+		re = (*cur)->next;
+		ft_free(&cur);
+		(*cur) = (*cur)->next;
+	}
+	if (qu)
+	{
+		qu->next = *que;
+		*que = st;
 	}
 }
 
@@ -121,7 +138,8 @@ int		main(int ac, char **av)
 				// add to que sorted argv's from terminal; 
 				// if av == NULL, then av = ".";
 				// add to t_curr !!! reg. files to print, then folders to que;
-	print_cur(&cur); //add 'total' print and then erasing cur list;
+	print_cur(cur); //add 'total' print and then erasing cur list;
+	ft_free(cur);
 	if (que->next)  // if dirs > 1 from terminal, or there was print of dir previously (like last dir)
 		col = 1;
 	while (state > 0)

@@ -99,4 +99,6 @@ ft_add_sorted(+, +, av, +)
 		add_que->abspath == ft_strjoin(av, "/");
 }
 
-}
+TOD0:
+- NULL checks
+- C0NN3CT:ME

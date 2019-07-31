@@ -29,16 +29,6 @@ int		ft_size_dirr(t_curr **curr_dir)
 	return (count);
 }
 
-size_t		ft_str_len(char *s)
-{
-	int i;
-
-	i = -1;
-	while (s[++i])
-		;
-	return (i);
-}
-
 int			ft_str_int(int num)
 {
 	int order;

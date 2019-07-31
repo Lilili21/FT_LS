@@ -13,33 +13,47 @@ void	ft_lstaddqu(t_q **alst, t_q *new)
 	(*alst) = new;
 }
 
-void	ft_lstaddcu(t_curr **alst, t_curr *new)
+void	ft_lstaddcu(t_curr **st, t_curr *new)
 {
-	if (!alst || !new)
-		return ;
-	if (!(*alst))
+	t_curr *tmp;
+
+	if (!st)
 	{
-		*alst = new;
+		*st = new;
 		return ;
 	}
-	new->next = (*alst);
-	(*alst) = new;
+	tmp = *st;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
 }
 
-void	er_list(t_q **err, char *av, char *er)
+void	er_list(t_err **err, char *av, char *er)
 {
+	t_err *erro;
+
 	if (av && er)
 	{
-		//make sort in list on by name!
+		if (!(erro = (t_err*)malloc(sizeof(t_err)))) // 0 level, av = abspath of av
+		{
+			perror("ls: ");
+			exit(errno);
+		}
+		erro->next = 0;
+		erro->name = ft_strnew(av);
+		erro->er = ft_strnew(er);
+		err_end(err, erro);
 		return ;
 	}
-	// print errors 2 FD !!!
+	ft_merge_sort_err(err);
+	print_err(err);
 }
 
 void	to_list(t_curr **cur, t_q **que, char *av, t_fl **fl)
 {
 	t_curr	*cu;
 	t_q		*qu;
+	struct stat	st;
 
 	if (!que)
 	{
@@ -52,13 +66,39 @@ void	to_list(t_curr **cur, t_q **que, char *av, t_fl **fl)
 		perror("ls: ");
 		exit(errno);
 	}
-	qu->lev = 0;
+	lstat(av, &st);
+	qu->compare_date = st.st_mtimespec.tv_sec;
 	qu->next = 0;
-	qu->abspath = av;
-	ft_lstaddqu(que, qu);
+	qu->abspath = ft_strnew(av);
+	que_end(que, qu);
 }
 
-void	ft_lstaddqulev(que, qu) // to add node to que list end of level;
+void	err_end(t_err **st, t_err *er) // to add node to que list end of level;
 {
+	t_err *tmp;
 
+	if (!st)
+	{
+		*st = er;
+		return ;
+	}
+	tmp = *st;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = er;
+}
+
+void	que_end(t_q **st, t_q *qu) // to add node to que list end of level;
+{
+	t_q *tmp;
+
+	if (!st)
+	{
+		*st = qu;
+		return ;
+	}
+	tmp = *st;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = qu;
 }

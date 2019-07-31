@@ -59,7 +59,7 @@ t_curr	*ft_sorted_merge(t_curr *a, t_curr *b, int sort_order, int type)
 {
 	t_curr *result;
 
-	*result = NULL;
+	result = NULL;
 	if (a == NULL)
 		return (b);
 	else if (b == NULL)
