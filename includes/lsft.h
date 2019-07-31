@@ -81,21 +81,22 @@ int 		flag_parse(char *av, t_fl **fl);
 void		ft_lstaddqu(t_q **alst, t_q *new);
 void		ft_lstaddcu(t_curr **st, t_curr *new);
 void		er_list(t_err **err, char *av, char *er);
-void		to_list(t_curr **cur, t_q **que, char *av, t_fl **fl);
+void		to_list(t_q **que, char *av, t_fl **fl);
 void		err_end(t_err **st, t_err *er);
 void		que_end(t_q **st, t_q *qu);
 void    	print_err(t_err **err);
 void		err_write(char *av, char *er);
-void		del_node(t_q **que, t_curr **cur, char *av);
+void		del_node(t_q **que); //, t_curr **cur, char *av);
 void		ft_merge_sort_q(t_q **que, t_fl *fl);
 void		ft_merge_sort_err(t_err **que);
 void		ft_merge_sort(t_curr **curr_dir, t_fl *fl);
 void		ft_free(t_curr **curr);
-t_curr		*ft_new_curr(char *d_name, t_fl **fl);
+int			ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path);
 void		add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl);
 void		ft_print(t_curr *curr_dir, t_fl *fl);
 t_count		*ft_count_s(t_curr *curr_dir);
-
+void		ft_putendldir(char *av);
+void		ft_free_one(t_curr **curr);
 #endif
 
 //man for dir stat https://www.ibm.com/developerworks/ru/library/au-unix-readdir/index.html

@@ -100,14 +100,21 @@ char	parse_type(char *d_name)
 		return ('f');
 }
 
-t_curr	*ft_new_curr(char *d_name, t_fl **fl)
+int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 {
 	t_curr		*new;
+	char		*p;
 
+	p = NULL;
 	if (!(new = (t_curr *)malloc(sizeof(t_curr))))
-		return (NULL);
+		return (0);
 	new->name = d_name;
-	new->type = parse_type(d_name);
+	if (path)
+	{
+		p = path[ft_strlen(path) - 1] == '/' ? path : ft_strjoin(path, "/");
+		p = ft_strjoin(p, d_name); //add protection
+	}
+	new->type = (p == 0 ? parse_type(d_name) : parse_type(p));
 	new->next = NULL;
 	new->check_date = 0;
 	if ((*fl)->l == 1)
@@ -122,5 +129,6 @@ t_curr	*ft_new_curr(char *d_name, t_fl **fl)
 	}
 	if ((*fl)->l == 1 && (*fl)->t == 1)
 		parse_date(new, d_name, fl);
-	return (new);
+	ft_lstaddcu(cur, new);
+	return (1);
 }

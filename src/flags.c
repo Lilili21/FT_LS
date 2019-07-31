@@ -13,14 +13,14 @@ void	flags(char av, t_fl **fl, int i)
 		if (av == 't')
 			(*fl)->t = 1;
 		if (av == 'r')
-			(*fl)->r = -1;
+			(*fl)->r = 1;
 		return ;
 	}
 	(*fl) = (t_fl*)malloc(sizeof(t_fl));
 	(*fl)->rr = 0;
 	(*fl)->a = 0;
 	(*fl)->l = 0;
-	(*fl)->r = 1;
+	(*fl)->r = -1;
 	(*fl)->t = 0;
 }
 	/*
