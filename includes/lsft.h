@@ -43,6 +43,13 @@ typedef struct	s_q
 	struct s_q	*next;
 }				t_q;
 
+typedef struct	s_err
+{
+	char			*name;
+	char			*er;
+	struct s_err	*next;
+}				t_err;
+
 typedef	struct s_curr
 {
 	char		type;

@@ -15,7 +15,7 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	int			ac;
 	int			l;
 	struct stat	buf;
-	t_q			*err;
+	t_err		*err;
 
 	flags(0, fl, 0); //to initialize flag struct to zero
 	ac = 1;
@@ -33,7 +33,7 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 			l = lstat(av[ac], &buf);
 			//if file or dir doesn;t exists
 			if (errno)
-				er_list(err, av[1], strerror(errno));
+				er_list(&err, av[ac], strerror(errno));
 			//if dir to que 
 			else if (S_ISDIR(buf.st_mode))
 				to_list(0, que, av[ac], fl);
@@ -42,26 +42,10 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 				to_list(cur, 0, av[ac], fl);
 			ac++;
 		}
-		er_list(err, 0, 0);
-		sort(cur, que, fl);
+		er_list(&err, 0, 0);
+		ft_merge_sort_cur(cur, fl);
+		ft_merge_sort_que(que, fl);
 	}
-}
-
-void	err_write(char *av, int errno)
-{
-	char *b;
-	char *tmp;
-
-	b = ft_strjoin("ls: ", av);
-	tmp = b;
-	b = ft_strjoin(b, ": ");
-	free(tmp);
-	errno = 12;
-	tmp = b;
-	b = ft_strjoin(b, strerror(errno));
-	free(tmp);
-	write(2, b, ft_strlen(b));
-	free(b);
 }
 
 int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int col)
@@ -77,7 +61,7 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int col)
 	if (col)
 		ft_putendl(ft_strjoin(av, ": ")); // probably write to buffer!
 	if (!(d = opendir(av)))
-		err_write(av, errno);
+		err_write(av, strerror(errno));
 	else
 	{
 		while ((rd = readdir(d))) // || rd == NULL && errno )
@@ -86,12 +70,12 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int col)
 				continue ;
 			to_list(cur, 0, rd->d_name, fl);
 		}
-		sort(cur, 0, fl);
+		ft_merge_sort_cur(cur, fl);
 		print_cur(cur);
 		if ((*fl)->rr)
 			add_sorted(cur, que, av, fl);
 		if (closedir(d))
-			err_write(av, errno);
+			err_write(av, strerror(errno));
 	}
 	del_node(que, cur, av); //del av-que !()
 	return (1);
@@ -147,6 +131,7 @@ int		main(int ac, char **av)
 				// if av == NULL, then av = ".";
 				// add to t_curr !!! reg. files to print, then folders to que;
 	print_cur(&cur); //add 'total' print and then erasing cur list;
+	ft_free(cur);
 	if (que->next)  // if dirs > 1 from terminal, or there was print of dir previously (like last dir)
 		col = 1;
 	while (state > 0)

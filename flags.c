@@ -71,18 +71,3 @@ int 	flag_parse(char *av, t_fl **fl)
 	}
 	return (-1);
 }
-
-void	del_node(t_q **que, t_curr **cur, char *av)
-{
-	t_q	*tmp;
-
-	if (!ft_strcmp((*que)->abspath, av))
-	{
-		tmp = (*que)->next;
-		free((*que)->abspath);
-		free(*que);
-		*que = tmp;
-	}
-	if (cur)
-		ft_free(cur);
-}
