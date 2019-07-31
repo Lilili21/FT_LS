@@ -82,6 +82,7 @@ void	ft_merge_sort_err(t_err **que);
 void	ft_merge_sort(t_curr **curr_dir, t_fl *fl);
 void	ft_free(t_curr **curr);
 t_curr	*ft_new_curr(char *d_name, t_fl **fl);
+void	add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl);
 
 
 #endif

@@ -64,7 +64,7 @@ int 	flag_parse(char *av, t_fl **fl)
 		if (*av)
 		{
 			ft_putstr_fd("ls: illegal option -- ", 2);
-			write(2, *av, 1);
+			write(2, av, 1);
 			ft_putendl_fd("\nusage: ls [-Ralrt] [file ...]", 2);
 			exit (1); //check for leaks on flag_struct!
 		}

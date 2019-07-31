@@ -40,8 +40,8 @@ void	er_list(t_err **err, char *av, char *er)
 			exit(errno);
 		}
 		erro->next = 0;
-		erro->name = ft_strnew(av);
-		erro->er = ft_strnew(er);
+		erro->name = ft_strdup(av);
+		erro->er = ft_strdup(er);
 		err_end(err, erro);
 		return ;
 	}
@@ -69,7 +69,7 @@ void	to_list(t_curr **cur, t_q **que, char *av, t_fl **fl)
 	lstat(av, &st);
 	qu->compare_date = st.st_mtimespec.tv_sec;
 	qu->next = 0;
-	qu->abspath = ft_strnew(av);
+	qu->abspath = ft_strdup(av);
 	que_end(que, qu);
 }
 

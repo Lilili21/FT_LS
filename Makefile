@@ -1,9 +1,9 @@
 NAME = ls
 
-SRC = fimain.c \
-		extra.c \
-		flags.c \
-		lists.c \
+SRC = src/fimain.c \
+		src/extra.c \
+		src/flags.c \
+		src/lists.c \
 		src/sort_merge.c \
 		src/sort_merge_q.c \
 		src/sort_merge_err.c \

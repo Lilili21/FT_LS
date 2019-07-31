@@ -76,7 +76,7 @@ void	parse_date(t_curr *new, char *d_name, t_fl **fl)
 	if ((*fl)->l == 1)
 	{
 		new->check_date += 2;
-		new->print_date = formatdate(ft_strsplit(ctime(&st.st_mtime)));
+		new->print_date = formatdate(ft_strsplit(ctime(&st.st_mtime), ' '));
 	}
 }
 
@@ -102,7 +102,6 @@ char	parse_type(char *d_name)
 t_curr	*ft_new_curr(char *d_name, t_fl **fl)
 {
 	t_curr		*new;
-	struct stat st;
 
 	if (!(new = (t_curr *)malloc(sizeof(t_curr))))
 		return (NULL);
