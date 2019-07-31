@@ -63,7 +63,7 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int col)
 	struct dirent	*rd;
 	char 			*av;
 
-	if (!(*que) || !(av = (*que)->abspath)) //finish of program
+	if (!(*que) || (av = (*que)->abspath)) //finish of program
 		return (0);
 	if (col)
 		ft_putendl(ft_strjoin(av, ": ")); // probably write to buffer!
@@ -137,7 +137,10 @@ int		main(int ac, char **av)
 				// add to que sorted argv's from terminal; 
 				// if av == NULL, then av = ".";
 				// add to t_curr !!! reg. files to print, then folders to que;
-	print_cur(cur); //add 'total' print and then erasing cur list;
+	if (cur)
+		ft_print(cur, fl); //add 'total' print and then erasing cur list;
+	else
+		write(1, que->abspath, 1);
 	ft_free(&cur);
 	if (que->next)  // if dirs > 1 from terminal, or there was print of dir previously (like last dir)
 		col = 1;
