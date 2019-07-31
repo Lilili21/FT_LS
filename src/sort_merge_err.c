@@ -37,7 +37,7 @@ void	ft_front_back_split_err(t_err *source, t_err **front_l, t_err **back_l)
 	t_err	*current;
 
 	current = source;
-	len = ft_size_dirr_err(source);
+	len = ft_size_dirr_err(&source);
 	i = -1;
 	if (len < 2)
 	{

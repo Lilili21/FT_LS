@@ -33,7 +33,7 @@ typedef struct	s_fl
 	char	rr;
 	char	a;
 	char	l;
-	char	r;
+	int		r;
 	char	t;
 }				t_fl;
 
@@ -66,6 +66,16 @@ typedef	struct s_curr
 	struct s_curr *next;
 }				t_curr;
 
+typedef struct s_count
+{
+	size_t		s_name;
+	size_t 		s_links;
+	size_t 		s_user;
+	size_t 		s_groop;
+	size_t		s_size;
+	size_t		total;
+}				t_count;
+
 void	flags(char av, t_fl **fl, int i);
 int 	flag_parse(char *av, t_fl **fl);
 void	ft_lstaddqu(t_q **alst, t_q *new);
@@ -82,16 +92,9 @@ void	ft_merge_sort_err(t_err **que);
 void	ft_merge_sort(t_curr **curr_dir, t_fl *fl);
 void	ft_free(t_curr **curr);
 t_curr	*ft_new_curr(char *d_name, t_fl **fl);
+void	add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl);
 
-typedef struct s_count
-{
-	size_t		s_name;
-	size_t 		s_links;
-	size_t 		s_user;
-	size_t 		s_groop;
-	size_t		s_size;
-	size_t		total;
-}				t_count;
+
 
 #endif
 

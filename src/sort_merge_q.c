@@ -37,7 +37,7 @@ void	ft_front_back_split_q(t_q *source, t_q **front_l, t_q **back_l)
 	t_q	*current;
 
 	current = source;
-	len = ft_size_dirr(source);
+	len = ft_size_dirr_q(&source);
 	i = -1;
 	if (len < 2)
 	{
@@ -70,12 +70,12 @@ t_q	*ft_sorted_merge_q(t_q *a, t_q *b, int sort_order, int type)
 	   ft_strcmp(a->abspath, b->abspath) > 0))))
 	{
 		result = a;
-		result->next = ft_sorted_merge(a->next, b, sort_order, type);
+		result->next = ft_sorted_merge_q(a->next, b, sort_order, type);
 	}
 	else
 	{
 		result = b;
-		result->next = ft_sorted_merge(a, b->next, sort_order, type);
+		result->next = ft_sorted_merge_q(a, b->next, sort_order, type);
 	}
 	return (result);
 }
@@ -89,8 +89,8 @@ void	ft_merge_sort_q(t_q **que, t_fl *fl)
 	head = *que;
 	if ((head == NULL) || (head->next == NULL))
 		return ;
-	ft_front_back_split(head, &a, &b);
-	ft_merge_sort(&a, fl);
-	ft_merge_sort(&b, fl);
-	*que = ft_sorted_merge(a, b, fl->r, fl->t);
+	ft_front_back_split_q(head, &a, &b);
+	ft_merge_sort_q(&a, fl);
+	ft_merge_sort_q(&b, fl);
+	*que = ft_sorted_merge_q(a, b, fl->r, fl->t);
 }

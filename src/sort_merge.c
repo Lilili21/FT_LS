@@ -37,7 +37,7 @@ void	ft_front_back_split(t_curr *source, t_curr **front_l, t_curr **back_l)
 	t_curr	*current;
 
 	current = source;
-	len = ft_size_dirr(source);
+	len = ft_size_dirr(&source);
 	i = -1;
 	if (len < 2)
 	{

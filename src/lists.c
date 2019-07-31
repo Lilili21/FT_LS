@@ -17,7 +17,7 @@ void	ft_lstaddcu(t_curr **st, t_curr *new)
 {
 	t_curr *tmp;
 
-	if (!st)
+	if (!(*st))
 	{
 		*st = new;
 		return ;
@@ -40,8 +40,8 @@ void	er_list(t_err **err, char *av, char *er)
 			exit(errno);
 		}
 		erro->next = 0;
-		erro->name = ft_strnew(av);
-		erro->er = ft_strnew(er);
+		erro->name = ft_strdup(av);
+		erro->er = ft_strdup(er);
 		err_end(err, erro);
 		return ;
 	}
@@ -69,7 +69,7 @@ void	to_list(t_curr **cur, t_q **que, char *av, t_fl **fl)
 	lstat(av, &st);
 	qu->compare_date = st.st_mtimespec.tv_sec;
 	qu->next = 0;
-	qu->abspath = ft_strnew(av);
+	qu->abspath = ft_strdup(av);
 	que_end(que, qu);
 }
 
@@ -77,7 +77,7 @@ void	err_end(t_err **st, t_err *er) // to add node to que list end of level;
 {
 	t_err *tmp;
 
-	if (!st)
+	if (!(*st))
 	{
 		*st = er;
 		return ;
@@ -92,7 +92,7 @@ void	que_end(t_q **st, t_q *qu) // to add node to que list end of level;
 {
 	t_q *tmp;
 
-	if (!st)
+	if (!(*st))
 	{
 		*st = qu;
 		return ;
