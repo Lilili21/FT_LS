@@ -1,6 +1,14 @@
 NAME = ls
 
-SRC = main.c
+SRC = fimain.c \
+		extra.c \
+		flags.c \
+		lists.c \
+		src/sort_merge.c \
+		src/sort_merge_q.c \
+		src/sort_merge_err.c \
+		src/parse_data.c \
+		src/help_sort.c
 
 OBJ = $(SRC:.c=.o)
 

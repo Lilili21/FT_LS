@@ -53,6 +53,7 @@ void	to_list(t_curr **cur, t_q **que, char *av, t_fl **fl)
 {
 	t_curr	*cu;
 	t_q		*qu;
+	struct stat	st;
 
 	if (!que)
 	{
@@ -65,6 +66,8 @@ void	to_list(t_curr **cur, t_q **que, char *av, t_fl **fl)
 		perror("ls: ");
 		exit(errno);
 	}
+	lstat(av, &st);
+	qu->compare_date = st.st_mtimespec.tv_sec;
 	qu->next = 0;
 	qu->abspath = ft_strnew(av);
 	que_end(que, qu);

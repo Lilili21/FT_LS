@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_merge.c                                       :+:      :+:    :+:   */
+/*   sort_merge_q.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfoote <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "lsft.h"
 
-int		ft_size_dirr(t_q **curr_dir)
+int		ft_size_dirr_q(t_q **curr_dir)
 {
 	int		count;
 	t_q		*curr;
@@ -29,7 +29,7 @@ int		ft_size_dirr(t_q **curr_dir)
 	return (count);
 }
 
-void	ft_front_back_split(t_q *source, t_q **front_l, t_q **back_l)
+void	ft_front_back_split_q(t_q *source, t_q **front_l, t_q **back_l)
 {
 	int		len;
 	int		i;
@@ -55,29 +55,32 @@ void	ft_front_back_split(t_q *source, t_q **front_l, t_q **back_l)
 	}
 }
 
-t_q	*ft_sorted_merge(t_q *a, t_q *b, int sort_order)
+t_q	*ft_sorted_merge_q(t_q *a, t_q *b, int sort_order, int type)
 {
 	t_q *result;
 
-	*result = NULL;
+	result = NULL;
 	if (a == NULL)
 		return (b);
 	else if (b == NULL)
 		return (a);
-	if (sort_order * ft_strcmp(a->abspath, b->abspath) > 0)
+	if ((type == 0 && sort_order * ft_strcmp(a->abspath, b->abspath) > 0) ||
+		(type == 1 && (sort_order * (a->compare_date - b->compare_date) > 0 ||
+	   (sort_order * (a->compare_date - b->compare_date) == 0 &&
+	   ft_strcmp(a->abspath, b->abspath) > 0))))
 	{
 		result = a;
-		result->next = ft_sorted_merge(a->next, b, sort_order);
+		result->next = ft_sorted_merge(a->next, b, sort_order, type);
 	}
 	else
 	{
 		result = b;
-		result->next = ft_sorted_merge(a, b->next, sort_order);
+		result->next = ft_sorted_merge(a, b->next, sort_order, type);
 	}
 	return (result);
 }
 
-void	ft_merge_sort(t_q **que, int sort_order)
+void	ft_merge_sort_q(t_q **que, t_fl *fl)
 {
 	t_q *head;
 	t_q *a;
@@ -87,7 +90,7 @@ void	ft_merge_sort(t_q **que, int sort_order)
 	if ((head == NULL) || (head->next == NULL))
 		return ;
 	ft_front_back_split(head, &a, &b);
-	ft_merge_sort(&a, sort_order);
-	ft_merge_sort(&b, sort_order);
-	*que = ft_sorted_merge(a, b, sort_order);
+	ft_merge_sort(&a, fl);
+	ft_merge_sort(&b, fl);
+	*que = ft_sorted_merge(a, b, fl->r, fl->t);
 }

@@ -39,7 +39,7 @@ t_q		*ft_new_q(t_curr *current, int lev)
 	new->next = NULL;
 	return (new);
 }
-
+/*
 void	ft_fill_que(t_curr **curr_dir, t_q **que, char *av)
 {
 	t_q		*q_first;
@@ -65,3 +65,4 @@ void	ft_fill_que(t_curr **curr_dir, t_q **que, char *av)
 	if (q_first != NULL)
 		q_first->next = *que;		
 }
+*/

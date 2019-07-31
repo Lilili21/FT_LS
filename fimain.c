@@ -43,8 +43,17 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 			ac++;
 		}
 		er_list(&err, 0, 0);
-		ft_merge_sort_cur(cur, fl);
-		ft_merge_sort_que(que, fl);
+		ft_merge_sort(cur, *fl);
+		ft_merge_sort_q(que, *fl);
+	}
+}
+
+void	print_cur(t_curr *cur)
+{
+	while (cur)
+	{
+		ft_putendl(cur->name);
+		cur = cur->next;
 	}
 }
 
@@ -53,7 +62,6 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int col)
 	DIR				*d;
 	struct dirent	*rd;
 	char 			*av;
-	static int		col;
 	char			*fr;
 
 	if (!(*que) || (av = (*que)->abspath)) //finish of program
@@ -70,8 +78,8 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int col)
 				continue ;
 			to_list(cur, 0, rd->d_name, fl);
 		}
-		ft_merge_sort_cur(cur, fl);
-		print_cur(cur);
+		ft_merge_sort(cur, fl);
+		print_cur(*cur);
 		if ((*fl)->rr)
 			add_sorted(cur, que, av, fl);
 		if (closedir(d))
@@ -130,7 +138,7 @@ int		main(int ac, char **av)
 				// add to que sorted argv's from terminal; 
 				// if av == NULL, then av = ".";
 				// add to t_curr !!! reg. files to print, then folders to que;
-	print_cur(&cur); //add 'total' print and then erasing cur list;
+	print_cur(cur); //add 'total' print and then erasing cur list;
 	ft_free(cur);
 	if (que->next)  // if dirs > 1 from terminal, or there was print of dir previously (like last dir)
 		col = 1;

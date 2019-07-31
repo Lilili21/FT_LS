@@ -3,7 +3,7 @@
 void    print_err(t_err **err)
 {
     t_err *tmp;
-    
+
     while (*err)
     {
         err_write((*err)->name, (*err)->er);
@@ -45,3 +45,4 @@ void	del_node(t_q **que, t_curr **cur, char *av)
 	if (cur)
 		ft_free(cur);
 }
+
