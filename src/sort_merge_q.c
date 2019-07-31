@@ -55,7 +55,7 @@ void	ft_front_back_split(t_q *source, t_q **front_l, t_q **back_l)
 	}
 }
 
-t_q	*ft_sorted_merge(t_q *a, t_q **que, int sort_order)
+t_q	*ft_sorted_merge(t_q *a, t_q *b, int sort_order)
 {
 	t_q *result;
 
@@ -64,12 +64,7 @@ t_q	*ft_sorted_merge(t_q *a, t_q **que, int sort_order)
 		return (b);
 	else if (b == NULL)
 		return (a);
-	if ((type == "name" && s_order *
-	ft_strcmp(sort[i]->name, sort[i + 1]->name) > 0) ||
-	(type == "time" && (s_order *
-	(sort[i]->compare_date - sort[i + 1]->compare_date) > 0 ||
-	(s_order * (sort[i]->compare_date - sort[i + 1]->compare_date) == 0
-	&& ft_strcmp(sort[i]->name, sort[i + 1]->name) > 0))))
+	if (s_order * ft_strcmp(a->abspath, b->abspath) > 0)
 	{
 		result = a;
 		result->next = ft_sorted_merge(a->next, b, sort_order, type);

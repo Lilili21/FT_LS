@@ -12,10 +12,10 @@
 
 #include "lsft.h"
 
-int		ft_size_dirr(t_curr **curr_dir)
+int		ft_size_dirr(t_err **curr_dir)
 {
 	int		count;
-	t_curr	*curr;
+	t_err		*curr;
 
 	count = 0;
 	if (!*curr_dir)
@@ -29,12 +29,12 @@ int		ft_size_dirr(t_curr **curr_dir)
 	return (count);
 }
 
-void	ft_front_back_split(t_curr *source, t_curr **front_l, t_curr **back_l)
+void	ft_front_back_split(t_err *source, t_err **front_l, t_err **back_l)
 {
 	int		len;
 	int		i;
 	int		middle;
-	t_curr	*current;
+	t_err	*current;
 
 	current = source;
 	len = ft_size_dirr(source);
@@ -55,19 +55,16 @@ void	ft_front_back_split(t_curr *source, t_curr **front_l, t_curr **back_l)
 	}
 }
 
-t_curr	*ft_sorted_merge(t_curr *a, t_curr *b, int sort_order, int type)
+t_err	*ft_sorted_merge(t_err *a, t_err *b, int sort_order)
 {
-	t_curr *result;
+	t_err *result;
 
 	*result = NULL;
 	if (a == NULL)
 		return (b);
 	else if (b == NULL)
 		return (a);
-	if ((type == "name" && s_order * ft_strcmp(a->name, b->name) > 0) ||
-	(type == "time" && (s_order * (a->compare_date - b->compare_date) > 0 ||
-	(s_order * (a->compare_date - b->compare_date) == 0
-	&& ft_strcmp(a->name, b->name) > 0))))
+	if (s_order * ft_strcmp(a->name, b->name) > 0)
 	{
 		result = a;
 		result->next = ft_sorted_merge(a->next, b, sort_order, type);
@@ -80,17 +77,17 @@ t_curr	*ft_sorted_merge(t_curr *a, t_curr *b, int sort_order, int type)
 	return (result);
 }
 
-void	ft_merge_sort(t_curr **curr_dir, int sort_order, int type)
+void	ft_merge_sort(t_err **que, int sort_order)
 {
-	t_curr *head;
-	t_curr *a;
-	t_curr *b;
+	t_err *head;
+	t_err *a;
+	t_err *b;
 
-	head = *curr_dir;
+	head = *que;
 	if ((head == NULL) || (head->next == NULL))
 		return ;
 	ft_front_back_split(head, &a, &b);
-	ft_merge_sort(&a, sort_order, type);
-	ft_merge_sort(&b, sort_order, type);
-	*curr_dir = ft_sorted_merge(a, b, sort_order, type);
+	ft_merge_sort(&a, sort_order);
+	ft_merge_sort(&b, sort_order);
+	*que = ft_sorted_merge(a, b, sort_order);
 }
