@@ -12,92 +12,72 @@
 
 #include "lsft.h"
 
-int		ft_size_dirr(t_curr **curr_dir)
+
+int 	ft_strjoin_space(char *result, int i, int space_number)
 {
-	int		count;
-	t_curr	*curr;
+	int j;
 
-	count = 0;
-	if (!*curr_dir)
-		return (0);
-	curr = *curr_dir;
-	while (curr)
-	{
-		count++;
-		curr = curr->next;
-	}
-	return (count);
-}
-
-size_t		ft_str_len(char *s)
-{
-	int i;
-
-	i = -1;
-	while (s[++i])
-		;
+	j = -1;
+	while(++j < space_number)
+		result[i++] = " ";
 	return (i);
 }
 
-int			ft_str_int(int num)
+int		ft_strjoin_char(char *result, int i, char *src, int m_size)
 {
-	int order;
+	int j;
+	int src_size;
 
-	order = 0;
-	while (num > 0)
-	{
-		num /= 10;
-		order++;
-	}
-	return (order);
+	j = -1;
+	src_size = ft_str_len(src);
+	if (src_size < m_size)
+		i = ft_strjoin_space(result, i, m_size-src_size);
+	while(++j < src_size)
+		result[++i] = src[j];
+	return (i);
 }
 
-t_count		*ft_count_s(t_curr *curr_dir)
-{
-	t_count	*count_col;
 
-	if (!count_column = (t_count *)malloc(sizeof(t_count *)))
-		return ;
-	count_col->s_name = 0;
-	count_col->s_links = 0;
-	count_col->s_user = 0;
-	count_col->s_groop = 0;
-	count_col->s_size = 0;
-	while (curr_dir)
-	{
-		count_col->s_name = (ft_str_len(curr_dir->name) > count_col->s_name)
-				? ft_str_len(curr_dir->name) : count_col->s_name;
-		count_col->s_links = (ft_str_int(curr_dir->links) > count_col->s_links)
-				? ft_str_int(curr_dir->links) : count_col->s_links;
-		count_col->s_user = (ft_str_len(curr_dir->user) > count_col->s_user)
-				? ft_str_len(curr_dir->user) : count_col->s_user;
-		count_col->s_groop = (ft_str_len(curr_dir->groop) > count_col->s_groop)
-				? ft_str_len(curr_dir->groop) : count_col->s_groop;
-		count_col->s_size = (ft_str_int(curr_dir->size) > count_col->s_size)
-				? ft_str_int(curr_dir->size) : count_col->s_size;
-		curr_dir = curr_dir->next;
-	}
-	return (count_column);
+void 	ft_strprint_join(s_curr *current, int size, t_count *count)
+{
+	char *result;
+	int i;
+	char *tmp;
+
+	if (!(result = ft_strnew(size))
+		return (NULL);
+	i = ft_strjoin_char(result, i, current->rights, 10);
+	i = ft_strjoin_space(result, i, 3);
+	i = ft_strjoin_char(result, i, ft_itoa(current->links), count_col->s_links);
+	i = ft_strjoin_space(result, i, 3);
+	i = ft_strjoin_char(result, i, current->user, count_col->s_user);
+	i = ft_strjoin_space(result, i, 3);
+	i = ft_strjoin_char(result, i, current->groop, count_col->s_groop);
+	i = ft_strjoin_space(result, i, 3);
+	i = ft_strjoin_char(result, i,  ft_itoa(current->size), count_col->s_size);
+	i = ft_strjoin_space(result, i, 3);
+	i = ft_strjoin_char(result, i, current->print_date, 13);
+	i = ft_strjoin_space(result, i, 3);
+	i = ft_strjoin_char(result, i, current->name, ft_str_len(current->name));
+	result[++i]='\n';
+	write(1, &result, size);
+	free(result);
 }
 
-void		ft_print_space(int i)
-{
-}
-
-void		ft_print(t_curr **curr_dir, int )
-{
-	t_count *count;
-	t_curr	*curr;
-	char	*result;
-
-	count = ft_count_s(&curr_dir);
-	curr = *curr_dir;
-	result = (char *)malloc(sizeof(char)*)
-
-	while (curr_dir)
+void ft_print(t_curr **curr_dir)
 	{
-		curr_dir->next;
+		t_count *count;
+		t_curr 	*curr;
+		int		size;
 
-	}
-	free(count);
+		count = ft_count_s(&curr_dir);
+		curr = *curr_dir;
+		while (curr)
+		{
+			size = 30 + count_col->s_links + count_col->s_user + count_col->s_groop
+				   + count_col->s_size + ft_str_len(curr->name) + 1; //учтен \n
+			ft_strprint_join(curr, size, count);
+			curr =curr->next;
+		}
+		free(count);
 }
