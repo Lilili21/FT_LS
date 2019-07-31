@@ -64,10 +64,10 @@ t_q	*ft_sorted_merge(t_q *a, t_q *b, int sort_order)
 		return (b);
 	else if (b == NULL)
 		return (a);
-	if (s_order * ft_strcmp(a->abspath, b->abspath) > 0)
+	if (sort_order * ft_strcmp(a->abspath, b->abspath) > 0)
 	{
 		result = a;
-		result->next = ft_sorted_merge(a->next, b, sort_order, type);
+		result->next = ft_sorted_merge(a->next, b, sort_order);
 	}
 	else
 	{

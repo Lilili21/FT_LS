@@ -55,7 +55,7 @@ void	ft_front_back_split(t_err *source, t_err **front_l, t_err **back_l)
 	}
 }
 
-t_err	*ft_sorted_merge(t_err *a, t_err *b, int sort_order)
+t_err	*ft_sorted_merge(t_err *a, t_err *b)
 {
 	t_err *result;
 
@@ -64,20 +64,20 @@ t_err	*ft_sorted_merge(t_err *a, t_err *b, int sort_order)
 		return (b);
 	else if (b == NULL)
 		return (a);
-	if (s_order * ft_strcmp(a->name, b->name) > 0)
+	if (ft_strcmp(a->name, b->name) > 0)
 	{
 		result = a;
-		result->next = ft_sorted_merge(a->next, b, sort_order, type);
+		result->next = ft_sorted_merge(a->next, b);
 	}
 	else
 	{
 		result = b;
-		result->next = ft_sorted_merge(a, b->next, sort_order);
+		result->next = ft_sorted_merge(a, b->next);
 	}
 	return (result);
 }
 
-void	ft_merge_sort(t_err **que, int sort_order)
+void	ft_merge_sort(t_err **que)
 {
 	t_err *head;
 	t_err *a;
@@ -87,7 +87,7 @@ void	ft_merge_sort(t_err **que, int sort_order)
 	if ((head == NULL) || (head->next == NULL))
 		return ;
 	ft_front_back_split(head, &a, &b);
-	ft_merge_sort(&a, sort_order);
-	ft_merge_sort(&b, sort_order);
-	*que = ft_sorted_merge(a, b, sort_order);
+	ft_merge_sort(&a);
+	ft_merge_sort(&b);
+	*que = ft_sorted_merge(a, b);
 }
