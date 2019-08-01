@@ -77,5 +77,5 @@ int 	flag_parse(char *av, t_fl **fl)
 
 void	flags_del(t_q **que, t_curr **cur, t_fl **fl, int err)
 {
-
+	//if err == 0, no write to 2fd 
 }

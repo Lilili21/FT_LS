@@ -1,35 +1,41 @@
 #include "lsft.h"
 
-void    print_err(t_err **err)
+int		print_err(t_err **err)
 {
-    t_err *tmp;
+    t_err	*tmp;
+	char	*t;
 
     while (*err)
     {
-        err_write((*err)->name, (*err)->er);
+        if (!(t = err_write((*err)->name, (*err)->er)))
+			return (12);
+		ft_putendl_fd(t, 2);
+		free(t);
         tmp = (*err)->next;
         free((*err)->name);
         free((*err)->er);
         free(*err);
         *err = tmp;
     }
+	return (0);
 }
 
-void	err_write(char *av, char *er)
+char	*err_write(char *av, char *er)
 {
 	char *b;
 	char *tmp;
 
-	b = ft_strjoin("ls: ", av);
+	if (!(b = ft_strjoin("ls: ", av)))
+		return (NULL);
 	tmp = b;
-	b = ft_strjoin(b, ": ");
+	if (!(b = ft_strjoin(b, ": ")))
+		return (NULL);
 	free(tmp);
 	tmp = b;
-	b = ft_strjoin(b, er);
+	if (!(b = ft_strjoin(b, er)))
+		return (NULL);
 	free(tmp);
-	write(2, b, ft_strlen(b));
-	write(2, "\n", 1);
-	free(b);
+	return (b);
 }
 
 void	del_node(t_q **que)

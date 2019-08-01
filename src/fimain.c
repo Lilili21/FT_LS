@@ -24,14 +24,15 @@ int		flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	while (!flag_parse(av[ac], fl))
 		ac++;
 	if (!av[ac] && to_list(que, ".", fl))
-		flags_del(que, cur, fl);
+		flags_del(que, cur, fl, 0);
 	else
 	{
 		while (av[ac])
 		{
-			CHECKM(lstat(av[ac], &buf), que, cur, fl, errno);
+			lstat(av[ac], &buf);
+			//CHECKM(lstat(av[ac], &buf), que, cur, fl, errno);
 			if (errno)
-				er_list(&err, av[ac], strerror(errno));
+				CHECKM(er_list(&err, av[ac], strerror(errno)), que, cur, fl, errnofromreturn);
 			else if (S_ISDIR(buf.st_mode))
 				to_list(que, av[ac], fl);
 			else
