@@ -70,6 +70,8 @@ add_executable(ft_ls2
         libft/ft_tolower.c
         libft/ft_toupper.c
         libft/get_next_line.c
+        src/print_data.c
+        src/help_print.c
         src/extra.c
         src/fimain.c
         src/flags.c
