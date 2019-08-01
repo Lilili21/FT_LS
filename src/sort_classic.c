@@ -72,8 +72,8 @@ void	ft_sort(t_curr **curr_dir, int s_order, int type)
 			i = -1;
 			check = 0;
 			while (++i < ft_size_dirr(curr_dir) - 1)
-				if ((type == "name" && s_order * ft_strcmp(sort[i]->name, sort[i + 1]->name) > 0) ||
-				(type == "time" &&
+				if ((type == 0 && s_order * ft_strcmp(sort[i]->name, sort[i + 1]->name) > 0) ||
+				(type == 1 &&
 				(s_order * (sort[i]->compare_date - sort[i + 1]->compare_date) > 0 ||
 				(s_order * (sort[i]->compare_date - sort[i + 1]->compare_date) == 0 &&
 				ft_strcmp(sort[i]->name, sort[i + 1]->name) > 0))))

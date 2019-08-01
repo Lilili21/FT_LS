@@ -11,7 +11,7 @@ SRC = src/fimain.c \
 		src/help_sort.c \
 		src/print_data.c \
 		src/help_print.c \
-		
+
 OBJ = fimain.o \
 		extra.o \
 		flags.o \

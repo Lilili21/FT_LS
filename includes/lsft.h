@@ -97,6 +97,7 @@ void		ft_print(t_curr *curr_dir, t_fl *fl);
 t_count		*ft_count_s(t_curr *curr_dir);
 void		ft_putendldir(char *av);
 void		ft_free_one(t_curr **curr);
+
 #endif
 
 //man for dir stat https://www.ibm.com/developerworks/ru/library/au-unix-readdir/index.html

@@ -108,7 +108,7 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 	p = NULL;
 	if (!(new = (t_curr *)malloc(sizeof(t_curr))))
 		return (0);
-	new->name = d_name;
+	new->name = ft_strdup(d_name);
 	if (path)
 	{
 		p = path[ft_strlen(path) - 1] == '/' ? path : ft_strjoin(path, "/");

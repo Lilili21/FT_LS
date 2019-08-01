@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "lsft.h"
+#include <stdio.h>
 
 int		ft_size_dirr(t_curr **curr_dir)
 {
@@ -35,6 +36,7 @@ void	ft_front_back_split(t_curr *source, t_curr **front_l, t_curr **back_l)
 	int		i;
 	int		middle;
 	t_curr	*current;
+//	t_curr *tmp;
 
 	current = source;
 	len = ft_size_dirr(&source);
@@ -50,8 +52,11 @@ void	ft_front_back_split(t_curr *source, t_curr **front_l, t_curr **back_l)
 		while (++i < middle)
 			current = current->next;
 		*front_l = source;
+		//source->next = NULL;
 		*back_l = current->next;
+		//printf("len = %i, middle = %i,\n front_l = %s, back_l = %s \n",len, middle, (*front_l)->name, (*back_l)->name);
 		current->next = NULL;
+		//printf("front_l = %s,back_l = %s \n \n", (*front_l)->next->name, (*back_l)->next->name);
 	}
 }
 

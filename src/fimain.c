@@ -17,6 +17,7 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	struct stat	buf;
 	t_err		*err;
 
+	err = NULL;
 	flags(0, fl, 0); //to initialize flag struct to zero
 	ac = 1;
 	while (!flag_parse(av[ac], fl))
@@ -55,6 +56,7 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int *col)
 	DIR				*d;
 	struct dirent	*rd;
 	char 			*av;
+	//int i;
 
 	if (!(*que))//finish of program
 		return (0);
@@ -65,13 +67,16 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int *col)
 		err_write(av, strerror(errno));
 	else
 	{
+		//i = 0;
 		while ((rd = readdir(d))) // || rd == NULL && errno )
 		{
 			if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", 1)))
 				continue ;
 			if (!ft_new_curr(rd->d_name, fl, cur, av))
 				exit(errno); //change to freee...all shit
+			//printf("i = %i current->name = %s\n",i++, rd->d_name);
 		}
+
 		ft_merge_sort(cur, *fl);
 		ft_print(*cur, *fl);
 		if (closedir(d))
