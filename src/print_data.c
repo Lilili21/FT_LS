@@ -67,7 +67,7 @@ void ft_print(t_curr *curr_dir, t_fl *fl)
 	{
 		t_count *count;
 		t_curr 	*curr;
-		int		size;
+		size_t	size;
 
 		if (fl->l == 1)
 			count = ft_count_s(curr_dir);
