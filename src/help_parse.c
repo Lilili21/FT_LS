@@ -18,7 +18,7 @@ void	ft_free(t_curr **curr)
 
 	if (!(*curr))
 		return ;
-	while(*curr)
+	while (*curr)
 	{
 		if ((*curr)->rights != NULL)
 			free((*curr)->rights);
@@ -28,4 +28,42 @@ void	ft_free(t_curr **curr)
 		free((*curr));
 		(*curr) = tmp;
 	}
+}
+
+void	ft_parse_null(t_curr *new)
+{
+	new->rights = NULL;
+	new->links = 0;
+	new->user = NULL;
+	new->groop = NULL;
+	new->size = 0;
+}
+
+char	*formatdate(char **str)
+{
+	char	*result;
+	int		i;
+	int		j;
+	int		k;
+
+	result = (char *)malloc(sizeof(char) * 13);
+	i = 0;
+	j = 1;
+	while (i < 10)
+	{
+		k = 0;
+		while (str[j][k] && i < 12)
+		{
+			result[i] = str[j][k];
+			i++;
+			k++;
+		}
+		j++;
+		if (ft_strlen(str[2]) == 1 && j == 2)
+			result[i++] = ' ';
+		if (i < 8)
+			result[i++] = ' ';
+	}
+	result[i] = '\0';
+	return (result);
 }

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "lsft.h"
-#include <stdio.h>
+
 int		parse_rights(t_curr *new, char *d_name)
 {
 	struct stat	st;
@@ -37,36 +37,7 @@ int		parse_rights(t_curr *new, char *d_name)
 	return (0);
 }
 
-char	*formatdate(char **str)
-{
-	char	*result;
-	int		i;
-	int		j;
-	int		k;
-
-	result = (char *)malloc(sizeof(char) * 13);
-	i = 0;
-	j = 1;
-	while (i < 10)
-	{
-		k = 0;
-		while (str[j][k] && i < 12)
-		{
-			result[i] = str[j][k];
-			i++;
-			k++;
-		}
-		j++;
-		if (ft_strlen(str[2]) == 1 && j == 2)
-			result[i++] = ' ';
-		if (i < 8)
-			result[i++] = ' ';
-	}
-	result[i] = '\0';
-	return (result);
-}
-
-int	parse_date(t_curr *new, char *d_name, t_fl **fl)
+int		parse_date(t_curr *new, char *d_name, t_fl **fl)
 {
 	struct stat	st;
 
@@ -123,7 +94,7 @@ char	parse_symb(char *d_name)
 	if (l_acl && l_attr)
 		return ('@');
 	else if (l_acl)
-		return('+');
+		return ('+');
 	else if (l_attr)
 		return ('@');
 	else
@@ -140,14 +111,10 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 		return (0);
 	new->name = ft_strdup(d_name);
 	if (path)
-	{
-		p = path[ft_strlen(path) - 1] == '/' ? path : ft_strjoin(path, "/");
-		p = ft_strjoin(p, d_name); //add protection
-	}
+		p = path[ft_strlen(path) - 1] == '/' ? path :
+				ft_strjoin(ft_strjoin(path, "/"), d_name);
 	new->type = (p == 0 ? parse_type(d_name) : parse_type(p));
 	new->symb = ((*fl)->l == 1 ? parse_symb(p) : ' ');
-	printf("%c = c %s\n",new->symb, new->name);
-
 	if (new->type == 'E')
 		return (0);
 	new->next = NULL;
@@ -155,13 +122,7 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 	if ((*fl)->l == 1)
 		parse_rights(new, d_name);
 	else
-	{
-		new->rights = NULL;
-		new->links = 0;
-		new->user = NULL;
-		new->groop = NULL;
-		new->size = 0;
-	}
+		ft_parse_null(new);
 	if ((*fl)->l == 1 || (*fl)->t == 1)
 		parse_date(new, d_name, fl);
 	ft_lstaddcu(cur, new);

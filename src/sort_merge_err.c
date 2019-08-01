@@ -15,7 +15,7 @@
 int		ft_size_dirr_err(t_err **curr_dir)
 {
 	int		count;
-	t_err		*curr;
+	t_err	*curr;
 
 	count = 0;
 	if (!*curr_dir)
