@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "lsft.h"
-
+#include <stdio.h>
 
 int 	ft_strjoin_space(char *result, int i, int space_number)
 {
@@ -19,8 +19,11 @@ int 	ft_strjoin_space(char *result, int i, int space_number)
 
 	j = -1;
 	while(++j < space_number)
-		result[i++] = ' ';
-	return (i);
+	{
+		result[i] = ' ';
+		i++;
+	}
+	return (--i);
 }
 
 int		ft_strjoin_char(char *result, int i, char *src, size_t m_size)
@@ -28,12 +31,15 @@ int		ft_strjoin_char(char *result, int i, char *src, size_t m_size)
 	int j;
 	size_t src_size;
 
-	j = -1;
+	j = 0;
 	src_size = ft_strlen(src);
-	if (src_size < m_size)
-		i = ft_strjoin_space(result, i, m_size-src_size);
-	while(++j < src_size)
-		result[++i] = src[j];
+	if (src_size < m_size + 1)
+		i = ft_strjoin_space(result, i, m_size - src_size);
+	while(j < src_size + 1)
+	{
+		i++;
+		result[i] = src[j++];
+	}
 	return (i);
 }
 
@@ -42,7 +48,7 @@ void 	ft_strprint_join(t_curr *current, int size, t_count *count_col)
 	char *result;
 	int i;
 
-	i = 0;
+	i = -1;
 	if (!(result = ft_strnew(size)))
 		return ;
 	i = ft_strjoin_char(result, i, current->rights, 10);
@@ -59,7 +65,9 @@ void 	ft_strprint_join(t_curr *current, int size, t_count *count_col)
 	i = ft_strjoin_space(result, i, 3);
 	i = ft_strjoin_char(result, i, current->name, ft_strlen(current->name));
 	result[++i]='\n';
-	write(1, &result, size);
+	size = ft_strlen(result);
+	write(1, result, size);
+	write(1, "\n",1);
 	free(result);
 }
 

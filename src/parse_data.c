@@ -127,7 +127,7 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 		new->groop = NULL;
 		new->size = 0;
 	}
-	if ((*fl)->l == 1 && (*fl)->t == 1)
+	if ((*fl)->l == 1 || (*fl)->t == 1)
 		parse_date(new, d_name, fl);
 	ft_lstaddcu(cur, new);
 	return (1);

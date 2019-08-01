@@ -46,7 +46,7 @@ t_count		*ft_count_s(t_curr *curr_dir)
 {
 	t_count	*count_col;
 
-	if (!(count_col = (t_count *)malloc(sizeof(t_count *))))
+	if (!(count_col = (t_count *)malloc(sizeof(t_count))))
 		return (NULL);
 	count_col->s_name = 0;
 	count_col->s_links = 0;
