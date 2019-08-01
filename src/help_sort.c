@@ -22,13 +22,20 @@ void	ft_add_curr(t_curr **curr_dir, t_curr *new)
 
 void	ft_free(t_curr **curr)
 {
+	t_curr *tmp;
+
 	if (!(*curr))
 		return ;
-	if ((*curr)->rights != NULL)
-		free((*curr)->rights);
-	if ((*curr)->check_date % 10 == 2)
-		free((*curr)->print_date);
-	free((*curr));
+	while(*curr)
+	{
+		if ((*curr)->rights != NULL)
+			free((*curr)->rights);
+		if ((*curr)->check_date % 10 == 2)
+			free((*curr)->print_date);
+		tmp = (*curr)->next;
+		free((*curr));
+		(*curr) = tmp;
+	}
 }
 
 t_q		*ft_new_q(t_curr *current, int lev)

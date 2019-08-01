@@ -28,21 +28,32 @@ void	err_write(char *av, char *er)
 	b = ft_strjoin(b, er);
 	free(tmp);
 	write(2, b, ft_strlen(b));
+	write(2, "\n", 1);
 	free(b);
 }
 
-void	del_node(t_q **que, t_curr **cur, char *av)
+void	del_node(t_q **que)
 {
 	t_q	*tmp;
 
-	if (!ft_strcmp((*que)->abspath, av))
-	{
-		tmp = (*que)->next;
-		free((*que)->abspath);
-		free(*que);
-		*que = tmp;
-	}
-	if (cur)
-		ft_free(cur);
+	tmp = (*que)->next;
+	free((*que)->abspath);
+	free(*que);
+	*que = tmp;
 }
 
+void	ft_putendldir(char *av)
+{
+	write(1, "\n", 1);
+	ft_putendl(ft_strjoin(av, ": "));
+}
+
+void	ft_free_one(t_curr **curr)
+{
+	if (!(*curr))
+		return ;
+	if ((*curr)->rights != NULL)
+		free((*curr)->rights);
+	if ((*curr)->check_date % 10 == 2)
+		free((*curr)->print_date);
+}

@@ -41,8 +41,8 @@ void 	ft_strprint_join(t_curr *current, int size, t_count *count_col)
 {
 	char *result;
 	int i;
-	char *tmp;
 
+	i = 0;
 	if (!(result = ft_strnew(size)))
 		return ;
 	i = ft_strjoin_char(result, i, current->rights, 10);
@@ -67,12 +67,11 @@ void ft_print(t_curr *curr_dir, t_fl *fl)
 	{
 		t_count *count;
 		t_curr 	*curr;
-		int		size;
+		size_t	size;
 
 		if (fl->l == 1)
 			count = ft_count_s(curr_dir);
 		curr = curr_dir;
-		write(1, "start\n", 6);
 		while (curr)
 		{	if (fl->l == 1)
 			{

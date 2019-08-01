@@ -33,8 +33,8 @@ int			ft_str_int(int num)
 {
 	int order;
 
-	order = 0;
-	while (num > 0)
+	order = 1;
+	while (num > 9)
 	{
 		num /= 10;
 		order++;
@@ -53,6 +53,7 @@ t_count		*ft_count_s(t_curr *curr_dir)
 	count_col->s_user = 0;
 	count_col->s_groop = 0;
 	count_col->s_size = 0;
+	count_col->total = 0;
 	while (curr_dir)
 	{
 		count_col->s_name = (ft_strlen(curr_dir->name) > count_col->s_name)
@@ -65,7 +66,9 @@ t_count		*ft_count_s(t_curr *curr_dir)
 							 ? ft_strlen(curr_dir->groop) : count_col->s_groop;
 		count_col->s_size = (ft_str_int(curr_dir->size) > count_col->s_size)
 							? ft_str_int(curr_dir->size) : count_col->s_size;
+		count_col->total += curr_dir->size;
 		curr_dir = curr_dir->next;
 	}
+	count_col->total /= 512;
 	return (count_col);
 }

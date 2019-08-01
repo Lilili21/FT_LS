@@ -49,18 +49,11 @@ void	er_list(t_err **err, char *av, char *er)
 	print_err(err);
 }
 
-void	to_list(t_curr **cur, t_q **que, char *av, t_fl **fl)
+void	to_list(t_q **que, char *av, t_fl **fl)
 {
-	t_curr	*cu;
 	t_q		*qu;
 	struct stat	st;
 
-	if (!que)
-	{
-		cu = ft_new_curr(av, fl);
-		ft_lstaddcu(cur, cu);
-		return ;
-	}
 	if (!(qu = (t_q*)malloc(sizeof(t_q)))) // 0 level, av = abspath of av
 	{
 		perror("ls: ");
@@ -92,7 +85,7 @@ void	que_end(t_q **st, t_q *qu) // to add node to que list end of level;
 {
 	t_q *tmp;
 
-	if (!(*st))
+	if (!st || !(*st))
 	{
 		*st = qu;
 		return ;

@@ -8,7 +8,9 @@ SRC = src/fimain.c \
 		src/sort_merge_q.c \
 		src/sort_merge_err.c \
 		src/parse_data.c \
-		src/help_sort.c
+		src/help_sort.c \
+		src/print_data.c \
+		src/help_print.c \
 
 OBJ = fimain.o \
 		extra.o \
@@ -18,7 +20,10 @@ OBJ = fimain.o \
 		sort_merge_q.o \
 		sort_merge_err.o \
 		parse_data.o \
-		help_sort.o
+		help_sort.o \
+		print_data.o \
+		help_print.o \
+
 #$(SRC:.c=.o)
 
 all: $(NAME)
@@ -27,7 +32,7 @@ $(NAME):
 	make -C libft
 	gcc -g -Wall -I libft/includes -I includes -c $(SRC)
 	#gcc -Wall -Wextra -Werror -I libft/includes -I includes -c $(SRC)
-	gcc -g -o $(NAME) $(OBJ) -L libft -lft
+	gcc -o $(NAME) -g $(OBJ) -L libft -lft
 
 clean:
 	rm -f $(OBJ)
