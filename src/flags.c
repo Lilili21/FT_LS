@@ -1,6 +1,6 @@
 #include "lsft.h"
 
-void	flags(char av, t_fl **fl, int i)
+int		flags(char av, t_fl **fl, int i)
 {
 	if (i == 1)
 	{
@@ -14,14 +14,16 @@ void	flags(char av, t_fl **fl, int i)
 			(*fl)->t = 1;
 		if (av == 'r')
 			(*fl)->r = 1;
-		return ;
+		return (0);
 	}
-	(*fl) = (t_fl*)malloc(sizeof(t_fl));
+	if (!((*fl) = (t_fl*)malloc(sizeof(t_fl))))
+		return (12);
 	(*fl)->rr = 0;
 	(*fl)->a = 0;
 	(*fl)->l = 0;
 	(*fl)->r = -1;
 	(*fl)->t = 0;
+	return (0);
 }
 	/*
 
@@ -66,8 +68,14 @@ int 	flag_parse(char *av, t_fl **fl)
 			ft_putstr_fd("ls: illegal option -- ", 2);
 			write(2, av, 1);
 			ft_putendl_fd("\nusage: ls [-Ralrt] [file ...]", 2);
-			exit (1); //check for leaks on flag_struct!
+			free(*fl);
+			exit (0); //idk why, but it leaks...
 		}
 	}
 	return (-1);
+}
+
+void	flags_del(t_q **que, t_curr **cur, t_fl **fl, int err)
+{
+
 }

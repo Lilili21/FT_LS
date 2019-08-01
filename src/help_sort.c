@@ -28,10 +28,16 @@ void	ft_free(t_curr **curr)
 		return ;
 	while(*curr)
 	{
-		if ((*curr)->rights != NULL)
+		if ((*curr)->rights)
 			free((*curr)->rights);
-		if ((*curr)->check_date % 10 == 2)
+		if ((*curr)->user)
+			free((*curr)->user);
+		if ((*curr)->groop)
+			free((*curr)->groop);
+		if ((*curr)->print_date)
 			free((*curr)->print_date);
+		if ((*curr)->name)
+			free((*curr)->name);
 		tmp = (*curr)->next;
 		free((*curr));
 		(*curr) = tmp;

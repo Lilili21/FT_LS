@@ -49,21 +49,30 @@ void	er_list(t_err **err, char *av, char *er)
 	print_err(err);
 }
 
-void	to_list(t_q **que, char *av, t_fl **fl)
+int		to_list(t_q **que, char *av, t_fl **fl)
 {
 	t_q		*qu;
 	struct stat	st;
 
-	if (!(qu = (t_q*)malloc(sizeof(t_q)))) // 0 level, av = abspath of av
+	if (!(qu = (t_q*)malloc(sizeof(t_q))))
+	{
+		ft_putendl_fd("ls: Cannot allocate memory.", 2);
+		return (-1);
+	}
+	if (lstat(av, &st))
 	{
 		perror("ls: ");
-		exit(errno);
+		return (-1);
 	}
-	lstat(av, &st);
 	qu->compare_date = st.st_mtimespec.tv_sec;
 	qu->next = 0;
-	qu->abspath = ft_strdup(av);
+	if (!(qu->abspath = ft_strdup(av)))
+	{
+		ft_putendl_fd("ls: Cannot allocate memory.", 2);
+		return (-1);
+	}
 	que_end(que, qu);
+	return (0);
 }
 
 void	err_end(t_err **st, t_err *er) // to add node to que list end of level;

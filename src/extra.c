@@ -50,10 +50,15 @@ void	ft_putendldir(char *av)
 
 void	ft_free_one(t_curr **curr)
 {
-	if (!(*curr))
-		return ;
-	if ((*curr)->rights != NULL)
-		free((*curr)->rights);
-	if ((*curr)->check_date % 10 == 2)
-		free((*curr)->print_date);
+		if ((*curr)->rights)
+			free((*curr)->rights);
+		if ((*curr)->user)
+			free((*curr)->user);
+		if ((*curr)->groop)
+			free((*curr)->groop);
+		if ((*curr)->print_date)
+			free((*curr)->print_date);
+		if ((*curr)->name)
+			free((*curr)->name);
+		free((*curr));
 }

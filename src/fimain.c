@@ -10,7 +10,7 @@ flags_n_sort
 3- que list has2be sorted, as cur has2be sorted n ready to print;
 */
 
-void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
+int		flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 {
 	int			ac;
 	int			l;
@@ -18,37 +18,32 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	t_err		*err;
 
 	err = NULL;
-	flags(0, fl, 0); //to initialize flag struct to zero
+	if (flags(0, fl, 0))
+		return (12);
 	ac = 1;
 	while (!flag_parse(av[ac], fl))
 		ac++;
-	//(1+)
-	//now ac point to terminal files and dirs
-	if (!av[ac])
-		to_list(que, ".", fl);
+	if (!av[ac] && to_list(que, ".", fl))
+		flags_del(que, cur, fl);
 	else
 	{
-		//parse & split on files(to cur) & dirs(que);
 		while (av[ac])
 		{
-			l = lstat(av[ac], &buf);
-			//if file or dir doesn;t exists
+			CHECKM(lstat(av[ac], &buf), que, cur, fl, errno);
 			if (errno)
 				er_list(&err, av[ac], strerror(errno));
-			//if dir to que 
 			else if (S_ISDIR(buf.st_mode))
 				to_list(que, av[ac], fl);
-			//if file to cur
 			else
 				if (!ft_new_curr(av[ac], fl, cur, 0))
 					exit(errno); //change to freee...all shit
-				//to_list(cur, 0, av[ac], fl);
 			ac++;
 		}
 		er_list(&err, 0, 0);
 		ft_merge_sort(cur, *fl);
 		ft_merge_sort_q(que, *fl);
 	}
+	return (0);
 }
 
 int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int *col)
@@ -125,12 +120,9 @@ void	add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl)
 int		main(int ac, char **av)
 {
 	int		state;
-	t_q		*que; //terminal que
-	t_curr	*cur; //print reg.files from dir or terminal ("ls file1 dir1 fil2" -->
-					// file1, file2
-					// dir1: 
-					// ......)
-	t_fl	*fl; // flag structure
+	t_q		*que;
+	t_curr	*cur;
+	t_fl	*fl;
 	int		col;
 
 	fl = NULL;
@@ -138,10 +130,11 @@ int		main(int ac, char **av)
 	que = NULL;
 	state = 1;
 	col = 0;
-	flags_n_sort(av, &que, &cur, &fl); //parse global flags;
-				// add to que sorted argv's from terminal; 
-				// if av == NULL, then av = ".";
-				// add to t_curr !!! reg. files to print, then folders to que;
+	if (flags_n_sort(av, &que, &cur, &fl))
+	{
+		ft_putendl_fd("ls: Cannot allocate memory.", 2);
+		exit (0);
+	}
 	if (cur)
 		ft_print(cur, fl); //add 'total' print and then erasing cur list;
 	ft_free(&cur);
