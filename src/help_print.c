@@ -11,23 +11,6 @@
 /* ************************************************************************** */
 
 #include "lsft.h"
-/*
-int		ft_size_dirr_p(t_curr **curr_dir)
-{
-	int		count;
-	t_curr	*curr;
-
-	count = 0;
-	if (!*curr_dir)
-		return (0);
-	curr = *curr_dir;
-	while (curr)
-	{
-		count++;
-		curr = curr->next;
-	}
-	return (count);
-}*/
 
 int			ft_str_int(int num)
 {
@@ -42,7 +25,7 @@ int			ft_str_int(int num)
 	return (order);
 }
 
-t_count		*ft_count_s(t_curr *curr_dir)
+t_count		*ft_count_s(t_curr *curr_dir, int fl)
 {
 	t_count	*count_col;
 
@@ -54,21 +37,30 @@ t_count		*ft_count_s(t_curr *curr_dir)
 	count_col->s_groop = 0;
 	count_col->s_size = 0;
 	count_col->total = 0;
-	while (curr_dir)
+	if (fl == 1)
 	{
-		count_col->s_name = (ft_strlen(curr_dir->name) > count_col->s_name)
-							? ft_strlen(curr_dir->name) : count_col->s_name;
-		count_col->s_links = (ft_str_int(curr_dir->links) > count_col->s_links)
-							 ? ft_str_int(curr_dir->links) : count_col->s_links;
-		count_col->s_user = (ft_strlen(curr_dir->user) > count_col->s_user)
-							? ft_strlen(curr_dir->user) : count_col->s_user;
-		count_col->s_groop = (ft_strlen(curr_dir->groop) > count_col->s_groop)
-							 ? ft_strlen(curr_dir->groop) : count_col->s_groop;
-		count_col->s_size = (ft_str_int(curr_dir->size) > count_col->s_size)
-							? ft_str_int(curr_dir->size) : count_col->s_size;
-		count_col->total += curr_dir->size;
-		curr_dir = curr_dir->next;
+		while (curr_dir)
+		{
+			count_col->s_links = (ft_str_int(curr_dir->links) > count_col->s_links)
+								 ? ft_str_int(curr_dir->links) : count_col->s_links;
+			count_col->s_user = ((int) ft_strlen(curr_dir->user) > count_col->s_user)
+								? ft_strlen(curr_dir->user) : count_col->s_user;
+			count_col->s_groop = ((int) ft_strlen(curr_dir->groop) > count_col->s_groop)
+								 ? ft_strlen(curr_dir->groop) : count_col->s_groop;
+			count_col->s_size = (ft_str_int(curr_dir->size) > count_col->s_size)
+								? ft_str_int(curr_dir->size) : count_col->s_size;
+			count_col->total += curr_dir->size;
+			curr_dir = curr_dir->next;
+		}
+		count_col->total /= 512;
 	}
-	count_col->total /= 512;
+	else
+	{
+		while (curr_dir)
+		{
+			count_col->s_name += ft_strlen(curr_dir->name) + 1;
+			curr_dir = curr_dir->next;
+		}
+	}
 	return (count_col);
 }

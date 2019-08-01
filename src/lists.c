@@ -49,7 +49,7 @@ void	er_list(t_err **err, char *av, char *er)
 	print_err(err);
 }
 
-void	to_list(t_q **que, char *av, t_fl **fl)
+void	to_list(t_q **que, char *av)
 {
 	t_q		*qu;
 	struct stat	st;

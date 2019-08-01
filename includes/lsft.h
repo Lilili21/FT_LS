@@ -25,6 +25,8 @@
 # include <grp.h>
 # include <time.h>
 # include <fcntl.h>
+# include <sys/acl.h>
+# include <sys/xattr.h>
 
 # define CHECM(x) if (!(x)) ft_putendl_fd("ls: malloc error", 2)
 
@@ -54,6 +56,7 @@ typedef struct	s_err
 typedef	struct s_curr
 {
 	char		type;
+	char 		symb;
 	char		*rights;
 	int			links;
 	char		*user;
@@ -69,10 +72,10 @@ typedef	struct s_curr
 typedef struct s_count
 {
 	size_t		s_name;
-	size_t 		s_links;
-	size_t 		s_user;
-	size_t 		s_groop;
-	size_t		s_size;
+	int 		s_links;
+	int 		s_user;
+	int 		s_groop;
+	int			s_size;
 	size_t		total;
 }				t_count;
 
@@ -81,7 +84,7 @@ int 		flag_parse(char *av, t_fl **fl);
 void		ft_lstaddqu(t_q **alst, t_q *new);
 void		ft_lstaddcu(t_curr **st, t_curr *new);
 void		er_list(t_err **err, char *av, char *er);
-void		to_list(t_q **que, char *av, t_fl **fl);
+void		to_list(t_q **que, char *av);
 void		err_end(t_err **st, t_err *er);
 void		que_end(t_q **st, t_q *qu);
 void    	print_err(t_err **err);
@@ -92,11 +95,13 @@ void		ft_merge_sort_err(t_err **que);
 void		ft_merge_sort(t_curr **curr_dir, t_fl *fl);
 void		ft_free(t_curr **curr);
 int			ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path);
-void		add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl);
+void		add_sorted(t_curr **cur, t_q **que, char *av);
 void		ft_print(t_curr *curr_dir, t_fl *fl);
-t_count		*ft_count_s(t_curr *curr_dir);
+t_count		*ft_count_s(t_curr *curr_dir, int fl);
 void		ft_putendldir(char *av);
 void		ft_free_one(t_curr **curr);
+int			ft_str_int(int num);
+int			ft_size_dirr(t_curr **curr_dir);
 
 #endif
 

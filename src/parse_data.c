@@ -11,12 +11,13 @@
 /* ************************************************************************** */
 
 #include "lsft.h"
-
-void	parse_rights(t_curr *new, char *d_name)
+#include <stdio.h>
+int		parse_rights(t_curr *new, char *d_name)
 {
 	struct stat	st;
 
-	lstat(d_name, &st);
+	if (lstat(d_name, &st))
+		return (errno);
 	new->links = st.st_nlink;
 	new->size = st.st_size;
 	new->user = getpwuid(st.st_uid)->pw_name;
@@ -33,6 +34,7 @@ void	parse_rights(t_curr *new, char *d_name)
 	new->rights[8] = (st.st_mode & S_IWOTH) ? 'w' : '-';
 	new->rights[9] = (st.st_mode & S_IXOTH) ? 'x' : '-';
 	new->rights[10] = '\0';
+	return (0);
 }
 
 char	*formatdate(char **str)
@@ -64,11 +66,12 @@ char	*formatdate(char **str)
 	return (result);
 }
 
-void	parse_date(t_curr *new, char *d_name, t_fl **fl)
+int	parse_date(t_curr *new, char *d_name, t_fl **fl)
 {
 	struct stat	st;
 
-	lstat(d_name, &st);
+	if (lstat(d_name, &st))
+		return (errno);
 	if ((*fl)->t == 1)
 	{
 		new->check_date += 10;
@@ -79,13 +82,18 @@ void	parse_date(t_curr *new, char *d_name, t_fl **fl)
 		new->check_date += 2;
 		new->print_date = formatdate(ft_strsplit(ctime(&st.st_mtime), ' '));
 	}
+	return (0);
 }
 
 char	parse_type(char *d_name)
 {
 	struct stat	st;
 
-	lstat(d_name, &st);
+	if (lstat(d_name, &st))
+	{
+		perror("ls: ");
+		return ('E');
+	}
 	if (S_ISDIR(st.st_mode) == 1)
 		return ('d');
 	else if (S_ISLNK(st.st_mode) == 1)
@@ -98,6 +106,28 @@ char	parse_type(char *d_name)
 		return ('c');
 	else
 		return ('f');
+}
+
+char	parse_symb(char *d_name)
+{
+	ssize_t len;
+	acl_t	acl;
+	int		l_attr;
+	int		l_acl;
+
+	len = listxattr(d_name, NULL, 0, XATTR_NOFOLLOW);
+	acl = acl_get_file(d_name, ACL_TYPE_EXTENDED);
+	l_attr = (len > 0) ? 1 : 0;
+	l_acl = (acl) ? 1 : 0;
+	acl_free((void *)acl);
+	if (l_acl && l_attr)
+		return ('@');
+	else if (l_acl)
+		return('+');
+	else if (l_attr)
+		return ('@');
+	else
+		return (' ');
 }
 
 int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
@@ -115,6 +145,11 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 		p = ft_strjoin(p, d_name); //add protection
 	}
 	new->type = (p == 0 ? parse_type(d_name) : parse_type(p));
+	new->symb = ((*fl)->l == 1 ? parse_symb(p) : ' ');
+	printf("%c = c %s\n",new->symb, new->name);
+
+	if (new->type == 'E')
+		return (0);
 	new->next = NULL;
 	new->check_date = 0;
 	if ((*fl)->l == 1)

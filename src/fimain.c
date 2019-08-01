@@ -25,7 +25,7 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	//(1+)
 	//now ac point to terminal files and dirs
 	if (!av[ac])
-		to_list(que, ".", fl);
+		to_list(que, ".");
 	else
 	{
 		//parse & split on files(to cur) & dirs(que);
@@ -37,7 +37,7 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 				er_list(&err, av[ac], strerror(errno));
 			//if dir to que 
 			else if (S_ISDIR(buf.st_mode))
-				to_list(que, av[ac], fl);
+				to_list(que, av[ac]);
 			//if file to cur
 			else
 				if (!ft_new_curr(av[ac], fl, cur, 0))
@@ -84,7 +84,7 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int *col)
 	}
 	del_node(que);
 	if (cur && (*fl)->rr && (*col = 1))
-		add_sorted(cur, que, av, fl);
+		add_sorted(cur, que, av);
 	if (cur)
 		ft_free(cur);
 	//if (*que)
@@ -92,7 +92,7 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int *col)
 	return (1);
 }
 
-void	add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl)
+void	add_sorted(t_curr **cur, t_q **que, char *av)
 {
 	t_q		*qu;
 	t_q		*st;
@@ -138,7 +138,8 @@ int		main(int ac, char **av)
 	que = NULL;
 	state = 1;
 	col = 0;
-	flags_n_sort(av, &que, &cur, &fl); //parse global flags;
+	if (ac > 0)
+		flags_n_sort(av, &que, &cur, &fl); //parse global flags;
 				// add to que sorted argv's from terminal; 
 				// if av == NULL, then av = ".";
 				// add to t_curr !!! reg. files to print, then folders to que;
