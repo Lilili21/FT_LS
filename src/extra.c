@@ -3,14 +3,11 @@
 int		print_err(t_err **err)
 {
     t_err	*tmp;
-	char	*t;
 
     while (*err)
     {
-        if (!(t = err_write((*err)->name, (*err)->er)))
+        if (err_write((*err)->name, (*err)->er))
 			return (12);
-		ft_putendl_fd(t, 2);
-		free(t);
         tmp = (*err)->next;
         free((*err)->name);
         free((*err)->er);
@@ -20,22 +17,24 @@ int		print_err(t_err **err)
 	return (0);
 }
 
-char	*err_write(char *av, char *er)
+int		err_write(char *av, char *er)
 {
 	char *b;
 	char *tmp;
 
 	if (!(b = ft_strjoin("ls: ", av)))
-		return (NULL);
+		return (12);
 	tmp = b;
 	if (!(b = ft_strjoin(b, ": ")))
-		return (NULL);
+		return (12);
 	free(tmp);
 	tmp = b;
 	if (!(b = ft_strjoin(b, er)))
-		return (NULL);
+		return (12);
 	free(tmp);
-	return (b);
+	ft_putendl_fd(b, 2);
+	free(b);
+	return (0);
 }
 
 void	del_node(t_q **que)
@@ -48,23 +47,30 @@ void	del_node(t_q **que)
 	*que = tmp;
 }
 
-void	ft_putendldir(char *av, int *prev)
+int		ft_putendldir(char *av, int *prev)
 {
+	char *tmp;
+
 	if (*prev == 2)
 		write(1, "\n", 1);
 	*prev = 2;
-	ft_putendl(ft_strjoin(av, ": "));
+	if (!(tmp = ft_strjoin(av, ": ")))
+		return (12);
+	ft_putendl(tmp);
+	free(tmp);
+	return (0);
 }
 
 void	ft_free_one(t_curr **curr)
 {
-		if ((*curr)->rights)
-			free((*curr)->rights);
-		if ((*curr)->print_date)
-			free((*curr)->print_date);
-		if ((*curr)->name)
-			free((*curr)->name);
-		free((*curr));
+	if ((*curr)->rights)
+		ft_strdel(&(*curr)->rights);
+	if ((*curr)->print_date)
+		ft_strdel(&(*curr)->print_date);
+	if ((*curr)->name)
+		ft_strdel(&(*curr)->name);
+	free((*curr));
+	(*curr) = 0;
 }
 
 void	ft_free(t_curr **curr)
@@ -76,13 +82,14 @@ void	ft_free(t_curr **curr)
 	while (*curr)
 	{
 		if ((*curr)->rights)
-			free((*curr)->rights);
+			ft_strdel(&(*curr)->rights);
 		if ((*curr)->print_date)
-			free((*curr)->print_date);
+			ft_strdel(&(*curr)->print_date);
 		if ((*curr)->name)
-			free((*curr)->name);
+			ft_strdel(&(*curr)->name);
 		tmp = (*curr)->next;
 		free((*curr));
+		(*curr) = 0;
 		(*curr) = tmp;
 	}
 }

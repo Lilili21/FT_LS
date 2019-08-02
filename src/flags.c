@@ -1,6 +1,6 @@
 #include "lsft.h"
 
-int		flags(char av, t_fl **fl, int i)
+void	flags(char av, t_fl **fl, int i)
 {
 	if (i == 1)
 	{
@@ -14,17 +14,18 @@ int		flags(char av, t_fl **fl, int i)
 			(*fl)->t = 1;
 		if (av == 'r')
 			(*fl)->r = 1;
-		return (0);
 	}
 	if (!((*fl) = (t_fl*)malloc(sizeof(t_fl))))
-		return (12);
+	{
+		ft_putendl_fd("ls: Cannot allocate memory.", 2);
+		exit (0);
+	}
 	(*fl)->rr = 0;
 	(*fl)->a = 0;
 	(*fl)->l = 0;
 	(*fl)->r = -1;
 	(*fl)->t = 0;
 	(*fl)->prev = 0;
-	return (0);
 }
 	/*
 

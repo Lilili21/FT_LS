@@ -12,6 +12,14 @@
 
 #include "lsft.h"
 
+void		*ft_mistake(char *result)
+{
+	if (result)
+		free(result);
+	perror("ls: Cannot allocate memory");
+	return (NULL);
+}
+
 int			ft_order(int num)
 {
 	int order;
@@ -25,24 +33,35 @@ int			ft_order(int num)
 	return (order);
 }
 
-size_t		ft_max_name(t_curr *curr_dir)
-{
-	size_t max;
-
-	max = 0;
-	while (curr_dir)
-	{
-		max += ft_strlen(curr_dir->name) + 1;
-		curr_dir = curr_dir->next;
-	}
-	return (max);
-}
-
 int			ft_compare(int a, int b)
 {
 	if (a > b)
 		return (a);
 	return (b);
+}
+
+size_t		ft_max_name(t_curr *curr_dir, int i)
+{
+	size_t max;
+
+	max = 0;
+	if (i == 0)
+	{
+		while (curr_dir)
+		{
+			max += ft_strlen(curr_dir->name) + 1;
+			curr_dir = curr_dir->next;
+		}
+	}
+	else
+	{
+		while (curr_dir)
+		{
+			max = ft_compare((int)ft_strlen(curr_dir->name), max);
+			curr_dir = curr_dir->next;
+		}
+	}
+	return (max);
 }
 
 t_count		*ft_count_s(t_curr *curr_dir, int fl)
@@ -56,7 +75,7 @@ t_count		*ft_count_s(t_curr *curr_dir, int fl)
 	max_s->s_groop = 0;
 	max_s->s_size = 0;
 	max_s->total = 0;
-	max_s->s_name = (fl == 0) ? ft_max_name(curr_dir) : 0;
+	max_s->s_name = ft_max_name(curr_dir, fl);
 	if (fl == 0)
 		return (max_s);
 	while (curr_dir)
@@ -72,5 +91,3 @@ t_count		*ft_count_s(t_curr *curr_dir, int fl)
 	}
 	return (max_s);
 }
-
-

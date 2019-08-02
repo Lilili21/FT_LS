@@ -47,42 +47,63 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	tavai(cur, que, fl, &err);
 }
 
-int		ft_ls(t_q **que, t_curr **cur, t_fl **fl)
+int		elswhile(char *av, t_curr **cur, t_fl **fl, DIR **d)
+{
+	struct dirent	*rd;
+
+	while ((rd = readdir(*d))) // || rd == NULL && errno )
+	{
+		if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", 1)))
+			continue ;
+		if (ft_new_curr(rd->d_name, fl, cur, av))
+		{
+			CHECKM(closedir(*d),CHECKM(err_write(av, strerror(errno)), return (-1)));
+			return (-1);
+		}
+	}
+	ft_merge_sort(cur, *fl);
+	if (ft_print(*cur, *fl))
+	{
+		ft_putendl_fd("ls: Cannot allocate memory.", 2);
+		return (-1);
+	}
+	if (closedir(*d))
+		CHECKM(err_write(av, strerror(errno)), return (-1));
+	return (0);
+}
+
+int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, char *av)
 {
 	DIR				*d;
-	struct dirent	*rd;
-	char 			*av;
 
 	if (!(*que))
-		return (0);
-	av = ft_strdup((*que)->abspath);
+		del_me(que, cur, fl, -1);
+	CHECKM(!(av = ft_strdup((*que)->abspath)), del_me(que, cur, fl, 12));
 	if ((*fl)->prev)
-		ft_putendldir(av, &(*fl)->prev);
+		CHECKMA(ft_putendldir(av, &(*fl)->prev), free(av),del_me(que, cur, fl, 12));
 	if (!(d = opendir(av)))
-		err_write(av, strerror(errno));
-	else
+		CHECKMA(err_write(av, strerror(errno)), free(av), del_me(que, cur, fl, 12));
+	if (d)
 	{
-		while ((rd = readdir(d))) // || rd == NULL && errno )
-		{
-			if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", 1)))
-				continue ;
-			if (!ft_new_curr(rd->d_name, fl, cur, av))
-				exit(errno); //change to freee...all shit
-		}
-		ft_merge_sort(cur, *fl);
-		ft_print(*cur, *fl);
-		if (closedir(d))
-			err_write(av, strerror(errno));
+		if (av[ft_strlen(av) - 1] != '/')
+			if (!(av = ft_sfstrjoin(&av, "/")))
+			{
+				CHECKM(closedir(d), CHECKM(err_write(av, strerror(errno)), del_me(que, cur, fl, 12)));
+				free(av);
+				del_me(que, cur, fl, 12);
+			}
+		CHECKMA(elswhile(av, cur, fl, &d), free(av), del_me(que, cur, fl, -1));
 	}
 	del_node(que);
-	if (cur && (*fl)->rr && ((*fl)->prev = 1))
-		add_sorted(cur, que, av);
-	if (cur)
-		ft_free(cur);
+	if (cur && (*fl)->rr)
+		CHECKMA(add_sorted(cur, que, av), free(av), del_me(que, cur, fl, 12));
+	ft_free(cur);
 	return (1);
 }
 
-void	add_sorted(t_curr **cur, t_q **que, char *av)
+//add free(av) += NULL!
+
+int		add_sorted(t_curr **cur, t_q **que, char *av)
 {
 	t_q		*qu;
 	t_q		*st;
@@ -90,13 +111,16 @@ void	add_sorted(t_curr **cur, t_q **que, char *av)
 
 	qu = NULL;
 	st = NULL;
-	av = av[ft_strlen(av) - 1] == '/' ? av : ft_strjoin(av, "/"); // add NULL check
-	while(*cur) //cu->next ?
+	while(*cur)
 	{
 		if ((*cur)->type == 'd')
 		{
-			qu = (t_q*)malloc(sizeof(t_q)); //add check for NULL
-			qu->abspath = ft_strjoin(av, (*cur)->name);
+			if (!(qu = (t_q*)malloc(sizeof(t_q))) || !(qu->abspath = ft_strjoin(av, (*cur)->name)))
+			{
+				CHECKM(qu, CHECKM(qu->abspath,free(qu->abspath)));
+				CHECKM(qu, free(qu));
+				return (-1);
+			}
 			qu->compare_date = 0;
 			qu->next = NULL;
 			que_end(&st, qu);
@@ -110,6 +134,7 @@ void	add_sorted(t_curr **cur, t_q **que, char *av)
 		qu->next = *que;
 		*que = st;
 	}
+	return (0);
 }
 
 int		main(int ac, char **av)
@@ -118,24 +143,22 @@ int		main(int ac, char **av)
 	t_q		*que;
 	t_curr	*cur;
 	t_fl	*fl;
+	char 	*avv;
 
 	fl = NULL;
 	cur = NULL;
 	que = NULL;
+	avv = NULL;
 	state = 1;
 	ac = 0;
-	if (flags(0, &fl, 0))
-	{
-		ft_putendl_fd("ls: Cannot allocate memory.", 2);
-		exit (0);
-	}
+	flags(0, &fl, 0);
 	flags_n_sort(av, &que, &cur, &fl);
 	if (cur)
-		ft_print(cur, fl); //add 'total' print and then erasing cur list;
+		ft_print(cur, fl);
 	ft_free(&cur);
-	if (que && que->next)  // if dirs > 1 from terminal, or there was print of dir previously (like last dir)
+	if (que && que->next)
 		fl->prev = 1;
 	while (state > 0)
-		state = ft_ls(&que, &cur, &fl);
+		state = ft_ls(&que, &cur, &fl, avv);
 	return (0);
 }

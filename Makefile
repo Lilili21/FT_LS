@@ -31,6 +31,7 @@ $(NAME):
 
 clean:
 	@rm -rf $(OBJDIR)
+	@make -C libft clean
 
 fclean: clean
 	@rm -rf $(NAME)

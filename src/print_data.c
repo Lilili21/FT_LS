@@ -73,7 +73,7 @@ void	ft_strprint_join(t_curr *current, int size, t_count *count_col)
 	free(result);
 }
 
-void	ft_print(t_curr *curr_dir, t_fl *fl)
+int		ft_print(t_curr *curr_dir, t_fl *fl)
 {
 	t_count *count;
 	t_curr	*curr;
@@ -104,7 +104,7 @@ void	ft_print(t_curr *curr_dir, t_fl *fl)
 	else
 	{
 		if (!(print = ft_strnew(count->s_name)))
-			return ;
+			return (-1);
 		i = 0;
 		while (curr)
 		{
@@ -118,4 +118,5 @@ void	ft_print(t_curr *curr_dir, t_fl *fl)
 	}
 	if (fl->l == 1)
 		free(count);
+	return (0);
 }
