@@ -26,7 +26,7 @@
 # include <time.h>
 # include <fcntl.h>
 
-# define CHECM(x, q, c, f, e) if (x) flags_del(q, c, f, e)
+# define CHECKM(x, fd) if ((x)) fd
 
 typedef struct	s_fl
 {
@@ -77,11 +77,11 @@ typedef struct s_count
 }				t_count;
 
 int		flags(char av, t_fl **fl, int i);
-int		flag_parse(char *av, t_fl **fl);
+int		flag_parse(int ac, int j, char **av, t_fl **fl);
 void	ft_lstaddqu(t_q **alst, t_q *new);
 void	ft_lstaddcu(t_curr **st, t_curr *new);
 int		er_list(t_err **err, char *av, char *er);
-int		to_list(t_q **que, char *av, t_fl **fl);
+int		to_list(t_q **que, char *av);
 void	err_end(t_err **st, t_err *er);
 void	que_end(t_q **st, t_q *qu);
 int  	print_err(t_err **err);
@@ -92,12 +92,13 @@ void	ft_merge_sort_err(t_err **que);
 void	ft_merge_sort(t_curr **curr_dir, t_fl *fl);
 void	ft_free(t_curr **curr);
 int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path);
-void	add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl);
+void	add_sorted(t_curr **cur, t_q **que, char *av);
 void	ft_print(t_curr *curr_dir, t_fl *fl);
 t_count	*ft_count_s(t_curr *curr_dir);
 void	ft_putendldir(char *av);
 void	ft_free_one(t_curr **curr);
-void	flags_del(t_q **que, t_curr **cur, t_fl **fl, int err);
+void	del_me(t_q **que, t_curr **cur, t_fl **fl, int err);
+
 
 #endif
 

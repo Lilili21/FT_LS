@@ -1,5 +1,7 @@
 #include "lsft.h"
 
+
+
 /*
 flags_n_sort
 
@@ -10,41 +12,35 @@ flags_n_sort
 3- que list has2be sorted, as cur has2be sorted n ready to print;
 */
 
-int		flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
+void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 {
-	int			ac;
-	int			l;
 	struct stat	buf;
 	t_err		*err;
+	int			ac;
 
 	err = NULL;
-	if (flags(0, fl, 0))
-		return (12);
-	ac = 1;
-	while (!flag_parse(av[ac], fl))
-		ac++;
-	if (!av[ac] && to_list(que, ".", fl))
-		flags_del(que, cur, fl, 0);
-	else
+	ac = flag_parse(0, 0, av, fl);
+	if (!av[ac--])
 	{
-		while (av[ac])
-		{
-			lstat(av[ac], &buf);
-			//CHECKM(lstat(av[ac], &buf), que, cur, fl, errno);
-			if (errno)
-				CHECKM(er_list(&err, av[ac], strerror(errno)), que, cur, fl, errnofromreturn);
-			else if (S_ISDIR(buf.st_mode))
-				to_list(que, av[ac], fl);
-			else
-				if (!ft_new_curr(av[ac], fl, cur, 0))
-					exit(errno); //change to freee...all shit
-			ac++;
-		}
-		er_list(&err, 0, 0);
-		ft_merge_sort(cur, *fl);
-		ft_merge_sort_q(que, *fl);
+		CHECKM(to_list(que, "."), del_me(que, cur, fl, -1));
+		return ;
 	}
-	return (0);
+	while (av[++ac])
+	{
+		if (lstat(av[ac], &buf) && errno)
+		{
+			CHECKM(er_list(&err, av[ac], strerror(errno)), del_me(que, cur, fl, 12));
+		}
+		else if (S_ISDIR(buf.st_mode))
+		{
+			CHECKM(to_list(que, av[ac]), del_me(que, cur, fl, -1));
+		}
+		else
+			CHECKM((!ft_new_curr(av[ac], fl, cur, 0)), del_me(que, cur, fl, -1));
+	}
+	CHECKM(er_list(&err, 0, 0), del_me(que, cur, fl, 12));
+	ft_merge_sort(cur, *fl);
+	ft_merge_sort_q(que, *fl);
 }
 
 int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int *col)
@@ -52,7 +48,6 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int *col)
 	DIR				*d;
 	struct dirent	*rd;
 	char 			*av;
-	//int i;
 
 	if (!(*que))//finish of program
 		return (0);
@@ -63,16 +58,13 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int *col)
 		err_write(av, strerror(errno));
 	else
 	{
-		//i = 0;
 		while ((rd = readdir(d))) // || rd == NULL && errno )
 		{
 			if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", 1)))
 				continue ;
 			if (!ft_new_curr(rd->d_name, fl, cur, av))
 				exit(errno); //change to freee...all shit
-			//printf("i = %i current->name = %s\n",i++, rd->d_name);
 		}
-
 		ft_merge_sort(cur, *fl);
 		ft_print(*cur, *fl);
 		if (closedir(d))
@@ -80,15 +72,13 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int *col)
 	}
 	del_node(que);
 	if (cur && (*fl)->rr && (*col = 1))
-		add_sorted(cur, que, av, fl);
+		add_sorted(cur, que, av);
 	if (cur)
 		ft_free(cur);
-	//if (*que)
-	//	write(1, "\n", 1);
 	return (1);
 }
 
-void	add_sorted(t_curr **cur, t_q **que, char *av, t_fl **fl)
+void	add_sorted(t_curr **cur, t_q **que, char *av)
 {
 	t_q		*qu;
 	t_q		*st;
@@ -131,7 +121,8 @@ int		main(int ac, char **av)
 	que = NULL;
 	state = 1;
 	col = 0;
-	if (flags_n_sort(av, &que, &cur, &fl))
+	ac = 0;
+	if (flags(0, &fl, 0) || flags_n_sort(av, &que, &cur, &fl))
 	{
 		ft_putendl_fd("ls: Cannot allocate memory.", 2);
 		exit (0);
@@ -143,4 +134,5 @@ int		main(int ac, char **av)
 		col = 1;
 	while (state > 0)
 		state = ft_ls(&que, &cur, &fl, &col);
+	return (0);
 }

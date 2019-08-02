@@ -57,7 +57,7 @@ int		er_list(t_err **err, char *av, char *er)
 	return (0);
 }
 
-int		to_list(t_q **que, char *av, t_fl **fl)
+int		to_list(t_q **que, char *av)
 {
 	t_q		*qu;
 	struct stat	st;
