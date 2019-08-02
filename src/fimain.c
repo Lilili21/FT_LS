@@ -97,10 +97,11 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, char *av)
 	del_node(que);
 	if (cur && (*fl)->rr)
 		CHECKMA(add_sorted(cur, que, av), free(av), del_me(que, cur, fl, 12));
-	if (cur)
-		ft_free(cur);
+	ft_free(cur);
 	return (1);
 }
+
+//add free(av) += NULL!
 
 int		add_sorted(t_curr **cur, t_q **que, char *av)
 {
@@ -150,11 +151,7 @@ int		main(int ac, char **av)
 	avv = NULL;
 	state = 1;
 	ac = 0;
-	if (flags(0, &fl, 0))
-	{
-		ft_putendl_fd("ls: Cannot allocate memory.", 2);
-		exit (0);
-	}
+	flags(0, &fl, 0);
 	flags_n_sort(av, &que, &cur, &fl);
 	if (cur)
 		ft_print(cur, fl);

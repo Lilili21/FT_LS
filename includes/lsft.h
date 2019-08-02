@@ -81,7 +81,7 @@ typedef struct s_count
 	size_t		total;
 }				t_count;
 
-int		flags(char av, t_fl **fl, int i);
+void	flags(char av, t_fl **fl, int i);
 int		flag_parse(int ac, int j, char **av, t_fl **fl);
 void	ft_lstaddcu(t_curr **st, t_curr *new);
 int		er_list(t_err **err, char *av, char *er);
