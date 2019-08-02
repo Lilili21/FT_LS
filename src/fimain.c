@@ -78,7 +78,7 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, char *av)
 
 	if (!(*que))
 		del_me(que, cur, fl, -1);
-	CHECKM((av = ft_strdup((*que)->abspath)), del_me(que, cur, fl, 12));
+	CHECKM(!(av = ft_strdup((*que)->abspath)), del_me(que, cur, fl, 12));
 	if ((*fl)->prev)
 		CHECKMA(ft_putendldir(av, &(*fl)->prev), free(av),del_me(que, cur, fl, 12));
 	if (!(d = opendir(av)))
@@ -86,7 +86,7 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, char *av)
 	if (d)
 	{
 		if (av[ft_strlen(av) - 1] != '/')
-			if (!ft_memdl((void **)av) && !(av = ft_strjoin(av, "/")))
+			if (!(av = ft_sfstrjoin(&av, "/")))
 			{
 				CHECKM(closedir(d), CHECKM(err_write(av, strerror(errno)), del_me(que, cur, fl, 12)));
 				free(av);

@@ -23,7 +23,7 @@ LIB_OBJS = $(addprefix $(OBJDIR)/, $(LIB_OBJ))
 all: $(NAME)
 
 $(NAME):
-	#@make -C libft
+	@make -C libft
 	@gcc -Wall -Wextra -Werror -I libft/includes -I includes -c $(SRCS)
 	@gcc -o $(NAME) -g $(OBJ) -L libft -lft
 	@mkdir -p $(OBJDIR);
@@ -31,10 +31,10 @@ $(NAME):
 
 clean:
 	@rm -rf $(OBJDIR)
-#	@make -C libft clean
+	@make -C libft clean
 
 fclean: clean
 	@rm -rf $(NAME)
-#	@make -C libft fclean
+	@make -C libft fclean
 
 re: fclean all

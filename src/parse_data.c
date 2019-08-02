@@ -110,8 +110,7 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 		return (0);
 	new->name = ft_strdup(d_name);
 	if (path)
-		p = path[ft_strlen(path) - 1] == '/' ? ft_strjoin(path, d_name) :
-				ft_strjoin(ft_strjoin(path, "/"), d_name);
+		p = path;
 	else
 		p = d_name;
 	new->type = parse_type(p);
@@ -124,5 +123,5 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 	if ((*fl)->l == 1 || (*fl)->t == 1)
 		parse_date(new, p, fl);
 	ft_lstaddcu(cur, new);
-	return (1);
+	return (0);
 }
