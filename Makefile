@@ -30,7 +30,7 @@ OBJ = fimain.o \
 all: $(NAME)
 
 $(NAME):
-	make -C libft
+	#make -C libft
 	gcc -g -Wall -Wextra -I libft/includes -I includes -c $(SRC)
 	#gcc -Wall -Wextra -Werror -I libft/includes -I includes -c $(SRC)
 	gcc -o $(NAME) -g $(OBJ) -L libft -lft

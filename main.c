@@ -21,20 +21,12 @@ void fef()
 
 int main()
 {
-	char *tmp;
 	char *b;
 	char av[5] = "avav";
 	
-	b = ft_strjoin("ls: ", av);
-	tmp = b;
-	b = ft_strjoin(b, ": ");
-	free(tmp);
-	errno = 12;
-	tmp = b;
-	b = ft_strjoin(b, strerror(errno));
-	free(tmp);
-	printf("%s\n", b);
-	free(b);
+	ft_putendl((b = ft_strjoin(av, "asdad")));
+
+
 }
 
 /*
