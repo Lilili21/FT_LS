@@ -55,11 +55,11 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl)
 
 	if (!(*que))
 		return (0);
-	av = ft_strdup((*que)->abspath);
+	CHECKM(av = ft_strdup((*que)->abspath), del_me(que, cur, fl, 12));
 	if ((*fl)->prev)
-		ft_putendldir(av, &(*fl)->prev);
+		CHECKM(ft_putendldir(av, &(*fl)->prev), del_me(que, cur, fl, 12));
 	if (!(d = opendir(av)))
-		err_write(av, strerror(errno));
+		CHECKM(err_write(av, strerror(errno)), del_me(que, cur, fl, 12));
 	else
 	{
 		while ((rd = readdir(d))) // || rd == NULL && errno )
@@ -67,7 +67,7 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl)
 			if (!(*fl)->a && (!ft_strncmp(rd->d_name, ".", 1)))
 				continue ;
 			if (!ft_new_curr(rd->d_name, fl, cur, av))
-				exit(errno); //change to freee...all shit
+				del_me(que, cur, fl,-1);//change ft_new_curr! return 0 if ok, -1 if error
 		}
 		ft_merge_sort(cur, *fl);
 		ft_print(*cur, *fl);
@@ -75,7 +75,7 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl)
 			err_write(av, strerror(errno));
 	}
 	del_node(que);
-	if (cur && (*fl)->rr && ((*fl)->prev = 1))
+	if (cur && (*fl)->rr)
 		add_sorted(cur, que, av);
 	if (cur)
 		ft_free(cur);

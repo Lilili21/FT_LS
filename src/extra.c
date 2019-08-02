@@ -20,22 +20,24 @@ int		print_err(t_err **err)
 	return (0);
 }
 
-char	*err_write(char *av, char *er)
+int		err_write(char *av, char *er)
 {
 	char *b;
 	char *tmp;
 
 	if (!(b = ft_strjoin("ls: ", av)))
-		return (NULL);
+		return (12);
 	tmp = b;
 	if (!(b = ft_strjoin(b, ": ")))
-		return (NULL);
+		return (12);
 	free(tmp);
 	tmp = b;
 	if (!(b = ft_strjoin(b, er)))
-		return (NULL);
+		return (12);
 	free(tmp);
-	return (b);
+	ft_putendl_fd(b, 2);
+	free(b);
+	return (0);
 }
 
 void	del_node(t_q **que)
@@ -48,12 +50,18 @@ void	del_node(t_q **que)
 	*que = tmp;
 }
 
-void	ft_putendldir(char *av, int *prev)
+int		ft_putendldir(char *av, int *prev)
 {
+	char *tmp;
+
 	if (*prev == 2)
 		write(1, "\n", 1);
 	*prev = 2;
-	ft_putendl(ft_strjoin(av, ": "));
+	if (!(tmp = ft_strjoin(av, ": ")))
+		return (12);
+	ft_putendl(tmp);
+	free(tmp);
+	return (0);
 }
 
 void	ft_free_one(t_curr **curr)
