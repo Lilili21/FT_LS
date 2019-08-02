@@ -40,30 +40,6 @@ int			ft_compare(int a, int b)
 	return (b);
 }
 
-size_t		ft_max_name(t_curr *curr_dir, int i)
-{
-	size_t max;
-
-	max = 0;
-	if (i == 0)
-	{
-		while (curr_dir)
-		{
-			max += ft_strlen(curr_dir->name) + 1;
-			curr_dir = curr_dir->next;
-		}
-	}
-	else
-	{
-		while (curr_dir)
-		{
-			max = ft_compare((int)ft_strlen(curr_dir->name), max);
-			curr_dir = curr_dir->next;
-		}
-	}
-	return (max);
-}
-
 t_count		*ft_count_s(t_curr *curr_dir, int fl)
 {
 	t_count	*max_s;
@@ -75,18 +51,22 @@ t_count		*ft_count_s(t_curr *curr_dir, int fl)
 	max_s->s_groop = 0;
 	max_s->s_size = 0;
 	max_s->total = 0;
-	max_s->s_name = ft_max_name(curr_dir, fl);
-	if (fl == 0)
-		return (max_s);
+	max_s->s_name = 0;
 	while (curr_dir)
 	{
-		max_s->s_links = ft_compare(ft_order(curr_dir->links), max_s->s_links);
-		max_s->s_user = ft_compare((int)ft_strlen(curr_dir->user),
-				max_s->s_user);
-		max_s->s_groop = ft_compare((int)ft_strlen(curr_dir->groop),
-				max_s->s_groop);
-		max_s->s_size = ft_compare(ft_order(curr_dir->size), max_s->s_size);
-		max_s->total += curr_dir->s_total;
+		if(fl!= 0)
+		{
+			max_s->s_links = ft_compare(ft_order(curr_dir->links), max_s->s_links);
+			max_s->s_user = ft_compare((int) ft_strlen(curr_dir->user),
+									   max_s->s_user);
+			max_s->s_groop = ft_compare((int) ft_strlen(curr_dir->groop),
+										max_s->s_groop);
+			max_s->s_size = ft_compare(ft_order(curr_dir->size), max_s->s_size);
+			max_s->total += curr_dir->s_total;
+		}
+		else
+			max_s->total += ft_strlen(curr_dir->name) + 1;
+		max_s->s_name = ft_compare((int)ft_strlen(curr_dir->name), max_s->s_name);
 		curr_dir = curr_dir->next;
 	}
 	return (max_s);

@@ -23,7 +23,7 @@ int		parse_rights(t_curr *new, char *d_name)
 	new->user = ft_strdup(getpwuid(st.st_uid)->pw_name);
 	new->groop = ft_strdup(getgrgid(st.st_gid)->gr_name);
 	new->s_total = st.st_blocks;
-	new->rights = (char *)malloc(11);
+	new->rights = (char *)malloc(sizeof(char) * 11);
 	new->rights[0] = (new->type == 'f') ? '-' : new->type;
 	new->rights[1] = (st.st_mode & S_IRUSR) ? 'r' : '-';
 	new->rights[2] = (st.st_mode & S_IWUSR) ? 'w' : '-';
@@ -45,19 +45,13 @@ int		parse_date(t_curr *new, char *d_name, t_fl **fl)
 	if (lstat(d_name, &st))
 		return (errno);
 	if ((*fl)->t == 1)
-	{
-		new->check_date += 10;
 		new->compare_date = st.st_mtimespec.tv_sec;
-	}
 	if ((*fl)->l == 1)
-	{
-		new->check_date += 2;
 		new->print_date = formatdate(ft_strsplit(ctime(&st.st_mtime), ' '));
-	}
 	return (0);
 }
 
-char	parse_type(char *d_name)
+char	parse_type(t_curr *new, char *d_name)
 {
 	struct stat	st;
 
@@ -66,8 +60,11 @@ char	parse_type(char *d_name)
 		perror("ls: ");
 		return ('E');
 	}
+	new->check_folder = 0;
 	if (S_ISDIR(st.st_mode) == 1)
+	{
 		return ('d');
+	}
 	else if (S_ISLNK(st.st_mode) == 1)
 		return ('l');
 	else if (S_ISFIFO(st.st_mode) == 1)
@@ -114,12 +111,11 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 		p = path;
 	else
 		p = d_name;
-	new->type = parse_type(p);
+	new->type = parse_type(new, p);
 	new->symb = ((*fl)->l == 1 ? parse_symb(p) : ' ');
 	if (new->type == 'E')
 		return (0);
 	new->next = NULL;
-	new->check_date = 0;
 	((*fl)->l == 1) ? parse_rights(new, p) : ft_parse_null(new);
 	if ((*fl)->l == 1 || (*fl)->t == 1)
 		parse_date(new, p, fl);

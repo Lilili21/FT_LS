@@ -1,7 +1,5 @@
 #include "lsft.h"
-
-
-
+#include <stdio.h>
 /*
 flags_n_sort
 
@@ -13,7 +11,7 @@ flags_n_sort
 */
 void	tavai(t_curr **cur, t_q **que, t_fl **fl, t_err **err)
 {
-	CHECKM(er_list(err, 0, 0), del_me(que, cur, fl, 12));
+	CHECKM(er_list(err, 0, 0, fl), del_me(que, cur, fl, 12));
 	ft_merge_sort(cur, *fl);
 	ft_merge_sort_q(que, *fl);
 }
@@ -35,7 +33,7 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	{
 		if (lstat(av[ac], &buf) && errno)
 		{
-			CHECKM(er_list(&err, av[ac], strerror(errno)), del_me(que, cur, fl, 12));
+			CHECKM(er_list(&err, av[ac], strerror(errno), fl), del_me(que, cur, fl, 12));
 		}
 		else if (S_ISDIR(buf.st_mode))
 		{
@@ -127,7 +125,7 @@ int		add_sorted(t_curr **cur, t_q **que, char *av)
 		}
 		re = (*cur)->next;
 		ft_free_one(cur);
-		(*cur) = (*cur)->next;
+		(*cur) = re;
 	}
 	if (qu)
 	{

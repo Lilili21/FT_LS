@@ -15,7 +15,7 @@ void	ft_lstaddcu(t_curr **st, t_curr *new)
 	tmp->next = new;
 }
 
-int		er_list(t_err **err, char *av, char *er)
+int		er_list(t_err **err, char *av, char *er, t_fl **fl)
 {
 	t_err *erro;
 
@@ -39,7 +39,7 @@ int		er_list(t_err **err, char *av, char *er)
 		return (0);
 	}
 	ft_merge_sort_err(err);
-	if (print_err(err))
+	if (print_err(err, fl))
 		return (12);
 	return (0);
 }

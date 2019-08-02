@@ -27,6 +27,8 @@
 # include <fcntl.h>
 # include <sys/acl.h>
 # include <sys/xattr.h>
+#include <sys/ioctl.h>
+#include <stdio.h>
 
 # define CHECKM(x, fd) if ((x)) fd
 # define CHECKMA(x, a, fd) if ((x)) { a; fd; }
@@ -67,7 +69,7 @@ typedef	struct s_curr
 	char		*print_date;
     char 		*name;
     int 		s_total;
-	int     	check_date;
+	int     	check_folder;
 	int     	compare_date;
 	struct s_curr *next;
 }				t_curr;
@@ -85,11 +87,11 @@ typedef struct s_count
 void	flags(char av, t_fl **fl, int i);
 int		flag_parse(int ac, int j, char **av, t_fl **fl);
 void	ft_lstaddcu(t_curr **st, t_curr *new);
-int		er_list(t_err **err, char *av, char *er);
+int		er_list(t_err **err, char *av, char *er, t_fl **fl);
 int		to_list(t_q **que, char *av);
 void	err_end(t_err **st, t_err *er);
 void	que_end(t_q **st, t_q *qu);
-int  	print_err(t_err **err);
+int  	print_err(t_err **err, t_fl **fl);
 int		err_write(char *av, char *er);
 void	del_node(t_q **que);
 void	ft_merge_sort_q(t_q **que, t_fl *fl);
@@ -108,7 +110,8 @@ int		ft_size_dirr(t_curr **curr_dir);
 char	*formatdate(char **str);
 void	ft_parse_null(t_curr *new);
 void	*ft_mistake(char *result);
-
+int		ft_strjoin_char(char *result, int i, char *src, int m_size);
+int		ft_print_column(t_curr	*curr, t_count *count);
 #endif
 
 //man for dir stat https://www.ibm.com/developerworks/ru/library/au-unix-readdir/index.html
