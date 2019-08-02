@@ -20,8 +20,8 @@ int		parse_rights(t_curr *new, char *d_name)
 		return (errno);
 	new->links = st.st_nlink;
 	new->size = st.st_size;
-	new->user = getpwuid(st.st_uid)->pw_name;
-	new->groop = getgrgid(st.st_gid)->gr_name;
+	new->user = ft_strdup(getpwuid(st.st_uid)->pw_name);
+	new->groop = ft_strdup(getgrgid(st.st_gid)->gr_name);
 	new->s_total = st.st_blocks;
 	new->rights = (char *)malloc(11);
 	new->rights[0] = (new->type == 'f') ? '-' : new->type;

@@ -106,7 +106,7 @@ int		ft_order(int num);
 int		ft_size_dirr(t_curr **curr_dir);
 char	*formatdate(char **str);
 void	ft_parse_null(t_curr *new);
-
+void	*ft_mistake(char *result);
 
 #endif
 

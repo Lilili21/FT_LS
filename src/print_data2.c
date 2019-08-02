@@ -19,10 +19,7 @@ int		ft_strjoin_space(char *result, int i, int space_number)
 
 	j = -1;
 	while (++j < space_number)
-	{
-		result[i] = ' ';
-		i++;
-	}
+		result[i++] = ' ';
 	return (--i);
 }
 
@@ -36,21 +33,18 @@ int		ft_strjoin_char(char *result, int i, char *src, int m_size)
 	if (src_size < m_size + 1)
 		i = ft_strjoin_space(result, i, m_size - src_size);
 	while (j < src_size + 1)
-	{
-		i++;
-		result[i] = src[j++];
-	}
+		result[++i] = src[j++];
 	return (i);
 }
 
-void	ft_strprint_join(t_curr *current, int size, t_count *count_col)
+char	*ft_fill_str(t_curr *current, int size, t_count *count_col)
 {
 	char	*result;
 	int		i;
 
 	i = -1;
 	if (!(result = ft_strnew(size)))
-		return ;
+		return (NULL);
 	i = ft_strjoin_char(result, i, current->rights, 11);
 	result[i] = current->symb;
 	i = ft_strjoin_space(result, ++i, 2);
@@ -67,39 +61,63 @@ void	ft_strprint_join(t_curr *current, int size, t_count *count_col)
 	i = ft_strjoin_char(result, i, current->name, ft_strlen(current->name));
 	result[i++] = '\n';
 	result[i] = '\0';
-	size = ft_strlen(result);
-	write(1, result, size);
-	//write(1, "\n", 1);
+	return (result);
+}
+
+t_curr	*ft_print_folder(t_curr *curr, t_count *count, int buff_size)
+{
+	char	*result;
+	char	*tmp;
+	int		str_size;
+	int		i;
+
+	i = 0;
+	if (!(result = ft_strnew(buff_size)))
+		return (ft_mistake(NULL));
+	while (curr)
+	{
+		str_size = 32 + count->s_links + count->s_user +
+				count->s_groop + count->s_size + ft_strlen(curr->name);
+		if (buff_size - str_size < 0)
+			break ;
+		if (!(tmp = ft_fill_str(curr, str_size, count)))
+			return (ft_mistake(result));
+		i = ft_strjoin_char(result, i, tmp, str_size);
+		free(tmp);
+		curr = curr->next;
+		buff_size -= str_size;
+	}
+	result[i] = '\n';
+	write(1, result, ft_strlen(result));
 	free(result);
+	return (curr);
 }
 
 void	ft_print(t_curr *curr_dir, t_fl *fl)
 {
 	t_count *count;
 	t_curr	*curr;
-	int		i;
 	char	*print;
-	int		size;
+	int		str_size;
+	int		size_dir;
+	int		buff_size;
+	int		i;
+
 
 	curr = curr_dir;
-	count = ft_count_s(curr_dir, fl->l);
+	if (!(count = ft_count_s(curr_dir, fl->l)))
+		return ;
 	if (fl->l == 1)
 	{
-		if (curr)
-		{
 			write(1, "total ", 6);
 			ft_putnbr(count->total);
 			write(1, "\n", 1);
-		}
-
-		while (curr)
-		{
-			size = 32 + count->s_links + count->s_user +
-				   count->s_groop + count->s_size + ft_strlen(curr->name);
-			ft_strprint_join(curr, size, count);
-			curr = curr->next;
-		}
-		write(1,"\n",1);
+			size_dir = ft_size_dirr(&curr);
+			str_size = 32 + count->s_links + count->s_user +
+					   count->s_groop + count->s_size + count->s_name;
+			buff_size = (size_dir * str_size > 100) ? 100 : size_dir * str_size;
+			while (curr)
+				curr = ft_print_folder(curr, count, buff_size);
 	}
 	else
 	{
@@ -116,6 +134,5 @@ void	ft_print(t_curr *curr_dir, t_fl *fl)
 		ft_putstr(print);
 		free(print);
 	}
-	if (fl->l == 1)
 		free(count);
 }
