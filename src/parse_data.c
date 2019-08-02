@@ -91,15 +91,14 @@ char	parse_symb(char *d_name)
 	l_attr = (len > 0) ? 1 : 0;
 	l_acl = (acl) ? 1 : 0;
 	acl_free((void *)acl);
-	if (l_acl && l_attr)
-		return ('@');
-	else if (l_acl)
-		return ('+');
-	else if (l_attr)
+	if (l_attr)
 		return ('@');
 	else
-		return (' ');
+		return l_acl ? '+' : ' ';
 }
+
+//@ - имеет альтернативные расширения
+//+ - имеет другие способы доступа
 
 int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 {
@@ -121,10 +120,7 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 		return (0);
 	new->next = NULL;
 	new->check_date = 0;
-	if ((*fl)->l == 1)
-		parse_rights(new, p);
-	else
-		ft_parse_null(new);
+	((*fl)->l == 1) ? parse_rights(new, p) : ft_parse_null(new);
 	if ((*fl)->l == 1 || (*fl)->t == 1)
 		parse_date(new, p, fl);
 	ft_lstaddcu(cur, new);
