@@ -3,14 +3,11 @@
 int		print_err(t_err **err)
 {
     t_err	*tmp;
-	char	*t;
 
     while (*err)
     {
-        if (!(t = err_write((*err)->name, (*err)->er)))
+        if (err_write((*err)->name, (*err)->er))
 			return (12);
-		ft_putendl_fd(t, 2);
-		free(t);
         tmp = (*err)->next;
         free((*err)->name);
         free((*err)->er);

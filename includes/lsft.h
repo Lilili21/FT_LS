@@ -29,6 +29,7 @@
 # include <sys/xattr.h>
 
 # define CHECKM(x, fd) if ((x)) fd
+# define CHECKMA(x, a, fd) if ((x)) { a; fd; }
 
 typedef struct	s_fl
 {
@@ -95,8 +96,8 @@ void	ft_merge_sort_err(t_err **que);
 void	ft_merge_sort(t_curr **curr_dir, t_fl *fl);
 void	ft_free(t_curr **curr);
 int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path);
-void	add_sorted(t_curr **cur, t_q **que, char *av);
-void	ft_print(t_curr *curr_dir, t_fl *fl);
+int		add_sorted(t_curr **cur, t_q **que, char *av);
+int		ft_print(t_curr *curr_dir, t_fl *fl);
 t_count	*ft_count_s(t_curr *curr_dir, int fl);
 int		ft_putendldir(char *av, int *prev);
 void	ft_free_one(t_curr **curr);

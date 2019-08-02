@@ -1,46 +1,40 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: gfoote <marvin@42.fr>                      +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/08/01 18:06:42 by gfoote            #+#    #+#              #
+#    Updated: 2019/08/01 18:08:21 by gfoote           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
 NAME = ls
 
-SRC = src/fimain.c \
-		src/extra.c \
-		src/flags.c \
-		src/lists.c \
-		src/sort_merge.c \
-		src/sort_merge_q.c \
-		src/sort_merge_err.c \
-		src/parse_data.c \
-		src/print_data.c \
-		src/help_print.c \
-		src/help_parse.c
-
-OBJ = fimain.o \
-		extra.o \
-		flags.o \
-		lists.o \
-		sort_merge.o \
-		sort_merge_q.o \
-		sort_merge_err.o \
-		parse_data.o \
-		print_data.o \
-		help_print.o \
-		help_parse.o \
-
-#$(SRC:.c=.o)
+SRC = fimain.c extra.c flags.c lists.c sort_merge.c sort_merge_q.c \
+    sort_merge_err.c parse_data.c help_parse.c print_data.c help_print.c
+SRCDIR = src
+SRCS = $(addprefix $(SRCDIR)/, $(SRC))
+OBJ = $(SRC:.c=.o)
+OBJDIR = objs
+LIB_OBJS = $(addprefix $(OBJDIR)/, $(LIB_OBJ))
 
 all: $(NAME)
 
 $(NAME):
-	#make -C libft
-	gcc -g -Wall -Wextra -I libft/includes -I includes -c $(SRC)
-	#gcc -Wall -Wextra -Werror -I libft/includes -I includes -c $(SRC)
-	gcc -o $(NAME) -g $(OBJ) -L libft -lft
+	#@make -C libft
+	@gcc -Wall -Wextra -Werror -I libft/includes -I includes -c $(SRCS)
+	@gcc -o $(NAME) -g $(OBJ) -L libft -lft
+	@mkdir -p $(OBJDIR);
+	@mv $(OBJ) $(OBJDIR)/
 
 clean:
-	rm -f $(OBJ)
-	#make -C libft clean
+	@rm -rf $(OBJDIR)
+#	@make -C libft clean
 
 fclean: clean
-	rm -f $(NAME)
-	#make -C libft fclean
+	@rm -rf $(NAME)
+#	@make -C libft fclean
 
 re: fclean all
