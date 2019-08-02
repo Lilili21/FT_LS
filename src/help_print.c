@@ -67,9 +67,10 @@ t_count		*ft_count_s(t_curr *curr_dir, int fl)
 		max_s->s_groop = ft_compare((int)ft_strlen(curr_dir->groop),
 				max_s->s_groop);
 		max_s->s_size = ft_compare(ft_order(curr_dir->size), max_s->s_size);
-		max_s->total += curr_dir->size;
+		max_s->total += curr_dir->s_total;
 		curr_dir = curr_dir->next;
 	}
-	max_s->total /= 512;
 	return (max_s);
 }
+
+

@@ -22,6 +22,7 @@ int		parse_rights(t_curr *new, char *d_name)
 	new->size = st.st_size;
 	new->user = getpwuid(st.st_uid)->pw_name;
 	new->groop = getgrgid(st.st_gid)->gr_name;
+	new->s_total = st.st_blocks;
 	new->rights = (char *)malloc(11);
 	new->rights[0] = (new->type == 'f') ? '-' : new->type;
 	new->rights[1] = (st.st_mode & S_IRUSR) ? 'r' : '-';
@@ -94,7 +95,7 @@ char	parse_symb(char *d_name)
 	if (l_attr)
 		return ('@');
 	else
-		return l_acl ? '+' : ' ';
+		return (l_acl ? '+' : ' ');
 }
 
 //@ - имеет альтернативные расширения

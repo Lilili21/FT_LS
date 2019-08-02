@@ -19,6 +19,7 @@ void	ft_parse_null(t_curr *new)
 	new->user = NULL;
 	new->groop = NULL;
 	new->size = 0;
+	new->s_total = 0;
 }
 
 char	*formatdate(char **str)

@@ -72,25 +72,34 @@ void	ft_strprint_join(t_curr *current, int size, t_count *count_col)
 	free(result);
 }
 
+
+int		ft_print_folder()
+{
+
+}
+
 void	ft_print(t_curr *curr_dir, t_fl *fl)
 {
 	t_count *count;
 	t_curr	*curr;
 	int		i;
 	char	*print;
-	int 	size;
+	int		size;
 
 	curr = curr_dir;
 	count = ft_count_s(curr_dir, fl->l);
 	if (fl->l == 1)
 	{
-		write(1, "total ", 6);
-		ft_putnbr(count->total);
+		if (count->total != 0)
+		{
+			write(1, "total ", 6);
+			ft_putnbr(count->total);
+		}
 		write(1, "\n", 1);
 		while (curr)
 		{
-			size = 37 + count->s_links + count->s_user +
-				   count->s_groop + count->s_size + ft_strlen(curr->name);
+			size = 31 + count->s_links + count->s_user +
+					count->s_groop + count->s_size + ft_strlen(curr->name);
 			ft_strprint_join(curr, size, count);
 			curr = curr->next;
 		}
