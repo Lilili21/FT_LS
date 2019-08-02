@@ -20,6 +20,7 @@ void	ft_parse_null(t_curr *new)
 	new->groop = NULL;
 	new->size = 0;
 	new->s_total = 0;
+	new->print_date = NULL;
 }
 
 char	*formatdate(char **str)
@@ -50,8 +51,23 @@ char	*formatdate(char **str)
 	result[i] = '\0';
 	return (result);
 }
-/*
-char	ft_print_column(char *)
-{
 
-}*/
+int		ft_print_column(t_curr	*curr, t_count *count)
+{
+	char	*print;
+	int		i;
+
+	if (!(print = ft_strnew(count->s_name)))
+		return (-1);
+	i = 0;
+	while (curr)
+	{
+		i = ft_strjoin_char(print, i, curr->name, ft_strlen(curr->name));
+		print[i++] = '\n';
+		curr = curr->next;
+	}
+	print[i] = '\0';
+	ft_putstr(print);
+	free(print);
+	return (0);
+}

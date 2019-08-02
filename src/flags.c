@@ -14,6 +14,7 @@ void	flags(char av, t_fl **fl, int i)
 			(*fl)->t = 1;
 		if (av == 'r')
 			(*fl)->r = 1;
+		return ;
 	}
 	if (!((*fl) = (t_fl*)malloc(sizeof(t_fl))))
 	{

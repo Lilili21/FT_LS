@@ -74,6 +74,7 @@ t_curr	*ft_print_folder(t_curr *curr, t_count *count, int buff_size)
 	i = 0;
 	if (!(result = ft_strnew(buff_size)))
 		return (ft_mistake(NULL));
+	printf("buff_size = %i", buff_size);
 	while (curr)
 	{
 		str_size = 32 + count->s_links + count->s_user +
@@ -83,56 +84,43 @@ t_curr	*ft_print_folder(t_curr *curr, t_count *count, int buff_size)
 		if (!(tmp = ft_fill_str(curr, str_size, count)))
 			return (ft_mistake(result));
 		i = ft_strjoin_char(result, i, tmp, str_size);
+		printf("tmp = %s",tmp);
 		free(tmp);
 		curr = curr->next;
 		buff_size -= str_size;
 	}
 	result[i] = '\n';
+	printf("tmp = %i",ft_strlen(result));
 	write(1, result, ft_strlen(result));
 	free(result);
 	return (curr);
 }
 
-void	ft_print(t_curr *curr_dir, t_fl *fl)
+int		ft_print(t_curr *curr_dir, t_fl *fl)
 {
 	t_count *count;
 	t_curr	*curr;
-	char	*print;
-	int		str_size;
-	int		size_dir;
 	int		buff_size;
-	int		i;
+	int		check;
 
-
+	check = 0;
 	curr = curr_dir;
 	if (!(count = ft_count_s(curr_dir, fl->l)))
-		return ;
+		return (-1);
 	if (fl->l == 1)
 	{
-			write(1, "total ", 6);
-			ft_putnbr(count->total);
-			write(1, "\n", 1);
-			size_dir = ft_size_dirr(&curr);
-			str_size = 32 + count->s_links + count->s_user +
-					   count->s_groop + count->s_size + count->s_name;
-			buff_size = (size_dir * str_size > 100) ? 100 : size_dir * str_size;
-			while (curr)
-				curr = ft_print_folder(curr, count, buff_size);
+		write(1, "total ", 6);
+		ft_putnbr(count->total);
+		write(1, "\n", 1);
+		buff_size = ft_size_dirr(&curr) * (31 + count->s_links + count->s_user +
+				count->s_groop + count->s_size + count->s_name);
+		if (buff_size > 5000)
+			buff_size = 5000;
+		while (curr)
+			curr = ft_print_folder(curr, count, buff_size);
 	}
 	else
-	{
-		if (!(print = ft_strnew(count->s_name)))
-			return ;
-		i = 0;
-		while (curr)
-		{
-			i = ft_strjoin_char(print, i, curr->name, ft_strlen(curr->name));
-			print[i++] = '\n';
-			curr = curr->next;
-		}
-		print[i] = '\0';
-		ft_putstr(print);
-		free(print);
-	}
-		free(count);
+		check = ft_print_column(curr, count);
+	free(count);
+	return (check);
 }
