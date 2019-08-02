@@ -48,9 +48,11 @@ void	del_node(t_q **que)
 	*que = tmp;
 }
 
-void	ft_putendldir(char *av)
+void	ft_putendldir(char *av, int *prev)
 {
-	write(1, "\n", 1);
+	if (*prev == 2)
+		write(1, "\n", 1);
+	*prev = 2;
 	ft_putendl(ft_strjoin(av, ": "));
 }
 

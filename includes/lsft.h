@@ -37,6 +37,7 @@ typedef struct	s_fl
 	char	l;
 	int		r;
 	char	t;
+	int		prev;
 }				t_fl;
 
 typedef struct	s_q
@@ -88,7 +89,7 @@ void	err_end(t_err **st, t_err *er);
 void	que_end(t_q **st, t_q *qu);
 int  	print_err(t_err **err);
 char	*err_write(char *av, char *er);
-void	del_node(t_q **que); //, t_curr **cur, char *av);
+void	del_node(t_q **que);
 void	ft_merge_sort_q(t_q **que, t_fl *fl);
 void	ft_merge_sort_err(t_err **que);
 void	ft_merge_sort(t_curr **curr_dir, t_fl *fl);
@@ -97,7 +98,7 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path);
 void	add_sorted(t_curr **cur, t_q **que, char *av);
 void	ft_print(t_curr *curr_dir, t_fl *fl);
 t_count	*ft_count_s(t_curr *curr_dir, int fl);
-void	ft_putendldir(char *av);
+void	ft_putendldir(char *av, int *prev);
 void	ft_free_one(t_curr **curr);
 void	del_me(t_q **que, t_curr **cur, t_fl **fl, int err);
 int		ft_order(int num);

@@ -9,9 +9,9 @@ SRC = src/fimain.c \
 		src/sort_merge_q.c \
 		src/sort_merge_err.c \
 		src/parse_data.c \
-		src/help_sort.c \
 		src/print_data.c \
 		src/help_print.c \
+		src/help_parse.c
 
 OBJ = fimain.o \
 		extra.o \
@@ -21,9 +21,9 @@ OBJ = fimain.o \
 		sort_merge_q.o \
 		sort_merge_err.o \
 		parse_data.o \
-		help_sort.o \
 		print_data.o \
 		help_print.o \
+		help_parse.o \
 
 #$(SRC:.c=.o)
 

@@ -23,6 +23,7 @@ int		flags(char av, t_fl **fl, int i)
 	(*fl)->l = 0;
 	(*fl)->r = -1;
 	(*fl)->t = 0;
+	(*fl)->prev = 0;
 	return (0);
 }
 	/*

@@ -21,7 +21,7 @@ int		er_list(t_err **err, char *av, char *er)
 
 	if (av && er)
 	{
-		if (!(erro = (t_err*)malloc(sizeof(t_err)))) // 0 level, av = abspath of av
+		if (!(erro = (t_err*)malloc(sizeof(t_err))))
 			return (12);
 		erro->next = 0;
 		if (!(erro->name = ft_strdup(av)))
@@ -29,7 +29,7 @@ int		er_list(t_err **err, char *av, char *er)
 			free(erro);
 			return (12);
 		}
-		erro->er = ft_strdup(er);
+		if (!(erro->er = ft_strdup(er)))
 		{
 			free(erro->name);
 			free(erro);

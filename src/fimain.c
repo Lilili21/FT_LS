@@ -47,17 +47,17 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	tavai(cur, que, fl, &err);
 }
 
-int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int *col)
+int		ft_ls(t_q **que, t_curr **cur, t_fl **fl)
 {
 	DIR				*d;
 	struct dirent	*rd;
 	char 			*av;
 
-	if (!(*que))//finish of program
+	if (!(*que))
 		return (0);
 	av = ft_strdup((*que)->abspath);
-	if (*col)
-		ft_putendldir(av); // probably write to buffer!
+	if ((*fl)->prev)
+		ft_putendldir(av, &(*fl)->prev);
 	if (!(d = opendir(av)))
 		err_write(av, strerror(errno));
 	else
@@ -75,7 +75,7 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int *col)
 			err_write(av, strerror(errno));
 	}
 	del_node(que);
-	if (cur && (*fl)->rr && (*col = 1))
+	if (cur && (*fl)->rr && ((*fl)->prev = 1))
 		add_sorted(cur, que, av);
 	if (cur)
 		ft_free(cur);
@@ -118,13 +118,11 @@ int		main(int ac, char **av)
 	t_q		*que;
 	t_curr	*cur;
 	t_fl	*fl;
-	int		col;
 
 	fl = NULL;
 	cur = NULL;
 	que = NULL;
 	state = 1;
-	col = 0;
 	ac = 0;
 	if (flags(0, &fl, 0))
 	{
@@ -135,9 +133,9 @@ int		main(int ac, char **av)
 	if (cur)
 		ft_print(cur, fl); //add 'total' print and then erasing cur list;
 	ft_free(&cur);
-	if (que->next)  // if dirs > 1 from terminal, or there was print of dir previously (like last dir)
-		col = 1;
+	if (que && que->next)  // if dirs > 1 from terminal, or there was print of dir previously (like last dir)
+		fl->prev = 1;
 	while (state > 0)
-		state = ft_ls(&que, &cur, &fl, &col);
+		state = ft_ls(&que, &cur, &fl);
 	return (0);
 }
