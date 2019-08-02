@@ -75,7 +75,7 @@ add_executable(ft_ls2
         src/extra.c
         src/fimain.c
         src/flags.c
-        src/help_sort.c
+		src/help_parse.c
         src/lists.c
         src/parse_data.c
         src/sort_merge.c

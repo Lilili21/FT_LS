@@ -11,6 +11,12 @@ flags_n_sort
 	! and then list ls task (probably opening a file or dir, instantly print err);
 3- que list has2be sorted, as cur has2be sorted n ready to print;
 */
+void	tavai(t_curr **cur, t_q **que, t_fl **fl, t_err **err)
+{
+	CHECKM(er_list(err, 0, 0), del_me(que, cur, fl, 12));
+	ft_merge_sort(cur, *fl);
+	ft_merge_sort_q(que, *fl);
+}
 
 void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 {
@@ -19,7 +25,7 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 	int			ac;
 
 	err = NULL;
-	ac = flag_parse(0, 0, av, fl);
+	ac = flag_parse(0,0, av, fl);
 	if (!av[ac--])
 	{
 		CHECKM(to_list(que, "."), del_me(que, cur, fl, -1));
@@ -38,9 +44,7 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 		else
 			CHECKM((!ft_new_curr(av[ac], fl, cur, 0)), del_me(que, cur, fl, -1));
 	}
-	CHECKM(er_list(&err, 0, 0), del_me(que, cur, fl, 12));
-	ft_merge_sort(cur, *fl);
-	ft_merge_sort_q(que, *fl);
+	tavai(cur, que, fl, &err);
 }
 
 int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, int *col)
@@ -122,11 +126,12 @@ int		main(int ac, char **av)
 	state = 1;
 	col = 0;
 	ac = 0;
-	if (flags(0, &fl, 0) || flags_n_sort(av, &que, &cur, &fl))
+	if (flags(0, &fl, 0))
 	{
 		ft_putendl_fd("ls: Cannot allocate memory.", 2);
 		exit (0);
 	}
+	flags_n_sort(av, &que, &cur, &fl);
 	if (cur)
 		ft_print(cur, fl); //add 'total' print and then erasing cur list;
 	ft_free(&cur);

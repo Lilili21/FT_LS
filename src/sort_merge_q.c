@@ -34,7 +34,7 @@ void	ft_front_back_split_q(t_q *source, t_q **front_l, t_q **back_l)
 	int		len;
 	int		i;
 	int		middle;
-	t_q	*current;
+	t_q		*current;
 
 	current = source;
 	len = ft_size_dirr_q(&source);
@@ -55,7 +55,7 @@ void	ft_front_back_split_q(t_q *source, t_q **front_l, t_q **back_l)
 	}
 }
 
-t_q	*ft_sorted_merge_q(t_q *a, t_q *b, int sort_order, int type)
+t_q		*ft_sorted_merge_q(t_q *a, t_q *b, int sort_order, int type)
 {
 	t_q *result;
 
@@ -66,8 +66,8 @@ t_q	*ft_sorted_merge_q(t_q *a, t_q *b, int sort_order, int type)
 		return (a);
 	if ((type == 0 && sort_order * ft_strcmp(a->abspath, b->abspath) < 0) ||
 		(type == 1 && (sort_order * (a->compare_date - b->compare_date) < 0 ||
-	   (sort_order * (a->compare_date - b->compare_date) == 0 &&
-	   ft_strcmp(a->abspath, b->abspath) < 0))))
+		(sort_order * (a->compare_date - b->compare_date) == 0 &&
+		ft_strcmp(a->abspath, b->abspath) < 0))))
 	{
 		result = a;
 		result->next = ft_sorted_merge_q(a->next, b, sort_order, type);

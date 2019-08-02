@@ -58,13 +58,29 @@ void	ft_free_one(t_curr **curr)
 {
 		if ((*curr)->rights)
 			free((*curr)->rights);
-		if ((*curr)->user)
-			free((*curr)->user);
-		if ((*curr)->groop)
-			free((*curr)->groop);
 		if ((*curr)->print_date)
 			free((*curr)->print_date);
 		if ((*curr)->name)
 			free((*curr)->name);
 		free((*curr));
+}
+
+void	ft_free(t_curr **curr)
+{
+	t_curr *tmp;
+
+	if (!(*curr))
+		return ;
+	while (*curr)
+	{
+		if ((*curr)->rights)
+			free((*curr)->rights);
+		if ((*curr)->print_date)
+			free((*curr)->print_date);
+		if ((*curr)->name)
+			free((*curr)->name);
+		tmp = (*curr)->next;
+		free((*curr));
+		(*curr) = tmp;
+	}
 }

@@ -1,18 +1,5 @@
 #include "lsft.h"
 
-void	ft_lstaddqu(t_q **alst, t_q *new)
-{
-	if (!alst || !new)
-		return ;
-	if (!(*alst))
-	{
-		*alst = new;
-		return ;
-	}
-	new->next = (*alst);
-	(*alst) = new;
-}
-
 void	ft_lstaddcu(t_curr **st, t_curr *new)
 {
 	t_curr *tmp;

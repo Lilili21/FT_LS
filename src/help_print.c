@@ -11,25 +11,8 @@
 /* ************************************************************************** */
 
 #include "lsft.h"
-/*
-int		ft_size_dirr_p(t_curr **curr_dir)
-{
-	int		count;
-	t_curr	*curr;
 
-	count = 0;
-	if (!*curr_dir)
-		return (0);
-	curr = *curr_dir;
-	while (curr)
-	{
-		count++;
-		curr = curr->next;
-	}
-	return (count);
-}*/
-
-int			ft_str_int(int num)
+int			ft_order(int num)
 {
 	int order;
 
@@ -42,33 +25,51 @@ int			ft_str_int(int num)
 	return (order);
 }
 
-t_count		*ft_count_s(t_curr *curr_dir)
+size_t		ft_max_name(t_curr *curr_dir)
 {
-	t_count	*count_col;
+	size_t max;
 
-	if (!(count_col = (t_count *)malloc(sizeof(t_count))))
-		return (NULL);
-	count_col->s_name = 0;
-	count_col->s_links = 0;
-	count_col->s_user = 0;
-	count_col->s_groop = 0;
-	count_col->s_size = 0;
-	count_col->total = 0;
+	max = 0;
 	while (curr_dir)
 	{
-		count_col->s_name = (ft_strlen(curr_dir->name) > count_col->s_name)
-							? ft_strlen(curr_dir->name) : count_col->s_name;
-		count_col->s_links = (ft_str_int(curr_dir->links) > count_col->s_links)
-							 ? ft_str_int(curr_dir->links) : count_col->s_links;
-		count_col->s_user = (ft_strlen(curr_dir->user) > count_col->s_user)
-							? ft_strlen(curr_dir->user) : count_col->s_user;
-		count_col->s_groop = (ft_strlen(curr_dir->groop) > count_col->s_groop)
-							 ? ft_strlen(curr_dir->groop) : count_col->s_groop;
-		count_col->s_size = (ft_str_int(curr_dir->size) > count_col->s_size)
-							? ft_str_int(curr_dir->size) : count_col->s_size;
-		count_col->total += curr_dir->size;
+		max += ft_strlen(curr_dir->name) + 1;
 		curr_dir = curr_dir->next;
 	}
-	count_col->total /= 512;
-	return (count_col);
+	return (max);
+}
+
+int			ft_compare(int a, int b)
+{
+	if (a > b)
+		return (a);
+	return (b);
+}
+
+t_count		*ft_count_s(t_curr *curr_dir, int fl)
+{
+	t_count	*max_s;
+
+	if (!(max_s = (t_count *)malloc(sizeof(t_count))))
+		return (NULL);
+	max_s->s_links = 0;
+	max_s->s_user = 0;
+	max_s->s_groop = 0;
+	max_s->s_size = 0;
+	max_s->total = 0;
+	max_s->s_name = (fl == 0) ? ft_max_name(curr_dir) : 0;
+	if (fl == 0)
+		return (max_s);
+	while (curr_dir)
+	{
+		max_s->s_links = ft_compare(ft_order(curr_dir->links), max_s->s_links);
+		max_s->s_user = ft_compare((int)ft_strlen(curr_dir->user),
+				max_s->s_user);
+		max_s->s_groop = ft_compare((int)ft_strlen(curr_dir->groop),
+				max_s->s_groop);
+		max_s->s_size = ft_compare(ft_order(curr_dir->size), max_s->s_size);
+		max_s->total += curr_dir->size;
+		curr_dir = curr_dir->next;
+	}
+	max_s->total /= 512;
+	return (max_s);
 }
