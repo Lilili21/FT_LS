@@ -50,3 +50,8 @@ char	*formatdate(char **str)
 	result[i] = '\0';
 	return (result);
 }
+/*
+char	ft_print_column(char *)
+{
+
+}*/

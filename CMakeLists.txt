@@ -70,7 +70,7 @@ add_executable(ft_ls2
         libft/ft_tolower.c
         libft/ft_toupper.c
         libft/get_next_line.c
-        src/print_data.c
+        src/print_data2.c
         src/help_print.c
         src/extra.c
         src/fimain.c
@@ -81,5 +81,4 @@ add_executable(ft_ls2
         src/sort_merge.c
         src/sort_merge_err.c
         src/sort_merge_q.c
-        src/print_data.c
         src/help_print.c)
