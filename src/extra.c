@@ -63,13 +63,14 @@ int		ft_putendldir(char *av, int *prev)
 
 void	ft_free_one(t_curr **curr)
 {
-		if ((*curr)->rights)
-			free((*curr)->rights);
-		if ((*curr)->print_date)
-			free((*curr)->print_date);
-		if ((*curr)->name)
-			free((*curr)->name);
-		free((*curr));
+	if ((*curr)->rights)
+		ft_strdel(&(*curr)->rights);
+	if ((*curr)->print_date)
+		ft_strdel(&(*curr)->print_date);
+	if ((*curr)->name)
+		ft_strdel(&(*curr)->name);
+	free((*curr));
+	(*curr) = 0;
 }
 
 void	ft_free(t_curr **curr)
@@ -81,13 +82,14 @@ void	ft_free(t_curr **curr)
 	while (*curr)
 	{
 		if ((*curr)->rights)
-			free((*curr)->rights);
+			ft_strdel(&(*curr)->rights);
 		if ((*curr)->print_date)
-			free((*curr)->print_date);
+			ft_strdel(&(*curr)->print_date);
 		if ((*curr)->name)
-			free((*curr)->name);
+			ft_strdel(&(*curr)->name);
 		tmp = (*curr)->next;
 		free((*curr));
+		(*curr) = 0;
 		(*curr) = tmp;
 	}
 }

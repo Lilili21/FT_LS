@@ -66,6 +66,7 @@ typedef	struct s_curr
 	int 		size;
 	char		*print_date;
     char 		*name;
+    int 		s_total;
 	int     	check_date;
 	int     	compare_date;
 	struct s_curr *next;
