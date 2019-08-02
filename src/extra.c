@@ -1,11 +1,12 @@
 #include "lsft.h"
 
-int		print_err(t_err **err)
+int		print_err(t_err **err, t_fl **fl)
 {
     t_err	*tmp;
 
     while (*err)
     {
+		(*fl)->prev = 1;
         if (err_write((*err)->name, (*err)->er))
 			return (12);
         tmp = (*err)->next;

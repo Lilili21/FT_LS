@@ -20,6 +20,7 @@ void	ft_parse_null(t_curr *new)
 	new->groop = NULL;
 	new->size = 0;
 	new->s_total = 0;
+	new->print_date = 0;
 }
 
 char	*formatdate(char **str)

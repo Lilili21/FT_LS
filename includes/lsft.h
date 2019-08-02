@@ -85,11 +85,11 @@ typedef struct s_count
 void	flags(char av, t_fl **fl, int i);
 int		flag_parse(int ac, int j, char **av, t_fl **fl);
 void	ft_lstaddcu(t_curr **st, t_curr *new);
-int		er_list(t_err **err, char *av, char *er);
+int		er_list(t_err **err, char *av, char *er, t_fl **fl);
 int		to_list(t_q **que, char *av);
 void	err_end(t_err **st, t_err *er);
 void	que_end(t_q **st, t_q *qu);
-int  	print_err(t_err **err);
+int  	print_err(t_err **err, t_fl **fl);
 int		err_write(char *av, char *er);
 void	del_node(t_q **que);
 void	ft_merge_sort_q(t_q **que, t_fl *fl);

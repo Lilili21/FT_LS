@@ -93,7 +93,7 @@ t_curr	*ft_print_folder(t_curr *curr, t_count *count, int buff_size)
 	return (curr);
 }
 
-void	ft_print(t_curr *curr_dir, t_fl *fl)
+int		ft_print(t_curr *curr_dir, t_fl *fl)
 {
 	t_count *count;
 	t_curr	*curr;
@@ -106,7 +106,7 @@ void	ft_print(t_curr *curr_dir, t_fl *fl)
 
 	curr = curr_dir;
 	if (!(count = ft_count_s(curr_dir, fl->l)))
-		return ;
+		return (-1);
 	if (fl->l == 1)
 	{
 			write(1, "total ", 6);
@@ -122,7 +122,7 @@ void	ft_print(t_curr *curr_dir, t_fl *fl)
 	else
 	{
 		if (!(print = ft_strnew(count->s_name)))
-			return ;
+			return (-1);
 		i = 0;
 		while (curr)
 		{
@@ -135,4 +135,5 @@ void	ft_print(t_curr *curr_dir, t_fl *fl)
 		free(print);
 	}
 		free(count);
+	return (0);
 }
