@@ -61,13 +61,13 @@ typedef	struct s_curr
 {
 	char		type;
 	char 		symb;
-	char		*rights;
+	char		*rights;//
 	int			links;
 	char		*user;
 	char		*groop;
 	int 		size;
-	char		*print_date;
-    char 		*name;
+	char		*print_date;//
+    char 		*name;//
     int 		s_total;
 	int     	check_folder;
 	int     	compare_date;
@@ -97,7 +97,7 @@ void	del_node(t_q **que);
 void	ft_merge_sort_q(t_q **que, t_fl *fl);
 void	ft_merge_sort_err(t_err **que);
 void	ft_merge_sort(t_curr **curr_dir, t_fl *fl);
-void	ft_free(t_curr **curr);
+void	ft_free(t_curr **curr, char **av);
 int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path);
 int		add_sorted(t_curr **cur, t_q **que, char *av);
 int		ft_print(t_curr *curr_dir, t_fl *fl);

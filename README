@@ -85,20 +85,11 @@ logs:
 * making parse of terminal files and dirs
 	split on dirs(to que) and files(to cur(for print))
 ~TODO:
-ft_add_sorted(cur, que, 0, fl)
-{
-	sort(cur, fl);
-	print_cur;
-	sort(que, fl); only que->abspath!
-}
-ft_add_sorted(+, +, av, +)
-{
-	sort(cur, fl);
-	if (sorted-cur(el) == dir)
-		add_que->el_path;
-		add_que->abspath == ft_strjoin(av, "/");
-}
 
 TOD0:
-- NULL checks
-- C0NN3CT:ME
+
+
+!!!!
+-sort of err_list
+-if there are dirs and files from term, print \n after files
+-total: only for dirs, not for files from term

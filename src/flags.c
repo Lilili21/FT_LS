@@ -82,7 +82,7 @@ void	del_me(t_q **que, t_curr **cur, t_fl **fl, int err)
 {
 	t_q *tmp;
 
-	ft_free(cur);
+	ft_free(cur, 0);
 	while (*que)
 	{
 		tmp = (*que)->next;

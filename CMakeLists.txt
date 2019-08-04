@@ -71,7 +71,7 @@ add_executable(ft_ls2
         libft/ft_toupper.c
         libft/get_next_line.c
 		libft/ft_strdl.c
-        src/print_data2.c
+        src/print_data2_n.c
         src/help_print.c
         src/extra.c
         src/fimain.c

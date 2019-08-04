@@ -64,6 +64,12 @@ int		ft_putendldir(char *av, int *prev)
 
 void	ft_free_one(t_curr **curr)
 {
+    if (!(*curr))
+        return ;
+    if ((*curr)->groop)
+        ft_strdel(&(*curr)->groop);
+    if ((*curr)->user)
+        ft_strdel(&(*curr)->user);
 	if ((*curr)->rights)
 		ft_strdel(&(*curr)->rights);
 	if ((*curr)->print_date)
@@ -74,14 +80,20 @@ void	ft_free_one(t_curr **curr)
 	(*curr) = 0;
 }
 
-void	ft_free(t_curr **curr)
+void	ft_free(t_curr **curr, char **av)
 {
 	t_curr *tmp;
 
+	if (av && *av)
+	    ft_strdel(av);
 	if (!(*curr))
 		return ;
 	while (*curr)
 	{
+        if ((*curr)->groop)
+            ft_strdel(&(*curr)->groop);
+        if ((*curr)->user)
+            ft_strdel(&(*curr)->user);
 		if ((*curr)->rights)
 			ft_strdel(&(*curr)->rights);
 		if ((*curr)->print_date)
@@ -90,7 +102,6 @@ void	ft_free(t_curr **curr)
 			ft_strdel(&(*curr)->name);
 		tmp = (*curr)->next;
 		free((*curr));
-		(*curr) = 0;
 		(*curr) = tmp;
 	}
 }

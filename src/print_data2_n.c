@@ -87,10 +87,17 @@ t_curr	*ft_print_folder(t_curr *curr, t_count *count, int buff_size)
 		curr = curr->next;
 		buff_size -= str_size;
 	}
-	result[i] = '\n';
+	result[i] = '\0';
 	write(1, result, ft_strlen(result));
 	free(result);
 	return (curr);
+}
+
+void totl(t_count *count)
+{
+    write(1, "total ", 6);
+    ft_putnbr(count->total);
+    write(1, "\n", 1);
 }
 
 int		ft_print(t_curr *curr_dir, t_fl *fl)
@@ -106,9 +113,8 @@ int		ft_print(t_curr *curr_dir, t_fl *fl)
 		return (-1);
 	if (fl->l == 1)
 	{
-        write(1, "total ", 6);
-        ft_putnbr(count->total);
-        write(1, "\n", 1);
+        if (fl->prev == 2)
+            totl(count);
 		buff_size = ft_size_dirr(&curr) * (32 + count->s_links + count->s_user +
 				count->s_groop + count->s_size + count->s_name);
 		if (buff_size > 5000)

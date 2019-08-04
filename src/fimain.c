@@ -40,7 +40,7 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 			CHECKM(to_list(que, av[ac]), del_me(que, cur, fl, -1));
 		}
 		else
-			CHECKM((!ft_new_curr(av[ac], fl, cur, 0)), del_me(que, cur, fl, -1));
+			CHECKM((ft_new_curr(av[ac], fl, cur, 0)), del_me(que, cur, fl, -1));
 	}
 	tavai(cur, que, fl, &err);
 }
@@ -62,7 +62,7 @@ int		elswhile(char *av, t_curr **cur, t_fl **fl, DIR **d)
 	ft_merge_sort(cur, *fl);
 	if (ft_print(*cur, *fl))
 	{
-		ft_putendl_fd("ls: Cannot allocate memory.", 2);
+		ft_putendl_fd("ls: Cannot allocate memory, while printing.", 2);
 		return (-1);
 	}
 	if (closedir(*d))
@@ -93,9 +93,9 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, char *av)
 		CHECKMA(elswhile(av, cur, fl, &d), free(av), del_me(que, cur, fl, -1));
 	}
 	del_node(que);
-	if (cur && (*fl)->rr)
+	if (cur && (*fl)->rr && ((*fl)->prev = 2))
 		CHECKMA(add_sorted(cur, que, av), free(av), del_me(que, cur, fl, 12));
-	ft_free(cur);
+	ft_free(cur, &av);
 	return (1);
 }
 
@@ -152,8 +152,10 @@ int		main(int ac, char **av)
 	flags(0, &fl, 0);
 	flags_n_sort(av, &que, &cur, &fl);
 	if (cur)
-		ft_print(cur, fl);
-	ft_free(&cur);
+        ft_print(cur, fl);
+	if (cur && que)
+	    write(1, "\n", 1);
+	ft_free(&cur, 0);
 	if (que && que->next)
 		fl->prev = 1;
 	while (state > 0)
