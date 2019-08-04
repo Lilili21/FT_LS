@@ -108,7 +108,7 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 		return (0);
 	new->name = ft_strdup(d_name);
 	if (path)
-		p = path;
+		p = ft_strjoin(path, d_name);
 	else
 		p = d_name;
 	new->type = parse_type(new, p);
