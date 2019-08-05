@@ -35,7 +35,7 @@ void	flags_n_sort(char **av, t_q **que, t_curr **cur, t_fl **fl)
 		{
 			CHECKM(er_list(&err, av[ac], strerror(errno), fl), del_me(que, cur, fl, 12));
 		}
-		else if (S_ISDIR(buf.st_mode))
+		else if (S_ISDIR(buf.st_mode) || (!(*fl)->l && S_ISLNK(buf.st_mode)))
 		{
 			CHECKM(to_list(que, av[ac]), del_me(que, cur, fl, -1));
 		}
@@ -75,29 +75,25 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, char *av)
 	DIR				*d;
 
 	if (!(*que))
-	{
 		del_me(que, cur, fl, 0);
-		return (0);
-	}
 	CHECKM(!(av = ft_strdup((*que)->abspath)), del_me(que, cur, fl, 12));
 	if ((*fl)->prev)
-		CHECKMA(ft_putendldir(av, &(*fl)->prev), free(av),del_me(que, cur, fl, 12));
+		CHECKMA(ft_putendldir(av, &(*fl)->prev), ft_strdel(&av), del_me(que, cur, fl, 12));
 	if (!(d = opendir(av)))
-		CHECKMA(err_write(av, strerror(errno)), free(av), del_me(que, cur, fl, 12));
+		CHECKMA(err_write(av, strerror(errno)), ft_strdel(&av), del_me(que, cur, fl, 12));
 	if (d)
 	{
 		if (av[ft_strlen(av) - 1] != '/')
 			if (!(av = ft_sfstrjoin(&av, "/")))
 			{
-				CHECKM(closedir(d), CHECKM(err_write(av, strerror(errno)), del_me(que, cur, fl, 12)));
-				free(av);
+				CHECKM(closedir(d), CHECKM(err_write(0, strerror(errno)), del_me(que, cur, fl, 12)));
 				del_me(que, cur, fl, 12);
 			}
-		CHECKMA(elswhile(av, cur, fl, &d), free(av), del_me(que, cur, fl, -1));
+		CHECKMA(elswhile(av, cur, fl, &d),ft_strdel(&av), del_me(que, cur, fl, -1));
 	}
 	del_node(que);
 	if (cur && (*fl)->rr && ((*fl)->prev = 2))
-		CHECKMA(add_sorted(cur, que, av), free(av), del_me(que, cur, fl, 12));
+		CHECKMA(add_sorted(cur, que, av), ft_strdel(&av), del_me(que, cur, fl, 12));
 	ft_free(cur, &av);
 	return (1);
 }

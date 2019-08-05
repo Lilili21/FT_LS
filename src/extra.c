@@ -18,17 +18,50 @@ int		print_err(t_err **err, t_fl **fl)
 	return (0);
 }
 
+char	*ft_strjspl(char *s1, char *s2)
+{
+	char	*b;
+	size_t	i;
+	size_t	s;
+	char	*tmp;
+
+	if (!s1 || !s2 || !(b = ft_strnew(ft_strlen(s1) + ft_strlen(s2))))
+		return (NULL);
+	i = -1;
+	s = 0;
+	while (s1[++i])
+		b[i] = s1[i];
+	tmp = s2;
+	s2 = ft_strrchr(s2, '/');
+	if (s2)
+		s2++;
+	if (s2)
+		;
+	else
+		s2 = tmp;
+	while (s2[s])
+		b[i++] = s2[s++];
+	b[i] = '\0';
+	return (b);
+}
+
 int		err_write(char *av, char *er)
 {
 	char *b;
 	char *tmp;
 
-	if (!(b = ft_strjoin("ls: ", av)))
-		return (12);
-	tmp = b;
-	if (!(b = ft_strjoin(b, ": ")))
-		return (12);
-	free(tmp);
+	if (av)
+	{
+		if (!(b = ft_strjspl("ls: ", av)))
+			return (12);
+		tmp = b;
+		if (!(b = ft_strjoin(b, ": ")))
+			return (12);
+		free(tmp);
+	}
+	else
+		if (!(b = ft_strdup("ls: ")))
+			return (12);
 	tmp = b;
 	if (!(b = ft_strjoin(b, er)))
 		return (12);

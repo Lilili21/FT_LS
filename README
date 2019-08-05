@@ -4,7 +4,8 @@ logs:
 TOD0:
 -if date is more than half year ago, show YEAR instead of clocktime(15:24);
 -check ./ls -l /dev
--
+-add `->` to link
+
 
 
 @savva
