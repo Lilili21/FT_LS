@@ -37,6 +37,18 @@ int		ft_strjoin_char(char *result, int i, char *src, int m_size)
 	return (i);
 }
 
+int		ft_strjoin_st(char *result, int i, char *src)
+{
+	int j;
+	int src_size;
+
+	j = 0;
+	src_size = ft_strlen(src);
+	while (j < src_size + 1)
+		result[++i] = src[j++];
+	return (i);
+}
+
 char	*ft_fill_str(t_curr *current, int size, t_count *count_col)
 {
 	char	*result;
@@ -46,7 +58,7 @@ char	*ft_fill_str(t_curr *current, int size, t_count *count_col)
 	i = -1;
 	if (!(result = ft_strnew(size)))
 		return (NULL);
-	i = ft_strjoin_char(result, i, current->rights, 11);
+	i = ft_strjoin_st(result, i, current->rights);
 	result[i] = current->symb;
 	i = ft_strjoin_space(result, ++i, 2);
 	i = ft_strjoin_char(result, i, (tmp = ft_itoa(current->links)), count_col->s_links);
@@ -120,8 +132,8 @@ int		ft_print(t_curr *curr_dir, t_fl *fl)
             totl(count);
 		buff_size = ft_size_dirr(&curr) * (32 + count->s_links + count->s_user +
 				count->s_groop + count->s_size + count->s_name);
-		if (buff_size > 5000)
-			buff_size = 5000;
+		if (buff_size > 500)
+			buff_size = 500;
 		while (curr)
 			curr = ft_print_folder(curr, count, buff_size);
 	}

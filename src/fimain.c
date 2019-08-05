@@ -75,7 +75,10 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, char *av)
 	DIR				*d;
 
 	if (!(*que))
-		del_me(que, cur, fl, -1);
+	{
+		del_me(que, cur, fl, 0);
+		return (0);
+	}
 	CHECKM(!(av = ft_strdup((*que)->abspath)), del_me(que, cur, fl, 12));
 	if ((*fl)->prev)
 		CHECKMA(ft_putendldir(av, &(*fl)->prev), free(av),del_me(que, cur, fl, 12));

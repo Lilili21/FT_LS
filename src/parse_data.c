@@ -52,6 +52,7 @@ int		parse_date(t_curr *new, char *d_name, t_fl **fl)
 		tmp = ft_strsplit(ctime(&st.st_mtime), ' ');
 		new->print_date = formatdate(tmp);
 		ft_strdl(tmp);
+		free(tmp);
 	}
 	return (0);
 }

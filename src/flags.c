@@ -95,5 +95,6 @@ void	del_me(t_q **que, t_curr **cur, t_fl **fl, int err)
 		free(*fl);
 	if (err == 12)
 		ft_putendl_fd("ls: Cannot allocate memory.", 2);
-	exit(0);
+	if (err != 0)
+		exit(0);
 }
