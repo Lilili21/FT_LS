@@ -41,13 +41,18 @@ int		parse_rights(t_curr *new, char *d_name)
 int		parse_date(t_curr *new, char *d_name, t_fl **fl)
 {
 	struct stat	st;
+	char		**tmp;
 
 	if (lstat(d_name, &st))
 		return (errno);
 	if ((*fl)->t == 1)
 		new->compare_date = st.st_mtimespec.tv_sec;
 	if ((*fl)->l == 1)
-		new->print_date = formatdate(ft_strsplit(ctime(&st.st_mtime), ' '));
+	{
+		tmp = ft_strsplit(ctime(&st.st_mtime), ' ');
+		new->print_date = formatdate(tmp);
+		ft_strdl(tmp);
+	}
 	return (0);
 }
 
@@ -119,6 +124,8 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 	((*fl)->l == 1) ? parse_rights(new, p) : ft_parse_null(new);
 	if ((*fl)->l == 1 || (*fl)->t == 1)
 		parse_date(new, p, fl);
+	if (path)
+		free(p);
 	ft_lstaddcu(cur, new);
 	return (0);
 }

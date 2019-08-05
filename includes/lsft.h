@@ -61,13 +61,13 @@ typedef	struct s_curr
 {
 	char		type;
 	char 		symb;
-	char		*rights;//
+	char		*rights;
 	int			links;
 	char		*user;
 	char		*groop;
 	int 		size;
-	char		*print_date;//
-    char 		*name;//
+	char		*print_date;
+    char 		*name;
     int 		s_total;
 	int     	check_folder;
 	int     	compare_date;

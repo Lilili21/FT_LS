@@ -41,6 +41,7 @@ char	*ft_fill_str(t_curr *current, int size, t_count *count_col)
 {
 	char	*result;
 	int		i;
+	char	*tmp;
 
 	i = -1;
 	if (!(result = ft_strnew(size)))
@@ -48,13 +49,15 @@ char	*ft_fill_str(t_curr *current, int size, t_count *count_col)
 	i = ft_strjoin_char(result, i, current->rights, 11);
 	result[i] = current->symb;
 	i = ft_strjoin_space(result, ++i, 2);
-	i = ft_strjoin_char(result, i, ft_itoa(current->links), count_col->s_links);
+	i = ft_strjoin_char(result, i, (tmp = ft_itoa(current->links)), count_col->s_links);
+	free(tmp);
 	i = ft_strjoin_space(result, i, 2);
 	i = ft_strjoin_char(result, i, current->user, count_col->s_user);
 	i = ft_strjoin_space(result, i, 3);
 	i = ft_strjoin_char(result, i, current->groop, count_col->s_groop);
 	i = ft_strjoin_space(result, i, 3);
-	i = ft_strjoin_char(result, i, ft_itoa(current->size), count_col->s_size);
+	i = ft_strjoin_char(result, i, (tmp = ft_itoa(current->size)), count_col->s_size);
+	free(tmp);
 	i = ft_strjoin_space(result, i, 1);
 	i = ft_strjoin_char(result, i, current->print_date, 13);
 	i = ft_strjoin_space(result, i, 2);

@@ -99,8 +99,6 @@ int		ft_ls(t_q **que, t_curr **cur, t_fl **fl, char *av)
 	return (1);
 }
 
-//add free(av) += NULL!
-
 int		add_sorted(t_curr **cur, t_q **que, char *av)
 {
 	t_q		*qu;
