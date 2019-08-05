@@ -112,7 +112,8 @@ int		add_sorted(t_curr **cur, t_q **que, char *av)
 	st = NULL;
 	while(*cur)
 	{
-		if ((*cur)->type == 'd')
+		if ((*cur)->type == 'd' && ft_strncmp((*cur)->name, ".", 3) &&
+		ft_strncmp((*cur)->name, "..", 3))
 		{
 			if (!(qu = (t_q*)malloc(sizeof(t_q))) || !(qu->abspath = ft_strjoin(av, (*cur)->name)))
 			{

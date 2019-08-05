@@ -69,7 +69,7 @@ int 	flag_parse(int ac, int j, char **av, t_fl **fl)
 			if (av[ac][j])
 			{
 				ft_putstr_fd("ls: illegal option -- ", 2);
-				write(2, av, 1);
+				ft_putchar_fd(av[ac][j], 2);
 				ft_putendl_fd("\nusage: ls [-Ralrt] [file ...]", 2);
 				free(*fl);
 				exit (0); //idk why, but it leaks...
