@@ -123,6 +123,8 @@ int		ft_print(t_curr *curr_dir, t_fl *fl)
 	int		check;
 
 	check = 0;
+	if (!curr_dir)
+		return (0);
 	curr = curr_dir;
 	if (!(count = ft_count_s(curr_dir, fl->l)))
 		return (-1);

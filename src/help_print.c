@@ -52,6 +52,7 @@ t_count		*ft_count_s(t_curr *curr_dir, int fl)
 	max_s->s_size = 0;
 	max_s->total = 0;
 	max_s->s_name = 0;
+	max_s->maj = 0;
 	while (curr_dir)
 	{
 		if(fl!= 0)
@@ -63,6 +64,8 @@ t_count		*ft_count_s(t_curr *curr_dir, int fl)
 										max_s->s_groop);
 			max_s->s_size = ft_compare(ft_order(curr_dir->size), max_s->s_size);
 			max_s->total += curr_dir->s_total;
+			max_s->maj = ft_compare(ft_order(curr_dir->maj), max_s->maj);
+
 		}
 		else
 			max_s->total += ft_strlen(curr_dir->name) + 1;

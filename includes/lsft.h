@@ -66,6 +66,7 @@ typedef	struct s_curr
 	char		*user;
 	char		*groop;
 	int 		size;
+	int			maj;
 	char		*print_date;
     char 		*name;
     int 		s_total;
@@ -81,6 +82,7 @@ typedef struct s_count
 	int 		s_user;
 	int 		s_groop;
 	int			s_size;
+	int			maj;
 	size_t		total;
 }				t_count;
 

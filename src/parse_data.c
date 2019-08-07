@@ -20,6 +20,11 @@ int		parse_rights(t_curr *new, char *d_name)
 		return (errno);
 	new->links = st.st_nlink;
 	new->size = st.st_size;
+	if (new->type == 'b' || new->type == 'c')
+	{
+		new->size = minor(st.st_rdev);
+		new->maj = major(st.st_rdev);
+	}
 	new->user = ft_strdup(getpwuid(st.st_uid)->pw_name);
 	new->groop = ft_strdup(getgrgid(st.st_gid)->gr_name);
 	new->s_total = st.st_blocks;
@@ -79,6 +84,8 @@ char	parse_type(t_curr *new, char *d_name)
 		return ('s');
 	else if (S_ISCHR(st.st_mode) == 1)
 		return ('c');
+	else if (S_ISBLK(st.st_mode))
+		return ('b');
 	else
 		return ('f');
 }

@@ -85,6 +85,11 @@ int		ft_putendldir(char *av, int *prev)
 {
 	char *tmp;
 
+	if (*prev == 4)
+	{
+		*prev = 2;
+		return (0);
+	}
 	if (*prev == 2)
 		write(1, "\n", 1);
 	*prev = 2;

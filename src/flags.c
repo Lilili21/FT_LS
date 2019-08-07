@@ -55,7 +55,7 @@ int 	flag_parse(int ac, int j, char **av, t_fl **fl)
 {
 	while (av[++ac] && av[ac][j++] == '-')
 	{
-			if (av[ac][j] == ' ')
+			if (!av[ac][j])
 				return (ac); //ok, but this is AV, exit of parse flags!
 			else if (av[ac][j] == 'l' || av[ac][j] == 'a' || av[ac][j] == 'R' ||
 				av[ac][j] == 't' || av[ac][j] == 'r')

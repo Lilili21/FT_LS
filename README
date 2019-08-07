@@ -10,13 +10,9 @@ TOD0:
 
 @savva
 TOD0:
-
-
-!!!!
--sort of err_list
--if there are dirs and files from term, print \n after files
--total: only for dirs, not for files from term
-
+-check sort of err_list;
+-total: only for dirs, not for files from term;
+- '-' check for one av;
 
 
 --bonuses:

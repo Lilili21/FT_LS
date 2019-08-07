@@ -151,11 +151,18 @@ int		main(int ac, char **av)
 	flags_n_sort(av, &que, &cur, &fl);
 	if (cur)
         ft_print(cur, fl);
-	if (cur && que)
-	    write(1, "\n", 1);
+	//if (cur && que)
+	//    write(1, "\n", 1);ls
+
+	if (que)
+		fl->prev = 4;
+	if (cur)
+		fl->prev = 2;
+	if (que && que->next && !cur) //also propably exists err write, fl == 1 ******!
+		fl->prev = 3;
+
+	
 	ft_free(&cur, 0);
-	if (que && que->next)
-		fl->prev = 1;
 	while (state > 0)
 		state = ft_ls(&que, &cur, &fl, avv);
 	return (0);
