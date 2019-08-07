@@ -19,7 +19,7 @@ void	ft_parse_null(t_curr *new)
 	new->user = NULL;
 	new->groop = NULL;
 	new->size = 0;
-	new->maj = 0;
+	new->maj = -1;
 	new->s_total = 0;
 	new->print_date = 0;
 }

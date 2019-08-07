@@ -2,17 +2,11 @@ logs:
 
 @Liza
 TOD0:
--if date is more than half year ago, show YEAR instead of clocktime(15:24);
--check ./ls -l /dev
--add `->` to link
-
-
+-ls -l /dev/fd && ls -l /dev "*I've added major & minor, but it needs alignment! :)
+-check '-t' flag. wrong sort on que & cur
 
 @savva
 TOD0:
--check sort of err_list;
--total: only for dirs, not for files from term;
-- '-' check for one av;
 
 
 --bonuses:

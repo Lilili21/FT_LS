@@ -24,6 +24,8 @@ int			ft_order(int num)
 {
 	int order;
 
+	if (num == -1)
+		return (-1);
 	order = 1;
 	while (num > 9)
 	{
@@ -52,7 +54,7 @@ t_count		*ft_count_s(t_curr *curr_dir, int fl)
 	max_s->s_size = 0;
 	max_s->total = 0;
 	max_s->s_name = 0;
-	max_s->maj = 0;
+	max_s->maj = -1;
 	while (curr_dir)
 	{
 		if(fl!= 0)
@@ -72,5 +74,6 @@ t_count		*ft_count_s(t_curr *curr_dir, int fl)
 		max_s->s_name = ft_compare((int)ft_strlen(curr_dir->name), max_s->s_name);
 		curr_dir = curr_dir->next;
 	}
+
 	return (max_s);
 }

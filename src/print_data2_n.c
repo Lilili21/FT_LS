@@ -28,12 +28,17 @@ int		ft_strjoin_char(char *result, int i, char *src, int m_size)
 	int j;
 	int src_size;
 
+	if (!src && !m_size)
+		return (i);
 	j = 0;
 	src_size = ft_strlen(src);
 	if (src_size < m_size + 1)
 		i = ft_strjoin_space(result, i, m_size - src_size);
-	while (j < src_size + 1)
-		result[++i] = src[j++];
+	else
+		i--;
+	if (src)
+		while (j < src_size + 1)
+			result[++i] = src[j++];
 	return (i);
 }
 
@@ -68,6 +73,18 @@ char	*ft_fill_str(t_curr *current, int size, t_count *count_col)
 	i = ft_strjoin_space(result, i, 3);
 	i = ft_strjoin_char(result, i, current->groop, count_col->s_groop);
 	i = ft_strjoin_space(result, i, 3);
+	
+	//for major!
+	if (current->type == 'b' || current->type == 'c')
+	{
+		tmp = ft_itoa(current->maj);
+		i = ft_strjoin_char(result, i, (tmp = ft_sfstrjoin(&tmp, ",")), count_col->maj);
+		free(tmp);
+	}
+	else
+		ft_strjoin_char(result, i, 0, count_col->maj);
+
+
 	i = ft_strjoin_char(result, i, (tmp = ft_itoa(current->size)), count_col->s_size);
 	free(tmp);
 	i = ft_strjoin_space(result, i, 1);
@@ -90,8 +107,8 @@ t_curr	*ft_print_folder(t_curr *curr, t_count *count, int buff_size)
 	if (!(result = ft_strnew(buff_size)))
 		return (ft_mistake(NULL));
 	while (curr)
-	{
-		str_size = 32 + count->s_links + count->s_user +
+		{
+		str_size = 32 + count->maj + count->s_links + count->s_user +
 				count->s_groop + count->s_size + ft_strlen(curr->name);
 		if (buff_size - str_size < 0)
 			break ;
@@ -132,8 +149,10 @@ int		ft_print(t_curr *curr_dir, t_fl *fl)
 	{
         if (fl->prev == 2)
             totl(count);
-		buff_size = ft_size_dirr(&curr) * (32 + count->s_links + count->s_user +
-				count->s_groop + count->s_size + count->s_name);
+        if (count->maj == -1)
+        	count->maj = 0;
+		buff_size = ft_size_dirr(&curr) * (32 + count->maj + count->s_links +
+	count->s_user + count->s_groop + count->s_size + count->s_name);
 		if (buff_size > 500)
 			buff_size = 500;
 		while (curr)
