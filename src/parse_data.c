@@ -135,7 +135,7 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 	t_curr		*new;
 	char		*p;
 	char 		*tmp;
-	int			status;
+	int		status;
 	char 		*link;
 
 	p = NULL;
@@ -152,7 +152,9 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 	{
 		tmp = ft_strjoin(d_name, " -> ");
 		link = (char*)malloc(sizeof(char) * PATH_MAX);
-		if ((status = readlink(p, link, PATH_MAX - 1) == -1))
+		if ((status = readlink(p, link, PATH_MAX - 1)) > 0)
+			link[status] = '\0';
+		else
 		{
 			perror("ls: ");
 			return (-1);
