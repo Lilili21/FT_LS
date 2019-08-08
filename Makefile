@@ -26,8 +26,8 @@ $(NAME):
 	@make -C libft
 	@gcc -Wall -Wextra -Werror -I libft/includes -I includes -g -c $(SRCS)
 	@gcc -g $(OBJ) -o $(NAME) -L libft -lft
-#	@mkdir -p $(OBJDIR);
-#	@mv $(OBJ) $(OBJDIR)/
+	@mkdir -p $(OBJDIR);
+	@mv $(OBJ) $(OBJDIR)/
 
 clean:
 	@rm -rf $(OBJDIR)

@@ -1,20 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   extra.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkatelyn <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/08 20:31:26 by kkatelyn          #+#    #+#             */
+/*   Updated: 2019/08/08 20:31:28 by kkatelyn         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lsft.h"
 
 int		print_err(t_err **err, t_fl **fl)
 {
-    t_err	*tmp;
+	t_err	*tmp;
 
-    while (*err)
-    {
+	while (*err)
+	{
 		(*fl)->prev = 1;
-        if (err_write((*err)->name, (*err)->er))
+		if (erp((*err)->name, (*err)->er))
 			return (12);
-        tmp = (*err)->next;
-        free((*err)->name);
-        free((*err)->er);
-        free(*err);
-        *err = tmp;
-    }
+		tmp = (*err)->next;
+		free((*err)->name);
+		free((*err)->er);
+		free(*err);
+		*err = tmp;
+	}
 	return (0);
 }
 
@@ -45,7 +57,7 @@ char	*ft_strjspl(char *s1, char *s2)
 	return (b);
 }
 
-int		err_write(char *av, char *er)
+int		erp(char *av, char *er)
 {
 	char *b;
 	char *tmp;
@@ -60,8 +72,10 @@ int		err_write(char *av, char *er)
 		free(tmp);
 	}
 	else
+	{
 		if (!(b = ft_strdup("ls: ")))
 			return (12);
+	}
 	tmp = b;
 	if (!(b = ft_strjoin(b, er)))
 		return (12);
@@ -71,17 +85,7 @@ int		err_write(char *av, char *er)
 	return (0);
 }
 
-void	del_node(t_q **que)
-{
-	t_q	*tmp;
-
-	tmp = (*que)->next;
-	free((*que)->abspath);
-	free(*que);
-	*que = tmp;
-}
-
-int		ft_putendldir(char *av, int *prev)
+int		pdir(char *av, int *prev)
 {
 	char *tmp;
 
@@ -102,12 +106,12 @@ int		ft_putendldir(char *av, int *prev)
 
 void	ft_free_one(t_curr **curr)
 {
-    if (!(*curr))
-        return ;
-    if ((*curr)->groop)
-        ft_strdel(&(*curr)->groop);
-    if ((*curr)->user)
-        ft_strdel(&(*curr)->user);
+	if (!(*curr))
+		return ;
+	if ((*curr)->groop)
+		ft_strdel(&(*curr)->groop);
+	if ((*curr)->user)
+		ft_strdel(&(*curr)->user);
 	if ((*curr)->rights)
 		ft_strdel(&(*curr)->rights);
 	if ((*curr)->print_date)
@@ -118,20 +122,30 @@ void	ft_free_one(t_curr **curr)
 	(*curr) = 0;
 }
 
+void	del_node(t_q **que)
+{
+	t_q	*tmp;
+
+	tmp = (*que)->next;
+	free((*que)->abspath);
+	free(*que);
+	*que = tmp;
+}
+
 void	ft_free(t_curr **curr, char **av)
 {
 	t_curr *tmp;
 
 	if (av && *av)
-	    ft_strdel(av);
+		ft_strdel(av);
 	if (!(*curr))
 		return ;
 	while (*curr)
 	{
-        if ((*curr)->groop)
-            ft_strdel(&(*curr)->groop);
-        if ((*curr)->user)
-            ft_strdel(&(*curr)->user);
+		if ((*curr)->groop)
+			ft_strdel(&(*curr)->groop);
+		if ((*curr)->user)
+			ft_strdel(&(*curr)->user);
 		if ((*curr)->rights)
 			ft_strdel(&(*curr)->rights);
 		if ((*curr)->print_date)

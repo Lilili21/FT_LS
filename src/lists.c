@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lists.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkatelyn <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/08 20:24:48 by kkatelyn          #+#    #+#             */
+/*   Updated: 2019/08/08 20:24:49 by kkatelyn         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lsft.h"
 
 void	ft_lstaddcu(t_curr **st, t_curr *new)
@@ -15,7 +27,7 @@ void	ft_lstaddcu(t_curr **st, t_curr *new)
 	tmp->next = new;
 }
 
-int		er_list(t_err **err, char *av, char *er, t_fl **fl)
+int		er_l(t_err **err, char *av, char *er, t_fl **fl)
 {
 	t_err *erro;
 
@@ -46,7 +58,7 @@ int		er_list(t_err **err, char *av, char *er, t_fl **fl)
 
 int		to_list(t_q **que, char *av)
 {
-	t_q		*qu;
+	t_q			*qu;
 	struct stat	st;
 
 	if (!(qu = (t_q*)malloc(sizeof(t_q))))
@@ -72,7 +84,7 @@ int		to_list(t_q **que, char *av)
 	return (0);
 }
 
-void	err_end(t_err **st, t_err *er) // to add node to que list end of level;
+void	err_end(t_err **st, t_err *er)
 {
 	t_err *tmp;
 
@@ -87,7 +99,7 @@ void	err_end(t_err **st, t_err *er) // to add node to que list end of level;
 	tmp->next = er;
 }
 
-void	que_end(t_q **st, t_q *qu) // to add node to que list end of level;
+void	que_end(t_q **st, t_q *qu)
 {
 	t_q *tmp;
 

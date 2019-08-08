@@ -157,6 +157,7 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 		else
 		{
 			perror("ls: ");
+			//free all malloc staff
 			return (-1);
 		}
 		new->name = ft_strjoin(tmp, link);
