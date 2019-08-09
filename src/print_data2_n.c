@@ -6,7 +6,7 @@
 /*   By: gfoote <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/26 15:32:01 by gfoote            #+#    #+#             */
-/*   Updated: 2019/07/26 15:32:03 by gfoote           ###   ########.fr       */
+/*   Updated: 2019/08/09 16:42:59 by kkatelyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ int		ft_print(t_curr *curr_dir, t_fl *fl)
 		buff_size = ft_size_dirr(&curr) * (32 + count->maj + count->s_links +
 	count->s_user + count->s_groop + count->s_size + count->s_name);
 		if (buff_size > 500)
-			buff_size = 500;
+			buff_size = 1000;
 		while (curr)
 			curr = ft_print_folder(curr, count, buff_size);
 	}
