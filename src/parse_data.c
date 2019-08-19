@@ -20,6 +20,13 @@ int		parse_rights(t_curr *new, char *d_name)
 		return (errno);
 	new->links = st.st_nlink;
 	new->size = st.st_size;
+	if (new->type == 'b' || new->type == 'c')
+	{
+		new->size = minor(st.st_rdev);
+		new->maj = major(st.st_rdev);
+	}
+	else
+		new->maj = -1;
 	new->user = ft_strdup(getpwuid(st.st_uid)->pw_name);
 	new->groop = ft_strdup(getgrgid(st.st_gid)->gr_name);
 	new->s_total = st.st_blocks;
@@ -41,13 +48,36 @@ int		parse_rights(t_curr *new, char *d_name)
 int		parse_date(t_curr *new, char *d_name, t_fl **fl)
 {
 	struct stat	st;
+	char		**tmp;
+	time_t		now;
+	struct tm 	*tim;
+	int			eh[3];
 
 	if (lstat(d_name, &st))
 		return (errno);
 	if ((*fl)->t == 1)
 		new->compare_date = st.st_mtimespec.tv_sec;
 	if ((*fl)->l == 1)
-		new->print_date = formatdate(ft_strsplit(ctime(&st.st_mtime), ' '));
+	{
+		tmp = ft_strsplit(ctime(&st.st_mtime), ' ');
+
+		now = time(0);
+		tim = localtime(&now);
+		eh[0] = tim->tm_year;
+		eh[1] = tim->tm_mon;
+		eh[2] = tim->tm_mday;
+		tim = localtime(&st.st_mtime);
+		if ((eh[0] > tim->tm_year) || ((eh[1] - tim->tm_mon) > 6) ||
+		((eh[1] - tim->tm_mon) == 6 && (eh[2] - tim->tm_mday) > 0))
+		{
+			free(tmp[3]);
+			tmp[3] = ft_strdup(tmp[4]);
+			tmp[3][4] = '\0';
+		}
+		new->print_date = formatdate(tmp);
+		ft_strdl(tmp);
+		free(tmp);
+	}
 	return (0);
 }
 
@@ -73,6 +103,8 @@ char	parse_type(t_curr *new, char *d_name)
 		return ('s');
 	else if (S_ISCHR(st.st_mode) == 1)
 		return ('c');
+	else if (S_ISBLK(st.st_mode))
+		return ('b');
 	else
 		return ('f');
 }
@@ -102,16 +134,36 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 {
 	t_curr		*new;
 	char		*p;
+	char 		*tmp;
+	int		status;
+	char 		*link;
 
 	p = NULL;
 	if (!(new = (t_curr *)malloc(sizeof(t_curr))))
 		return (0);
-	new->name = ft_strdup(d_name);
 	if (path)
-		p = path;
+		p = ft_strjoin(path, d_name);
 	else
 		p = d_name;
 	new->type = parse_type(new, p);
+	if (new->type != 'l')
+		new->name = ft_strdup(d_name);
+	else //for -> link... (ls -l /dev *PROBLEM WITH "stdin -> f" instead of "stdin ->  fd/0"
+	{
+		tmp = ft_strjoin(d_name, " -> ");
+		link = (char*)malloc(sizeof(char) * PATH_MAX);
+		if ((status = readlink(p, link, PATH_MAX - 1)) > 0)
+			link[status] = '\0';
+		else
+		{
+			perror("ls: ");
+			//free all malloc staff
+			return (-1);
+		}
+		new->name = ft_strjoin(tmp, link);
+		free(tmp);
+		free(link);
+	}
 	new->symb = ((*fl)->l == 1 ? parse_symb(p) : ' ');
 	if (new->type == 'E')
 		return (0);
@@ -119,6 +171,8 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 	((*fl)->l == 1) ? parse_rights(new, p) : ft_parse_null(new);
 	if ((*fl)->l == 1 || (*fl)->t == 1)
 		parse_date(new, p, fl);
+	if (path)
+		free(p);
 	ft_lstaddcu(cur, new);
 	return (0);
 }

@@ -64,7 +64,7 @@ t_err	*ft_sorted_merge_err(t_err *a, t_err *b)
 		return (b);
 	else if (b == NULL)
 		return (a);
-	if (ft_strcmp(a->name, b->name) > 0)
+	if (ft_strcmp(a->name, b->name) < 0)
 	{
 		result = a;
 		result->next = ft_sorted_merge_err(a->next, b);
