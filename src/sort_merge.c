@@ -65,9 +65,9 @@ t_curr	*ft_sorted_merge(t_curr *a, t_curr *b, int sort_order, int type)
 	else if (b == NULL)
 		return (a);
 	if ((type == 0 && sort_order * ft_strcmp(a->name, b->name) > 0) ||
-	(type == 1 && (sort_order * (a->compare_date - b->compare_date) > 0 ||
+	(type == 1 && (sort_order * (a->compare_date - b->compare_date) < 0 ||
 	(sort_order * (a->compare_date - b->compare_date) == 0
-	&& ft_strcmp(a->name, b->name) > 0))))
+	&& sort_order * ft_strcmp(a->name, b->name) > 0))))
 	{
 		result = a;
 		result->next = ft_sorted_merge(a->next, b, sort_order, type);
@@ -77,6 +77,7 @@ t_curr	*ft_sorted_merge(t_curr *a, t_curr *b, int sort_order, int type)
 		result = b;
 		result->next = ft_sorted_merge(a, b->next, sort_order, type);
 	}
+
 	return (result);
 }
 
