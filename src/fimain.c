@@ -122,6 +122,7 @@ int		main(int ac, char **av)
 	ac = 0;
 	flags(0, &fl, 0);
 	flags_n_sort(av, &que, &cur, &fl);
+	printf("reverse = %i\n", fl->r);
 	if (cur)
 		ft_print(cur, fl);
 	if (que)

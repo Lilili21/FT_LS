@@ -12,6 +12,13 @@
 
 #include "lsft.h"
 
+int		type_check(char c)
+{
+	if (c == 'b' || c == 'c')
+		return (1);
+	return (0);
+}
+
 void	ft_parse_null(t_curr *new)
 {
 	new->rights = NULL;
@@ -52,19 +59,66 @@ char	*formatdate(char **str)
 	result[i] = '\0';
 	return (result);
 }
-/*
- * // в зависимости от столбца добавлять в место i т.е. маллочить огромную строку и вставлять в серединке
-int		ft_print_column(t_curr	*curr, t_count *count, int size_dirr)
-{
-	char			*print;
-	int				i;
-	struct winsize	w;
-	int 			column;
-	int 			str;
 
-	i = 0;
+char	**ft_list_to_char(t_curr **curr_dir, int size)
+{
+	char	**sort;
+	t_curr	*current;
+	int		i;
+
+	i = -1;
+	current = *curr_dir;
+	sort = malloc(sizeof(char *) * size);
+	while (++i < size)
+	{
+		sort[i] = ft_strdup(current->name);
+		current = current->next;
+	}
+	return (sort);
+}
+/*
+// в зависимости от столбца добавлять в место i т.е. маллочить огромную строку и вставлять в серединке
+int		ft_print_column(t_curr	*curr, t_count *count)
+{
+	//char			*print;
+	int				i;
+	int				j;
+	int 			t;
+	struct winsize	w;
+	int 			column; //column wide
+	int 			str_count;
+	char			**new;
+	//int 			str;
+
 	ioctl(0, TIOCGWINSZ, &w);
-	column = w.ws_col/count->s_name;
+	column = w.ws_col/(count->s_name);
+	str_count = count->s_size / column + 1;
+	printf("str_count = %i\n", str_count);
+	new = ft_list_to_char(&curr, count->s_size);
+	i = 0;
+	j = 1;
+	t = 0;
+	while(j < str_count + 1)
+	{
+		column = w.ws_col/(count->s_name + 2);;
+		while (column > 0)
+		{
+			write(1, new[i], ft_strlen(new[i]));
+			if ((int)ft_strlen(new[i]) < count->s_size)
+			{
+				t = 0;
+				while (t++ < count->s_size - (int)ft_strlen(new[i]))
+					write(1, " ", 1);
+			}
+			i += str_count;
+			if (i > count->s_size)
+				break;
+			column--;
+		}
+		i = j;
+		printf("\n");
+		j++;
+	}
 	str = size_dirr / column;
 	if (column < 1)
 		print = ft_strnew(count->total);
@@ -94,7 +148,7 @@ int		ft_print_column(t_curr	*curr, t_count *count)
 	i = 0;
 	while (curr)
 	{
-		i = ft_strjoin_char(print, i, curr->name, ft_strlen(curr->name));
+		i = ft_strjoin_char(print, i, curr->name, ft_strlen(curr->name), 0);
 		print[i++] = '\n';
 		curr = curr->next;
 	}

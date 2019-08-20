@@ -13,7 +13,7 @@
 NAME = ls
 
 SRC = fimain.c extra.c flags.c lists.c sort_merge.c sort_merge_q.c \
-    sort_merge_err.c parse_data.c help_parse.c print_data.c help_print.c
+    sort_merge_err.c parse_data.c help_parse.c print_data2_n.c help_print.c
 SRCDIR = src
 SRCS = $(addprefix $(SRCDIR)/, $(SRC))
 OBJ = $(SRC:.c=.o)
@@ -24,8 +24,8 @@ all: $(NAME)
 
 $(NAME):
 	@make -C libft
-	@gcc -Wall -Wextra -Werror -I libft/includes -I includes -c $(SRCS)
-	@gcc -o $(NAME) -g $(OBJ) -L libft -lft
+	@gcc -Wall -Wextra -Werror -I libft/includes -I includes -g -c $(SRCS)
+	@gcc -g $(OBJ) -o $(NAME) -L libft -lft
 	@mkdir -p $(OBJDIR);
 	@mv $(OBJ) $(OBJDIR)/
 

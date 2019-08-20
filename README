@@ -1,33 +1,12 @@
-TODO:
-	! we need non-recursive algorithm of ls -R, 
-	then anything;
+logs:
 
+@Liza
+TOD0:
+-ls -l /dev/fd && ls -l /dev "*I've added major & minor, but it needs alignment! :)
+-check '-t' flag. wrong sort on que & cur
 
---use .xml file (open with  www.draw.io) to edit block-scheme;
-
---__MARKS:
-1)
-	ls -l afile bdir:
-	~	~		afile
-	~	~		bdir
-
-	ls -l bdir afile:
-	~	~		afile
-	~	~		bdir
-
-	but in the directory they are already sorted;
---__
-
---flags:
-	-l
-	-R !!!!!! think about implications!! on the begin
-	-a
-	-r
-	-t
-
-! if "-l" is not in args –> then no multiple column format
-! no errors and leaks
-! error mngmnt: why? like no that file or dir, no permitted, permission denied etc
+@savva
+TOD0:
 
 
 --bonuses:
@@ -67,38 +46,3 @@ $ git checkout lilili21 includes/lsft.h README fimain.c
 $ git add, git commit
 :)
 
-logs:
-@Liza
-* in LSFT_H defined current structure more detailed
-* in src add functions with t_curr: 1. function new t_curr 2. add new t_curr in correct order
-- merge sort(ft_add_sorted(cur, rd, fl)), cur struct is ready to print;
-		test on `/usr/share/man/man3`
-- print_cur(cur, av) – just print depending on column (allignemnt)
-				& free cur struct;
-	*av*		/Users/kkatelyn/sometests/1:
-	*count size* total 0
-- to_que(rd->d_name, (lev/que));
-
-@savva
-+_+ flag parsing, added to struct, check for errors on flags (check4leaks);
-* making a logic and algo of our program %))
-* making parse of terminal files and dirs
-	split on dirs(to que) and files(to cur(for print))
-~TODO:
-ft_add_sorted(cur, que, 0, fl)
-{
-	sort(cur, fl);
-	print_cur;
-	sort(que, fl); only que->abspath!
-}
-ft_add_sorted(+, +, av, +)
-{
-	sort(cur, fl);
-	if (sorted-cur(el) == dir)
-		add_que->el_path;
-		add_que->abspath == ft_strjoin(av, "/");
-}
-
-TOD0:
-- NULL checks
-- C0NN3CT:ME

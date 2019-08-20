@@ -19,14 +19,8 @@ int		parse_rights(t_curr *new, char *d_name)
 	if (lstat(d_name, &st))
 		return (errno);
 	new->links = st.st_nlink;
-	new->size = st.st_size;
-	if (new->type == 'b' || new->type == 'c')
-	{
-		new->size = minor(st.st_rdev);
-		new->maj = major(st.st_rdev);
-	}
-	else
-		new->maj = -1;
+	new->size = type_check(new->type) ? minor(st.st_rdev) : st.st_size;
+	new->maj = type_check(new->type) ? major(st.st_rdev) : -1;
 	new->user = ft_strdup(getpwuid(st.st_uid)->pw_name);
 	new->groop = ft_strdup(getgrgid(st.st_gid)->gr_name);
 	new->s_total = st.st_blocks;
@@ -50,7 +44,7 @@ int		parse_date(t_curr *new, char *d_name, t_fl **fl)
 	struct stat	st;
 	char		**tmp;
 	time_t		now;
-	struct tm 	*tim;
+	struct tm	*tim;
 	int			eh[3];
 
 	if (lstat(d_name, &st))
@@ -60,7 +54,6 @@ int		parse_date(t_curr *new, char *d_name, t_fl **fl)
 	if ((*fl)->l == 1)
 	{
 		tmp = ft_strsplit(ctime(&st.st_mtime), ' ');
-
 		now = time(0);
 		tim = localtime(&now);
 		eh[0] = tim->tm_year;
@@ -134,9 +127,9 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 {
 	t_curr		*new;
 	char		*p;
-	char 		*tmp;
-	int		status;
-	char 		*link;
+	char		*tmp;
+	int			status;
+	char		*link;
 
 	p = NULL;
 	if (!(new = (t_curr *)malloc(sizeof(t_curr))))

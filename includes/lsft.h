@@ -31,6 +31,7 @@
 #include <stdio.h>
 
 # define CHECKM(x, fd) if ((x)) fd
+# define CHKMR(x) if ((x)) return (-1)
 # define CHECKMA(x, a, fd) if ((x)) { a; fd; }
 
 typedef struct	s_fl
@@ -66,6 +67,7 @@ typedef	struct s_curr
 	char		*user;
 	char		*groop;
 	int 		size;
+	int			maj;
 	char		*print_date;
     char 		*name;
     int 		s_total;
@@ -81,28 +83,29 @@ typedef struct s_count
 	int 		s_user;
 	int 		s_groop;
 	int			s_size;
+	int			maj;
 	size_t		total;
 }				t_count;
 
 void	flags(char av, t_fl **fl, int i);
 int		flag_parse(int ac, int j, char **av, t_fl **fl);
 void	ft_lstaddcu(t_curr **st, t_curr *new);
-int		er_list(t_err **err, char *av, char *er, t_fl **fl);
+int		er_l(t_err **err, char *av, char *er, t_fl **fl);
 int		to_list(t_q **que, char *av);
 void	err_end(t_err **st, t_err *er);
 void	que_end(t_q **st, t_q *qu);
 int  	print_err(t_err **err, t_fl **fl);
-int		err_write(char *av, char *er);
+int		erp(char *av, char *er);
 void	del_node(t_q **que);
 void	ft_merge_sort_q(t_q **que, t_fl *fl);
 void	ft_merge_sort_err(t_err **que);
 void	ft_merge_sort(t_curr **curr_dir, t_fl *fl);
-void	ft_free(t_curr **curr);
+void	ft_free(t_curr **curr, char **av);
 int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path);
 int		add_sorted(t_curr **cur, t_q **que, char *av);
 int		ft_print(t_curr *curr_dir, t_fl *fl);
 t_count	*ft_count_s(t_curr *curr_dir, int fl);
-int		ft_putendldir(char *av, int *prev);
+int		pdir(char *av, int *prev);
 void	ft_free_one(t_curr **curr);
 void	del_me(t_q **que, t_curr **cur, t_fl **fl, int err);
 int		ft_order(int num);
@@ -110,8 +113,12 @@ int		ft_size_dirr(t_curr **curr_dir);
 char	*formatdate(char **str);
 void	ft_parse_null(t_curr *new);
 void	*ft_mistake(char *result);
-int		ft_strjoin_char(char *result, int i, char *src, int m_size);
+int		ft_strjoin_char(char *result, int i, char *src, int m_size, int skip_z);
 int		ft_print_column(t_curr	*curr, t_count *count);
+void	tavai(t_curr **cur, t_q **que, t_fl **fl, t_err **err);
+void	flags_n_sort(char **av, t_q **q, t_curr **c, t_fl **f);
+int		type_check(char c);
+
 #endif
 
 //man for dir stat https://www.ibm.com/developerworks/ru/library/au-unix-readdir/index.html

@@ -70,7 +70,10 @@ t_count		*ft_count_s(t_curr *curr_dir, int fl)
 
 		}
 		else
+			{
 			max_s->total += ft_strlen(curr_dir->name) + 1;
+			max_s->s_size++;
+		}
 		max_s->s_name = ft_compare((int)ft_strlen(curr_dir->name), max_s->s_name);
 		curr_dir = curr_dir->next;
 	}

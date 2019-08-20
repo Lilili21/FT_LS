@@ -77,7 +77,6 @@ t_curr	*ft_sorted_merge(t_curr *a, t_curr *b, int sort_order, int type)
 		result = b;
 		result->next = ft_sorted_merge(a, b->next, sort_order, type);
 	}
-
 	return (result);
 }
 
