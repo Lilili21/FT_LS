@@ -28,7 +28,6 @@
 # include <sys/acl.h>
 # include <sys/xattr.h>
 #include <sys/ioctl.h>
-#include <stdio.h>
 
 # define CHECKM(x, fd) if ((x)) fd
 # define CHKMR(x) if ((x)) return (-1)
@@ -110,7 +109,7 @@ void	ft_free_one(t_curr **curr);
 void	del_me(t_q **que, t_curr **cur, t_fl **fl, int err);
 int		ft_order(int num);
 int		ft_size_dirr(t_curr **curr_dir);
-char	*formatdate(char **str);
+char	*formatdate(char **str, int check);
 void	ft_parse_null(t_curr *new);
 void	*ft_mistake(char *result);
 int		ft_strjoin_char(char *result, int i, char *src, int m_size, int skip_z);
@@ -118,7 +117,15 @@ int		ft_print_column(t_curr	*curr, t_count *count);
 void	tavai(t_curr **cur, t_q **que, t_fl **fl, t_err **err);
 void	flags_n_sort(char **av, t_q **q, t_curr **c, t_fl **f);
 int		type_check(char c);
-
+void	ft_strdl2(char **tmp);
+int		ft_buff_size(t_curr *curr_dir, t_count *count);
+void	total(t_count *count);
+int		ft_fill_str1(t_curr *curr, t_count *count_col, int i, char *result);
+int		ft_fill_str2(t_curr *curr, t_count *count_col, int i, char *result);
+int		ft_strjoin_space(char *result, int i, int space_number);
+int		ft_strjoin_char_0(char *result, int i, char *src, int m_size);
+int		ft_strjoin_char_1(char *result, int i, char *src, int m_size);
+int		ft_strjoin_char_2(char *result, int i, char *src, int m_size);
 #endif
 
 //man for dir stat https://www.ibm.com/developerworks/ru/library/au-unix-readdir/index.html
