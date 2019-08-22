@@ -42,41 +42,42 @@ int			ft_compare(int a, int b)
 	return (b);
 }
 
-t_count		*ft_count_s(t_curr *curr_dir, int fl)
+void		ft_m_s(t_count *m_s)
 {
-	t_count	*max_s;
+	m_s->s_links = 0;
+	m_s->s_user = 0;
+	m_s->s_groop = 0;
+	m_s->s_size = -1;
+	m_s->total = 0;
+	m_s->s_name = 0;
+	m_s->maj = 0;
+}
 
-	if (!(max_s = (t_count *)malloc(sizeof(t_count))))
+t_count		*ft_count_s(t_curr *cd, int fl)
+{
+	t_count	*m_s;
+
+	if (!(m_s = (t_count *)malloc(sizeof(t_count))))
 		return (NULL);
-	max_s->s_links = 0;
-	max_s->s_user = 0;
-	max_s->s_groop = 0;
-	max_s->s_size = 0;
-	max_s->total = 0;
-	max_s->s_name = 0;
-	max_s->maj = -1;
-	while (curr_dir)
+	ft_m_s(m_s);
+	while (cd)
 	{
-		if(fl!= 0)
+		if (fl != 0)
 		{
-			max_s->s_links = ft_compare(ft_order(curr_dir->links), max_s->s_links);
-			max_s->s_user = ft_compare((int) ft_strlen(curr_dir->user),
-									   max_s->s_user);
-			max_s->s_groop = ft_compare((int) ft_strlen(curr_dir->groop),
-										max_s->s_groop);
-			max_s->s_size = ft_compare(ft_order(curr_dir->size), max_s->s_size);
-			max_s->total += curr_dir->s_total;
-			max_s->maj = ft_compare(ft_order(curr_dir->maj), max_s->maj);
-
+			m_s->s_links = ft_compare(ft_order(cd->links), m_s->s_links);
+			m_s->s_user = ft_compare((int)ft_strlen(cd->user), m_s->s_user);
+			m_s->s_groop = ft_compare((int)ft_strlen(cd->groop), m_s->s_groop);
+			m_s->s_size = ft_compare(ft_order(cd->size), m_s->s_size);
+			m_s->total += cd->s_total;
+			m_s->maj = ft_compare(ft_order(cd->maj) + 1, m_s->maj);
 		}
 		else
-			{
-			max_s->total += ft_strlen(curr_dir->name) + 1;
-			max_s->s_size++;
+		{
+			m_s->total += ft_strlen(cd->name) + 1;
+			m_s->s_size++;
 		}
-		max_s->s_name = ft_compare((int)ft_strlen(curr_dir->name), max_s->s_name);
-		curr_dir = curr_dir->next;
+		m_s->s_name = ft_compare((int)ft_strlen(cd->name), m_s->s_name);
+		cd = cd->next;
 	}
-
-	return (max_s);
+	return (m_s);
 }
