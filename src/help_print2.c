@@ -11,7 +11,8 @@
 /* ************************************************************************** */
 
 #include "lsft.h"
-/*
+#include <stdio.h>
+
 char	**ft_list_to_char(t_curr **curr_dir, int size)
 {
 	char	**sort;
@@ -21,7 +22,7 @@ char	**ft_list_to_char(t_curr **curr_dir, int size)
 	i = -1;
 	current = *curr_dir;
 	sort = malloc(sizeof(char *) * size);
-	while (++i < size)
+	while (++i < size + 1)
 	{
 		sort[i] = ft_strdup(current->name);
 		current = current->next;
@@ -29,67 +30,41 @@ char	**ft_list_to_char(t_curr **curr_dir, int size)
 	return (sort);
 }
 
-
-// в зависимости от столбца добавлять в место i т.е. маллочить огромную строку и вставлять в серединке
 int		ft_print_column(t_curr	*curr, t_count *count)
 {
-	//char			*print;
-	int				i;
-	int				j;
-	int 			t;
 	struct winsize	w;
 	int 			column; //column wide
 	int 			str_count;
 	char			**new;
-	//int 			str;
+	char			*result;
+	int 			i[3];
 
-	ioctl(0, TIOCGWINSZ, &w);
-	column = w.ws_col/(count->s_name);
+	//ioctl(0, TIOCGWINSZ, &w);
+	//column = w.ws_col/(count->s_name + 5);
+	column = 10;
 	str_count = count->s_size / column + 1;
-	printf("str_count = %i\n", str_count);
 	new = ft_list_to_char(&curr, count->s_size);
-	i = 0;
-	j = 1;
-	t = 0;
-	while(j < str_count + 1)
+	i[0] = 0;
+	i[1] = 0;
+	i[2] = 0;
+	result = (char *)malloc((count->s_name + 2) * (count->s_size + 1));
+	while(i[0] < str_count && new[i[2]])
 	{
-		column = w.ws_col/(count->s_name + 2);;
-		while (column > 0)
+		i[1] = ft_strjoin_char_2(result, i[1], new[i[2]], count->s_name + 2);
+	//	printf("%s\n", result);
+		i[2] += str_count;
+		if ( i[2] % (column - 2) == 0 && i[2] != 0)
 		{
-			write(1, new[i], ft_strlen(new[i]));
-			if ((int)ft_strlen(new[i]) < count->s_size)
-			{
-				t = 0;
-				while (t++ < count->s_size - (int)ft_strlen(new[i]))
-					write(1, " ", 1);
-			}
-			i += str_count;
-			if (i > count->s_size)
-				break;
-			column--;
+			result[i[2]] = '\n';
+			i[0]++;
+			i[2] =i[0];
 		}
-		i = j;
-		printf("\n");
-		j++;
 	}
-	str = size_dirr / column;
-	if (column < 1)
-		print = ft_strnew(count->total);
-	else
-		print = ft_strnew(str * w.ws_row);
-	if (!print)
-		return (-1);
-	while (curr)
-	{
-		i = ft_strjoin_char(print, i, curr->name, ft_strlen(curr->name));
-		print[i++] = '\n';
-		curr = curr->next;
-	}
-	print[i] = '\0';
-	ft_putstr(print);
-	free(print);
+	write(1, result, ft_strlen(result));
+	result[i[2]] = '\0';
+	free(result);
 	return (0);
-}*/
+}
 
 void	total(t_count *count)
 {
@@ -108,7 +83,7 @@ int		ft_buff_size(t_curr *curr_dir, t_count *count)
 		buff_size = 1000;
 	return (buff_size);
 }
-
+/*
 int		ft_print_column(t_curr *curr, t_count *count)
 {
 	char	*print;
@@ -127,7 +102,7 @@ int		ft_print_column(t_curr *curr, t_count *count)
 	ft_putstr(print);
 	free(print);
 	return (0);
-}
+}*/
 
 int		ft_fill_str1(t_curr *curr, t_count *count_col, int i, char *result)
 {
