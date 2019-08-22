@@ -12,6 +12,12 @@
 
 #include "lsft.h"
 
+void	ft_strdl2(char **tmp)
+{
+	ft_strdl(tmp);
+	free(tmp);
+}
+
 int		type_check(char c)
 {
 	if (c == 'b' || c == 'c')
@@ -31,7 +37,7 @@ void	ft_parse_null(t_curr *new)
 	new->print_date = 0;
 }
 
-char	*formatdate(char **str)
+char	*formatdate(char **str, int check)
 {
 	char	*result;
 	int		i;
@@ -45,115 +51,15 @@ char	*formatdate(char **str)
 	{
 		k = 0;
 		while (str[j][k] && i < 12)
-		{
-			result[i] = str[j][k];
-			i++;
-			k++;
-		}
+			result[i++] = str[j][k++];
 		j++;
 		if (ft_strlen(str[2]) == 1 && j == 2)
 			result[i++] = ' ';
 		if (i < 8)
 			result[i++] = ' ';
+		if (check == 1 && i == 7 && j++ == 3)
+			result[i++] = ' ';
 	}
 	result[i] = '\0';
 	return (result);
-}
-
-char	**ft_list_to_char(t_curr **curr_dir, int size)
-{
-	char	**sort;
-	t_curr	*current;
-	int		i;
-
-	i = -1;
-	current = *curr_dir;
-	sort = malloc(sizeof(char *) * size);
-	while (++i < size)
-	{
-		sort[i] = ft_strdup(current->name);
-		current = current->next;
-	}
-	return (sort);
-}
-/*
-// в зависимости от столбца добавлять в место i т.е. маллочить огромную строку и вставлять в серединке
-int		ft_print_column(t_curr	*curr, t_count *count)
-{
-	//char			*print;
-	int				i;
-	int				j;
-	int 			t;
-	struct winsize	w;
-	int 			column; //column wide
-	int 			str_count;
-	char			**new;
-	//int 			str;
-
-	ioctl(0, TIOCGWINSZ, &w);
-	column = w.ws_col/(count->s_name);
-	str_count = count->s_size / column + 1;
-	printf("str_count = %i\n", str_count);
-	new = ft_list_to_char(&curr, count->s_size);
-	i = 0;
-	j = 1;
-	t = 0;
-	while(j < str_count + 1)
-	{
-		column = w.ws_col/(count->s_name + 2);;
-		while (column > 0)
-		{
-			write(1, new[i], ft_strlen(new[i]));
-			if ((int)ft_strlen(new[i]) < count->s_size)
-			{
-				t = 0;
-				while (t++ < count->s_size - (int)ft_strlen(new[i]))
-					write(1, " ", 1);
-			}
-			i += str_count;
-			if (i > count->s_size)
-				break;
-			column--;
-		}
-		i = j;
-		printf("\n");
-		j++;
-	}
-	str = size_dirr / column;
-	if (column < 1)
-		print = ft_strnew(count->total);
-	else
-		print = ft_strnew(str * w.ws_row);
-	if (!print)
-		return (-1);
-	while (curr)
-	{
-		i = ft_strjoin_char(print, i, curr->name, ft_strlen(curr->name));
-		print[i++] = '\n';
-		curr = curr->next;
-	}
-	print[i] = '\0';
-	ft_putstr(print);
-	free(print);
-	return (0);
-}*/
-
-int		ft_print_column(t_curr	*curr, t_count *count)
-{
-	char	*print;
-	int		i;
-
-	if (!(print = ft_strnew(count->total)))
-		return (-1);
-	i = 0;
-	while (curr)
-	{
-		i = ft_strjoin_char(print, i, curr->name, ft_strlen(curr->name), 0);
-		print[i++] = '\n';
-		curr = curr->next;
-	}
-	print[i] = '\0';
-	ft_putstr(print);
-	free(print);
-	return (0);
 }

@@ -60,16 +60,10 @@ int		parse_date(t_curr *new, char *d_name, t_fl **fl)
 		eh[1] = tim->tm_mon;
 		eh[2] = tim->tm_mday;
 		tim = localtime(&st.st_mtime);
-		if ((eh[0] > tim->tm_year) || ((eh[1] - tim->tm_mon) > 6) ||
-		((eh[1] - tim->tm_mon) == 6 && (eh[2] - tim->tm_mday) > 0))
-		{
-			free(tmp[3]);
-			tmp[3] = ft_strdup(tmp[4]);
-			tmp[3][4] = '\0';
-		}
-		new->print_date = formatdate(tmp);
-		ft_strdl(tmp);
-		free(tmp);
+		new->print_date = ((eh[0] > tim->tm_year) || ((eh[1] -
+			tim->tm_mon) > 6) || ((eh[1] - tim->tm_mon) == 6 && (eh[2] -
+			tim->tm_mday) > 0)) ? formatdate(tmp, 1) : formatdate(tmp, 0);
+		ft_strdl2(tmp);
 	}
 	return (0);
 }
@@ -120,9 +114,6 @@ char	parse_symb(char *d_name)
 		return (l_acl ? '+' : ' ');
 }
 
-//@ - имеет альтернативные расширения
-//+ - имеет другие способы доступа
-
 int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 {
 	t_curr		*new;
@@ -134,10 +125,7 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 	p = NULL;
 	if (!(new = (t_curr *)malloc(sizeof(t_curr))))
 		return (0);
-	if (path)
-		p = ft_strjoin(path, d_name);
-	else
-		p = d_name;
+	p = (path) ? ft_strjoin(path, d_name) : d_name;
 	new->type = parse_type(new, p);
 	if (new->type != 'l')
 		new->name = ft_strdup(d_name);

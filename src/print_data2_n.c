@@ -23,81 +23,16 @@ int		ft_strjoin_space(char *result, int i, int space_number)
 	return (--i);
 }
 
-int		ft_strjoin_char(char *result, int i, char *src, int m_size, int skip_z)
-{
-	int j;
-	int src_size;
-
-	if (!src && !m_size)
-		return (i);
-	j = 0;
-	src_size = ft_strlen(src);
-	if (src_size < m_size + 1 && skip_z == 0)
-		i = ft_strjoin_space(result, i, m_size - src_size);
-	else
-		i--;
-	if (src)
-		while (j < src_size + 1)
-			result[++i] = src[j++];
-	if (src_size < m_size + 1 && skip_z == 2)
-	{
-
-		i = ft_strjoin_space(result, i, m_size - src_size + 1);
-	}
-		//i++;
-	//printf("step = %i, result = %s\n",i, result);
-	return (i);
-}
-
-int		ft_strjoin_st(char *result, int i, char *src)
-{
-	int j;
-	int src_size;
-
-	j = 0;
-	src_size = ft_strlen(src);
-	while (j < src_size + 1)
-		result[++i] = src[j++];
-	return (i);
-}
-
-char	*ft_fill_str(t_curr *current, int size, t_count *count_col)
+char	*ft_fill_str(t_curr *curr, int size, t_count *count_col)
 {
 	char	*result;
 	int		i;
-	char	*tmp;
 
 	i = -1;
 	if (!(result = ft_strnew(size)))
 		return (NULL);
-	i = ft_strjoin_st(result, i, current->rights);
-	result[i] = current->symb;
-	i = ft_strjoin_space(result, ++i, 2);
-	i = ft_strjoin_char(result, i, (tmp = ft_itoa(current->links)), count_col->s_links, 0);
-	free(tmp);
-	i = ft_strjoin_space(result, i, 2);
-	i = ft_strjoin_char(result, i, current->user, count_col->s_user, 2);
-	i = ft_strjoin_space(result, i, 3);
-	i = ft_strjoin_char(result, i, current->groop, count_col->s_groop, 2);
-	i = ft_strjoin_space(result, i, 3);
-	
-	//for major!
-	if (current->type == 'b' || current->type == 'c')
-	{
-		tmp = ft_itoa(current->maj);
-		i = ft_strjoin_char(result, i, (tmp = ft_sfstrjoin(&tmp, ",")), count_col->maj, 0);
-		free(tmp);
-	}
-	else
-		ft_strjoin_char(result, i, 0, count_col->maj, 0);
-
-
-	i = ft_strjoin_char(result, i, (tmp = ft_itoa(current->size)), count_col->s_size, 0);
-	free(tmp);
-	i = ft_strjoin_space(result, i, 1);
-	i = ft_strjoin_char(result, i, current->print_date, 13, 0);
-	i = ft_strjoin_space(result, i, 2);
-	i = ft_strjoin_char(result, i, current->name, ft_strlen(current->name), 0);
+	i = ft_fill_str1(curr, count_col, i, result);
+	i = ft_fill_str2(curr, count_col, i, result);
 	result[i++] = '\n';
 	result[i] = '\0';
 	return (result);
@@ -114,14 +49,14 @@ t_curr	*ft_print_folder(t_curr *curr, t_count *count, int buff_size)
 	if (!(result = ft_strnew(buff_size)))
 		return (ft_mistake(NULL));
 	while (curr)
-		{
+	{
 		str_size = 32 + count->maj + count->s_links + count->s_user +
-				count->s_groop + count->s_size + ft_strlen(curr->name);
+			count->s_groop + count->s_size + ft_strlen(curr->name);
 		if (buff_size - str_size < 0)
 			break ;
 		if (!(tmp = ft_fill_str(curr, str_size, count)))
 			return (ft_mistake(result));
-		i = ft_strjoin_char(result, i, tmp, str_size, 1);
+		i = ft_strjoin_char_1(result, i, tmp, str_size);
 		free(tmp);
 		curr = curr->next;
 		buff_size -= str_size;
@@ -132,45 +67,27 @@ t_curr	*ft_print_folder(t_curr *curr, t_count *count, int buff_size)
 	return (curr);
 }
 
-void totl(t_count *count)
-{
-    write(1, "total ", 6);
-    ft_putnbr(count->total);
-    write(1, "\n", 1);
-}
-
 int		ft_print(t_curr *curr_dir, t_fl *fl)
 {
 	t_count *count;
-	t_curr	*curr;
 	int		buff_size;
 	int		check;
 
 	check = 0;
 	if (!curr_dir)
 		return (0);
-	curr = curr_dir;
 	if (!(count = ft_count_s(curr_dir, fl->l)))
 		return (-1);
 	if (fl->l == 1)
 	{
-        if (fl->prev == 2)
-            totl(count);
-        if (count->maj == -1)
-        	count->maj = 0;
-		buff_size = ft_size_dirr(&curr) * (32 + count->maj + count->s_links +
-	count->s_user + count->s_groop + count->s_size + count->s_name);
-		//printf("buff_size = %i\n", buff_size);
-		if (buff_size > 500)
-			buff_size = 1000;
-		while (curr)
-		{
-			curr = ft_print_folder(curr, count, buff_size);
-		//	printf("\n");
-		}
+		if (fl->prev == 2)
+			total(count);
+		buff_size = ft_buff_size(curr_dir, count);
+		while (curr_dir)
+			curr_dir = ft_print_folder(curr_dir, count, buff_size);
 	}
 	else
-		check = ft_print_column(curr, count);
+		check = ft_print_column(curr_dir, count);
 	free(count);
 	return (check);
 }
