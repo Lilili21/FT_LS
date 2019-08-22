@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "lsft.h"
-#include <stdio.h>
 
 int		ft_strjoin_space(char *result, int i, int space_number)
 {
