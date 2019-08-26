@@ -37,7 +37,7 @@ char	*ft_fill_str(t_curr *curr, int size, t_count *count_col)
 	return (result);
 }
 
-t_curr	*ft_print_folder(t_curr *curr, t_count *count, int buff_size)
+int		ft_print_folder(t_curr **curr, t_count *count, int buff_size)
 {
 	char	*result;
 	char	*tmp;
@@ -46,24 +46,24 @@ t_curr	*ft_print_folder(t_curr *curr, t_count *count, int buff_size)
 
 	i = 0;
 	if (!(result = ft_strnew(buff_size)))
-		return (ft_mistake(NULL));
-	while (curr)
+		return (-1);
+	while (*curr)
 	{
 		str_size = 32 + count->maj + count->s_links + count->s_user +
-			count->s_groop + count->s_size + ft_strlen(curr->name);
+			count->s_groop + count->s_size + ft_strlen((*curr)->name);
 		if (buff_size - str_size < 0)
 			break ;
-		if (!(tmp = ft_fill_str(curr, str_size, count)))
+		if (!(tmp = ft_fill_str(*curr, str_size, count)))
 			return (ft_mistake(result));
 		i = ft_strjoin_char_1(result, i, tmp, str_size);
 		free(tmp);
-		curr = curr->next;
+		*curr = (*curr)->next;
 		buff_size -= str_size;
 	}
 	result[i] = '\0';
 	write(1, result, ft_strlen(result));
 	free(result);
-	return (curr);
+	return (0);
 }
 
 int		ft_print(t_curr *curr_dir, t_fl *fl)
@@ -82,8 +82,8 @@ int		ft_print(t_curr *curr_dir, t_fl *fl)
 		if (fl->prev == 2)
 			total(count);
 		buff_size = ft_buff_size(curr_dir, count);
-		while (curr_dir)
-			curr_dir = ft_print_folder(curr_dir, count, buff_size);
+		while (curr_dir && check == 0)
+			check = ft_print_folder(&curr_dir, count, buff_size);
 	}
 	else
 		check = ft_print_column(curr_dir, count);

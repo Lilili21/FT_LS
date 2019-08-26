@@ -122,8 +122,8 @@ int		main(int ac, char **av)
 	ac = 0;
 	flags(0, &fl, 0);
 	flags_n_sort(av, &que, &cur, &fl);
-	if (cur)
-		ft_print(cur, fl);
+	if (cur && ft_print(cur, fl))
+		del_me(&que, &cur, &fl, 12);
 	if (que)
 		fl->prev = 4;
 	if (cur)

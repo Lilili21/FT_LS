@@ -12,12 +12,11 @@
 
 #include "lsft.h"
 
-void		*ft_mistake(char *result)
+int		ft_mistake(char *result)
 {
 	if (result)
 		free(result);
-	perror("ls: Cannot allocate memory");
-	return (NULL);
+	return (-1);
 }
 
 int			ft_order(int num)

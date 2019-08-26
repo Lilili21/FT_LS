@@ -39,29 +39,29 @@ int		ft_print_column(t_curr	*curr, t_count *count)
 	char			*result;
 	int 			i[3];
 
-	//ioctl(0, TIOCGWINSZ, &w);
-	//column = w.ws_col/(count->s_name + 5);
-	column = 10;
-	str_count = count->s_size / column + 1;
-	new = ft_list_to_char(&curr, count->s_size);
-	i[0] = 0;
-	i[1] = 0;
-	i[2] = 0;
-	result = (char *)malloc((count->s_name + 2) * (count->s_size + 1));
-	while(i[0] < str_count && new[i[2]])
+	ioctl(0, TIOCGWINSZ, &w);
+	column = w.ws_col / (count->s_name + 5);
+	//column = 10; // number of columns
+	str_count = count->s_size / column; // number of lines
+	new = ft_list_to_char(&curr, count->s_size); // array of files to print
+	i[0] = 0; // number of raw
+	i[1] = 0; // place in the result array
+	i[2] = 0; // number from new array
+	result = (char *)malloc(sizeof(char) *  425 * str_count); // w.ws_col * str_count); // result array
+	while(i[0] < str_count + 1 && new[i[2]]) //i0 < number of strings and exist an element to print
 	{
-		i[1] = ft_strjoin_char_2(result, i[1], new[i[2]], count->s_name + 2);
-	//	printf("%s\n", result);
+		i[1] = ft_strjoin_char_2(result, i[1], new[i[2]], count->s_name + 2); //
+		//i[1]++;
 		i[2] += str_count;
-		if ( i[2] % (column - 2) == 0 && i[2] != 0)
+		if ( (i[2] % (column - str_count + 1) == 0 && i[2] != str_count) || !new[i[2]])
 		{
 			result[i[2]] = '\n';
 			i[0]++;
 			i[2] =i[0];
 		}
 	}
+	result[i[1]] = '\0';
 	write(1, result, ft_strlen(result));
-	result[i[2]] = '\0';
 	free(result);
 	return (0);
 }
