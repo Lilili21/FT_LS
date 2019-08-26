@@ -78,8 +78,10 @@ add_executable(ft_ls2
 		src/extra.c
 		src/lists.c
 
-        src/print_data2_n.c
+		src/print_data.c
         src/help_print.c
+		src/help_print2.c
+		src/help_print3.c
 		src/help_parse.c
         src/parse_data.c
 
