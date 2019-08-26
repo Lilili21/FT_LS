@@ -37,31 +37,40 @@ int		ft_print_column(t_curr	*curr, t_count *count)
 	int 			str_count;
 	char			**new;
 	char			*result;
-	int 			i[3];
+	int 			i[4];
 
 	ioctl(0, TIOCGWINSZ, &w);
-	column = w.ws_col / (count->s_name + 5);
-	//column = 10; // number of columns
-	str_count = count->s_size / column; // number of lines
+	column = w.ws_col / (count->s_name + 6);
+	//column = 12; // number of columns
+	if (count->s_size % column == 0)
+		str_count = count->s_size / column; // number of lines
+	else
+		str_count = count->s_size / column + 1;
 	new = ft_list_to_char(&curr, count->s_size); // array of files to print
+	printf("column = %i, str_count = %i\n", column, str_count);
 	i[0] = 0; // number of raw
 	i[1] = 0; // place in the result array
 	i[2] = 0; // number from new array
-	result = (char *)malloc(sizeof(char) *  425 * str_count); // w.ws_col * str_count); // result array
-	while(i[0] < str_count + 1 && new[i[2]]) //i0 < number of strings and exist an element to print
+	i[3] = column;
+	result = (char *)malloc(sizeof(char) * w.ws_col * str_count + 1); // result array
+	while(i[0] < str_count && new[i[2]]) //i0 < number of strings and exist an element to print
 	{
 		i[1] = ft_strjoin_char_2(result, i[1], new[i[2]], count->s_name + 2); //
-		//i[1]++;
+		//printf("i[3] =  %i, i[2] = %i i[1] = %i result[i[1]] = %s\n",i[3], i[2], i[1], result);
+		i[3]--;
 		i[2] += str_count;
-		if ( (i[2] % (column - str_count + 1) == 0 && i[2] != str_count) || !new[i[2]])
+		if (i[3] == 0 || i[2] > count->s_size)
 		{
-			result[i[2]] = '\n';
+			//printf("strcount = %i, i2 = %i\n", str_count, i[2]);
+			result[i[1]++] = '\n';
 			i[0]++;
-			i[2] =i[0];
+			i[2] = i[0];
+			i[3] = column;
 		}
 	}
 	result[i[1]] = '\0';
 	write(1, result, ft_strlen(result));
+	ft_memdel((void**)new);
 	free(result);
 	return (0);
 }
