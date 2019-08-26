@@ -127,9 +127,9 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 		return (0);
 	p = (path) ? ft_strjoin(path, d_name) : d_name;
 	new->type = parse_type(new, p);
-	if (new->type != 'l')
+	if (new->type != 'l' || (*fl)->l != 1)
 		new->name = ft_strdup(d_name);
-	else //for -> link... (ls -l /dev *PROBLEM WITH "stdin -> f" instead of "stdin ->  fd/0"
+	else
 	{
 		tmp = ft_strjoin(d_name, " -> ");
 		link = (char*)malloc(sizeof(char) * PATH_MAX);

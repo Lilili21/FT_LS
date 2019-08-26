@@ -27,7 +27,7 @@ char	*ft_fill_str(t_curr *curr, int size, t_count *count_col)
 	char	*result;
 	int		i;
 
-	i = -1;
+	i = 0;
 	if (!(result = ft_strnew(size)))
 		return (NULL);
 	i = ft_fill_str1(curr, count_col, i, result);

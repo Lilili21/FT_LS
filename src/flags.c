@@ -62,7 +62,7 @@ int		flag_parse(int ac, int j, char **av, t_fl **fl)
 			ft_putchar_fd(av[ac][j], 2);
 			ft_putendl_fd("\nusage: ls [-Ralrt] [file ...]", 2);
 			free(*fl);
-			exit(0);
+			exit(1);
 		}
 	}
 	return (ac);

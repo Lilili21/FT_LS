@@ -73,9 +73,9 @@ int		to_list(t_q **que, char *av)
 		return (-1);
 	}
 	qu->compare_date = st.st_mtimespec.tv_sec;
-	qu->next = 0;
-	if (!(qu->abspath = ft_strdup(av)))
-	{
+		qu->next = 0;
+		if (!(qu->abspath = ft_strdup(av)))
+		{
 		ft_putendl_fd("ls: Cannot allocate memory.", 2);
 		free(qu);
 		return (-1);
