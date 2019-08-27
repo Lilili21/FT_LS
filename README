@@ -46,3 +46,7 @@ $ git checkout lilili21 includes/lsft.h README fimain.c
 $ git add, git commit
 :)
 
+
+need to check:
+folder -a should be like a flag and if // -a(folder) it should be a folder
+to write in a file by default it should be one column.
