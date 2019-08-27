@@ -50,3 +50,4 @@ $ git add, git commit
 need to check:
 folder -a should be like a flag and if // -a(folder) it should be a folder
 to write in a file by default it should be one column.
+check the future files

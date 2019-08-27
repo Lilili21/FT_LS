@@ -85,6 +85,8 @@ int		ft_print(t_curr *curr_dir, t_fl *fl)
 		while (curr_dir && check == 0)
 			check = ft_print_folder(&curr_dir, count, buff_size);
 	}
+	else if (fl->c == 1)
+		check = ft_print_column2(curr_dir, count);
 	else
 		check = ft_print_column(curr_dir, count);
 	free(count);

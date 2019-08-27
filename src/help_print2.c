@@ -21,8 +21,9 @@ char	**ft_list_to_char(t_curr **curr_dir, int size)
 
 	i = -1;
 	current = *curr_dir;
-	sort = malloc(sizeof(char *) * size);
-	while (++i < size + 1)
+	sort = (char**)malloc(sizeof(char *) * size);
+	sort[size] = 0;
+	while (++i < size)
 	{
 		sort[i] = ft_strdup(current->name);
 		current = current->next;
@@ -30,125 +31,65 @@ char	**ft_list_to_char(t_curr **curr_dir, int size)
 	return (sort);
 }
 
-int		ft_print_column(t_curr	*curr, t_count *count)
+int		ft_check_eight(int number)
 {
-	struct winsize	w;
-	int 			column; //column wide
-	int 			str_count;
-	char			**new;
-	char			*result;
-	int 			i[4];
+	if (number % 8 == 0)
+		return (number + 8);
+	else
+		while (number % 8 != 0)
+			number++;
+	return (number);
+}
 
-	ioctl(0, TIOCGWINSZ, &w);
-	column = w.ws_col / (count->s_name + 6);
-	str_count = (count->s_size % column == 0) ? count->s_size / column :
-			count->s_size / column + 1;
-	new = ft_list_to_char(&curr, count->s_size);
+void	ft_fill_result(char *result, char **new, int *param)
+{
+	int	i[4];
+
 	i[0] = 0;
 	i[1] = 0;
 	i[2] = 0;
-	i[3] = column;
-	if (!(result = (char *)malloc(sizeof(char) * w.ws_col * str_count + 1)))
-		return (-1);
-	while(i[0] < str_count && new[i[2]])
+	i[3] = param[2];
+	while (i[0] < param[3] && new[i[2]])
 	{
-		i[1] = ft_strjoin_char_2(result, i[1], new[i[2]], count->s_name + 2);
+		i[1] = ft_strjoin_char_2(result, i[1], new[i[2]], param[0]);
+		ft_strdel(&new[i[2]]);
 		i[3]--;
-		i[2] += str_count;
-		if (i[3] == 0 || i[2] > count->s_size)
+		i[2] += param[3];
+		if (i[1] > param[1] * (i[0] + 1))
+			while (result[i[1]] == ' ' && i[1] > param[1] * (i[0] + 1))
+				i[1]--;
+		if (i[3] == 0 || i[2] > param[4] - 1)
 		{
 			result[i[1]++] = '\n';
 			i[0]++;
 			i[2] = i[0];
-			i[3] = column;
+			i[3] = param[2];
 		}
 	}
 	result[i[1]] = '\0';
+}
+
+int		ft_print_column(t_curr *curr, t_count *count)
+{
+	struct winsize	w;
+	int				param[5];
+	char			**new;
+	char			*result;
+
+	ioctl(0, TIOCGWINSZ, &w);
+	param[0] = ft_check_eight(count->s_name);
+	param[1] = w.ws_col;
+	param[2] = (param[1] > 0 && (param[1] / param[0]) > 0) ?
+			param[1] / param[0] : 1;
+	param[3] = (count->s_size % param[2] == 0) ? count->s_size / param[2] :
+			count->s_size / param[2] + 1;
+	param[4] = count->s_size;
+	new = ft_list_to_char(&curr, count->s_size);
+	if (!(result = (char *)malloc(sizeof(char) * (param[1] * param[2] + 1))))
+		return (-1);
+	ft_fill_result(result, new, param);
 	write(1, result, ft_strlen(result));
-	ft_memdel((void**)new);
 	free(new);
 	free(result);
 	return (0);
-}
-
-void	total(t_count *count)
-{
-	write(1, "total ", 6);
-	ft_putnbr(count->total);
-	write(1, "\n", 1);
-}
-
-int		ft_buff_size(t_curr *curr_dir, t_count *count)
-{
-	int		buff_size;
-
-	buff_size = ft_size_dirr(&curr_dir) * (32 + count->maj + count->s_links +
-										   count->s_user + count->s_groop + count->s_size + count->s_name);
-	if (buff_size > 500)
-		buff_size = 1000;
-	return (buff_size);
-}
-
-int		ft_print_column2(t_curr *curr, t_count *count)
-{
-	char	*print;
-	int		i;
-
-	if (!(print = ft_strnew(count->total)))
-		return (-1);
-	i = 0;
-	while (curr)
-	{
-		i = ft_strjoin_char_0(print, i, curr->name, ft_strlen(curr->name));
-		print[i++] = '\n';
-		curr = curr->next;
-	}
-	print[i] = '\0';
-	ft_putstr(print);
-	free(print);
-	return (0);
-}
-
-int		ft_fill_str1(t_curr *curr, t_count *count_col, int i, char *result)
-{
-	char	*tmp;
-
-	i = ft_strjoin_char_1(result, i, curr->rights, ft_strlen(curr->rights));
-	result[i] = curr->symb;
-	i = ft_strjoin_space(result, ++i, 2);
-	tmp = ft_itoa(curr->links);
-	i = ft_strjoin_char_0(result, i, tmp, count_col->s_links);
-	free(tmp);
-	i = ft_strjoin_space(result, i, 2);
-	i = ft_strjoin_char_2(result, i, curr->user, count_col->s_user);
-	i = ft_strjoin_space(result, i, 3);
-	i = ft_strjoin_char_2(result, i, curr->groop, count_col->s_groop);
-	i = ft_strjoin_space(result, i, 3);
-	return (i);
-}
-
-int		ft_fill_str2(t_curr *curr, t_count *count_col, int i, char *result)
-{
-	char	*tmp;
-
-	if (curr->type == 'b' || curr->type == 'c')
-	{
-		tmp = ft_itoa(curr->maj);
-		tmp = ft_sfstrjoin(&tmp, ",");
-		i = ft_strjoin_char_0(result, i, tmp, count_col->maj);
-		free(tmp);
-		i = ft_strjoin_space(result, i, 2);
-	}
-	else if (count_col->maj > 0)
-		i = ft_strjoin_space(result, i, count_col->maj + 2);
-	else
-		ft_strjoin_char_0(result, i, 0, count_col->maj);
-	tmp = ft_itoa(curr->size);
-	i = ft_strjoin_char_0(result, i, tmp, count_col->s_size);
-	free(tmp);
-	i = ft_strjoin_space(result, i, 1);
-	i = ft_strjoin_char_0(result, i, curr->print_date, 13);
-	i = ft_strjoin_space(result, i, 2);
-	i = ft_strjoin_char_0(result, i, curr->name, ft_strlen(curr->name));
-	return (i);
 }

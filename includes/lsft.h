@@ -40,6 +40,7 @@ typedef struct	s_fl
 	char	l;
 	int		r;
 	char	t;
+	char 	c;
 	int		prev;
 }				t_fl;
 
@@ -125,7 +126,8 @@ int		ft_buff_size(t_curr *curr_dir, t_count *count);
 void	total(t_count *count);
 int		ft_fill_str1(t_curr *curr, t_count *count_col, int i, char *result);
 int		ft_fill_str2(t_curr *curr, t_count *count_col, int i, char *result);
-
+int		ft_print_column2(t_curr *curr, t_count *count);
+void 	ft_parse_flags_null(t_fl *fl);
 #endif
 
 //man for dir stat https://www.ibm.com/developerworks/ru/library/au-unix-readdir/index.html

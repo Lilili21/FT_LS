@@ -157,3 +157,14 @@ void	ft_free(t_curr **curr, char **av)
 		(*curr) = tmp;
 	}
 }
+
+void	ft_parse_flags_null(t_fl *fl)
+{
+	fl->rr = 0;
+	fl->a = 0;
+	fl->l = 0;
+	fl->r = -1;
+	fl->t = 0;
+	fl->c = 0;
+	fl->prev = 0;
+}

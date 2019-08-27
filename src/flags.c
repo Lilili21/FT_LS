@@ -26,6 +26,8 @@ void	flags(char av, t_fl **fl, int i)
 			(*fl)->t = 1;
 		if (av == 'r')
 			(*fl)->r = 1;
+		if (av == '1')
+			(*fl)->c = 1;
 		return ;
 	}
 	if (!((*fl) = (t_fl*)malloc(sizeof(t_fl))))
@@ -33,12 +35,7 @@ void	flags(char av, t_fl **fl, int i)
 		ft_putendl_fd("ls: Cannot allocate memory.", 2);
 		exit(0);
 	}
-	(*fl)->rr = 0;
-	(*fl)->a = 0;
-	(*fl)->l = 0;
-	(*fl)->r = -1;
-	(*fl)->t = 0;
-	(*fl)->prev = 0;
+	ft_parse_flags_null(*fl);
 }
 
 int		flag_parse(int ac, int j, char **av, t_fl **fl)
@@ -48,10 +45,11 @@ int		flag_parse(int ac, int j, char **av, t_fl **fl)
 		if (!av[ac][j])
 			return (ac);
 		else if (av[ac][j] == 'l' || av[ac][j] == 'a' || av[ac][j] == 'R' ||
-			av[ac][j] == 't' || av[ac][j] == 'r')
+			av[ac][j] == 't' || av[ac][j] == 'r' || av[ac][j] == '1')
 		{
 			while (av[ac][j] && (av[ac][j] == 'l' || av[ac][j] == 'a' ||
-			av[ac][j] == 'R' || av[ac][j] == 't' || av[ac][j] == 'r'))
+			av[ac][j] == 'R' || av[ac][j] == 't' || av[ac][j] == 'r' ||
+			av[ac][j] == '1'))
 				flags(av[ac][j++], fl, 1);
 			if (!(av[ac][j]) && !(j = 0))
 				continue ;

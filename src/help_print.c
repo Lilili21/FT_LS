@@ -12,7 +12,7 @@
 
 #include "lsft.h"
 
-int		ft_mistake(char *result)
+int			ft_mistake(char *result)
 {
 	if (result)
 		free(result);
@@ -46,7 +46,7 @@ void		ft_m_s(t_count *m_s)
 	m_s->s_links = 0;
 	m_s->s_user = 0;
 	m_s->s_groop = 0;
-	m_s->s_size = -1;
+	m_s->s_size = 0;
 	m_s->total = 0;
 	m_s->s_name = 0;
 	m_s->maj = 0;
