@@ -21,11 +21,11 @@ char	**ft_list_to_char(t_curr **curr_dir, int size)
 
 	i = -1;
 	current = *curr_dir;
-	sort = (char**)malloc(sizeof(char *) * size);
+	sort = (char**)malloc(sizeof(char *) * (size + 1)); //add check to NULL
 	sort[size] = 0;
 	while (++i < size)
 	{
-		sort[i] = ft_strdup(current->name);
+		sort[i] = ft_strdup(current->name); //add check to NULL
 		current = current->next;
 	}
 	return (sort);
@@ -60,6 +60,7 @@ void	ft_fill_result(char *result, char **new, int *param)
 				i[1]--;
 		if (i[3] == 0 || i[2] > param[4] - 1)
 		{
+			//printf("i[1] = %i\n", i[1]);
 			result[i[1]++] = '\n';
 			i[0]++;
 			i[2] = i[0];
@@ -78,18 +79,19 @@ int		ft_print_column(t_curr *curr, t_count *count)
 
 	ioctl(0, TIOCGWINSZ, &w);
 	param[0] = ft_check_eight(count->s_name);
-	param[1] = w.ws_col;
+	param[1] = w.ws_col; //width
 	param[2] = (param[1] > 0 && (param[1] / param[0]) > 0) ?
-			param[1] / param[0] : 1;
+			param[1] / param[0] : 1;  // number of columns
 	param[3] = (count->s_size % param[2] == 0) ? count->s_size / param[2] :
-			count->s_size / param[2] + 1;
-	param[4] = count->s_size;
+			count->s_size / param[2] + 1; // number of lines
+	param[4] = count->s_size; //number of elements
 	new = ft_list_to_char(&curr, count->s_size);
-	if (!(result = (char *)malloc(sizeof(char) * (param[1] * param[2] + 1))))
+	if (!(result = (char *)malloc(sizeof(char) * (param[1] * param[3] + 1))))
 		return (-1);
 	ft_fill_result(result, new, param);
 	ft_putstr(result);
-	free(new);
+	if (new)
+		free(new);
 	free(result);
 	return (0);
 }

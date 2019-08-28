@@ -27,7 +27,7 @@
 # include <fcntl.h>
 # include <sys/acl.h>
 # include <sys/xattr.h>
-#include <sys/ioctl.h>
+# include <sys/ioctl.h>
 
 # define CHECKM(x, fd) if ((x)) fd
 # define CHKMR(x) if ((x)) return (-1)
@@ -40,15 +40,15 @@ typedef struct	s_fl
 	char	l;
 	int		r;
 	char	t;
-	char 	c;
+	char	c;
 	int		prev;
 }				t_fl;
 
 typedef struct	s_q
 {
-	char		*abspath;
-	int     	compare_date;
-	struct s_q	*next;
+	char			*abspath;
+	int     		compare_date;
+	struct s_q		*next;
 }				t_q;
 
 typedef struct	s_err
@@ -130,23 +130,3 @@ int		ft_fill_str2(t_curr *curr, t_count *count_col, int i, char *result);
 void 	ft_parse_flags_null(t_fl *fl);
 int		*ft_fill_date(char **time);
 #endif
-
-//man for dir stat https://www.ibm.com/developerworks/ru/library/au-unix-readdir/index.html
-// -R -l -a -r -t
-/*
- * R Включить рекурсивную выдачу списка каталогов
- *
- * a Включать в список файлы с именем, начинающимся с `.'.
- *
- * l Выдавать (в одноколоночном формате) тип файла, права доступа к файлу, количество ссылок на файл, имя владельца, имя группы, размер файла (в байтах), временной штамп и имя файла.
- * 	Типы файлов могут принимать следующие значения: - для обычного файла, d для каталога, b для блочного устройства, c для символьного устройства, l для символической ссылки, p для FIFO и s для гнезда (socket).
- * 	По умолчанию, временной штамп является временем последней модификации; опции -c и -u позволяют выбрать два других временных штампа. Для файлов устройств, поле размера обычно заменяется на старший и младший номера устройства.
- *
- * r Производить сортировку в обратном порядке.
- *
- * t Сортировать по показываемому временному штампу.
- *
- * rt Обратная сортировка по времени
- *
- * c Вывод в 1 столбец
- */

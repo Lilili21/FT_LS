@@ -27,7 +27,7 @@ int		ft_buff_size(t_curr *curr_dir, t_count *count)
 	buff_size = ft_size_dirr(&curr_dir) * (32 + count->maj + count->s_links +
 			count->s_user + count->s_groop + count->s_size + count->s_name);
 	if (buff_size > 500)
-		buff_size = 1000;
+		buff_size = 500;
 	return (buff_size);
 }
 

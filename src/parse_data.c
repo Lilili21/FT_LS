@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "lsft.h"
 
 int		parse_rights(t_curr *new, char *d_name)
@@ -63,6 +64,8 @@ int		parse_date(t_curr *new, char *d_name, t_fl **fl)
 				cur_time_i[1]) > 6) || ((now_time_i[1] - cur_time_i[1]) == 6 && (now_time_i[2] -
 				cur_time_i[2]) > 0)) ? formatdate(tmp, 1) : formatdate(tmp, 0);
 		ft_strdl2(tmp);
+		free(cur_time_i);
+		free(now_time_i);
 	}
 	return (0);
 }
@@ -137,7 +140,7 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 		else
 		{
 			perror("ls: ");
-			//free all malloc staff
+			//free: new, "p", new->name, tmp, link,
 			return (-1);
 		}
 		new->name = ft_strjoin(tmp, link);
