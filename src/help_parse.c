@@ -12,12 +12,6 @@
 
 #include "lsft.h"
 
-void	ft_strdl2(char **tmp)
-{
-	ft_strdl(tmp);
-	free(tmp);
-}
-
 int		type_check(char c)
 {
 	if (c == 'b' || c == 'c')
@@ -90,4 +84,9 @@ int		*ft_fill_date(char **time)
 	else
 		result[1] = 12;
 	return (result);
+}
+
+int 	ft_new_curr_part()
+{
+	return (-1)
 }

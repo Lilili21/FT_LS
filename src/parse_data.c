@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "lsft.h"
 
 int		parse_rights(t_curr *new, char *d_name)
@@ -127,10 +126,23 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 	p = NULL;
 	if (!(new = (t_curr *)malloc(sizeof(t_curr))))
 		return (0);
-	p = (path) ? ft_strjoin(path, d_name) : d_name;
+	if (path)
+	{
+		p = ft_strjoin(path, d_name);
+		if (!p)
+		{
+			free(new);
+			return (-1);
+		}
+	}
+	else
+		p = d_name;
 	new->type = parse_type(new, p);
 	if (new->type != 'l' || (*fl)->l != 1)
-		new->name = ft_strdup(d_name);
+	{
+		if (!(new->name = ft_strdup(d_name))
+			free(new->name);
+	}
 	else
 	{
 		tmp = ft_strjoin(d_name, " -> ");
@@ -140,7 +152,17 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 		else
 		{
 			perror("ls: ");
-			//free: new, "p", new->name, tmp, link,
+			if (free(p);
+			free(new->name);
+			free(tmp);
+			free(link);
+			if ((*fl)->l == 1)
+			{
+				free(new->print_date);
+				free(new->groop);
+				free(new->user);
+				free(new->rights);
+			}
 			return (-1);
 		}
 		new->name = ft_strjoin(tmp, link);

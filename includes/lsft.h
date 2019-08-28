@@ -12,6 +12,7 @@
 
 #ifndef LSFT_H
 # define LSFT_H
+
 # include "libft.h"
 # include <dirent.h>
 # include <stdlib.h>
@@ -46,9 +47,9 @@ typedef struct	s_fl
 
 typedef struct	s_q
 {
-	char			*abspath;
-	int     		compare_date;
-	struct s_q		*next;
+	char		*abspath;
+	int			compare_date;
+	struct s_q	*next;
 }				t_q;
 
 typedef struct	s_err
@@ -58,30 +59,30 @@ typedef struct	s_err
 	struct s_err	*next;
 }				t_err;
 
-typedef	struct s_curr
+typedef	struct	s_curr
 {
-	char		type;
-	char 		symb;
-	char		*rights;
-	int			links;
-	char		*user;
-	char		*groop;
-	int 		size;
-	int			maj;
-	char		*print_date;
-    char 		*name;
-    int 		s_total;
-	int     	check_folder;
-	int     	compare_date;
-	struct s_curr *next;
+	char			type;
+	char			symb;
+	char			*rights;
+	int				links;
+	char			*user;
+	char			*groop;
+	int				size;
+	int				maj;
+	char			*print_date;
+	char			*name;
+	int				s_total;
+	int				check_folder;
+	int				compare_date;
+	struct s_curr	*next;
 }				t_curr;
 
-typedef struct s_count
+typedef struct	s_count
 {
 	size_t		s_name;
-	int 		s_links;
-	int 		s_user;
-	int 		s_groop;
+	int			s_links;
+	int			s_user;
+	int			s_groop;
 	int			s_size;
 	int			maj;
 	size_t		total;
@@ -94,7 +95,7 @@ int		er_l(t_err **err, char *av, char *er, t_fl **fl);
 int		to_list(t_q **que, char *av);
 void	err_end(t_err **st, t_err *er);
 void	que_end(t_q **st, t_q *qu);
-int  	print_err(t_err **err, t_fl **fl);
+int		print_err(t_err **err, t_fl **fl);
 int		erp(char *av, char *er);
 void	del_node(t_q **que);
 void	ft_merge_sort_q(t_q **que, t_fl *fl);
@@ -127,6 +128,7 @@ void	total(t_count *count);
 int		ft_print_column2(t_curr *curr, t_count *count);
 int		ft_fill_str1(t_curr *curr, t_count *count_col, int i, char *result);
 int		ft_fill_str2(t_curr *curr, t_count *count_col, int i, char *result);
-void 	ft_parse_flags_null(t_fl *fl);
+void	ft_parse_flags_null(t_fl *fl);
 int		*ft_fill_date(char **time);
+int 	ft_new_curr_part();
 #endif

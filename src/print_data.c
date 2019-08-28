@@ -81,9 +81,7 @@ int		ft_print(t_curr *curr_dir, t_fl *fl)
 	{
 		if (fl->prev == 2)
 			total(count);
-		//buff_size = ft_buff_size(curr_dir, count);
-		buff_size = ft_size_dirr(&curr_dir) * (32 + count->maj + count->s_links +
-								   count->s_user + count->s_groop + count->s_size + count->s_name);
+		buff_size = ft_buff_size(curr_dir, count);
 		while (curr_dir && check == 0)
 			check = ft_print_folder(&curr_dir, count, buff_size);
 	}

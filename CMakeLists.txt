@@ -76,7 +76,9 @@ add_executable(ft_ls2
 		src/fimain.c
 		src/flags.c
 		src/extra.c
+		src/extra2.c
 		src/lists.c
+
 
 		src/print_data.c
         src/help_print.c
