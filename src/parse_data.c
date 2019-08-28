@@ -124,24 +124,27 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 	char		*link;
 
 	p = NULL;
+	link = NULL;
 	if (!(new = (t_curr *)malloc(sizeof(t_curr))))
 		return (0);
 	if (path)
 	{
-		p = ft_strjoin(path, d_name);
-		if (!p)
-		{
-			free(new);
-			return (-1);
-		}
+		if (!(p = ft_strjoin(path, d_name)))
+			return (ft_clr(new, link, p, 0));
 	}
 	else
 		p = d_name;
 	new->type = parse_type(new, p);
 	if (new->type != 'l' || (*fl)->l != 1)
 	{
-		if (!(new->name = ft_strdup(d_name))
+		if (!(new->name = ft_strdup(d_name)))
+		{
 			free(new->name);
+			free(new);
+			if (path)
+				free(p);
+			return (-1);
+		}
 	}
 	else
 	{
@@ -152,17 +155,12 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 		else
 		{
 			perror("ls: ");
-			if (free(p);
+			if (path)
+				free(p);
 			free(new->name);
-			free(tmp);
+			free(new);
 			free(link);
-			if ((*fl)->l == 1)
-			{
-				free(new->print_date);
-				free(new->groop);
-				free(new->user);
-				free(new->rights);
-			}
+			free(tmp);
 			return (-1);
 		}
 		new->name = ft_strjoin(tmp, link);
