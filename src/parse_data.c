@@ -44,8 +44,8 @@ int		parse_date(t_curr *new, char *d_name, t_fl **fl)
 	struct stat	st;
 	char		**tmp;
 	time_t		now;
-	struct tm	*tim;
-	int			eh[3];
+	int			*cur_time_i;
+	int			*now_time_i;
 
 	if (lstat(d_name, &st))
 		return (errno);
@@ -53,16 +53,15 @@ int		parse_date(t_curr *new, char *d_name, t_fl **fl)
 		new->compare_date = st.st_mtimespec.tv_sec;
 	if ((*fl)->l == 1)
 	{
-		tmp = ft_strsplit(ctime(&st.st_mtime), ' ');
 		now = time(0);
-		tim = localtime(&now);
-		eh[0] = tim->tm_year;
-		eh[1] = tim->tm_mon;
-		eh[2] = tim->tm_mday;
-		tim = localtime(&st.st_mtime);
-		new->print_date = ((eh[0] > tim->tm_year) || ((eh[1] -
-			tim->tm_mon) > 6) || ((eh[1] - tim->tm_mon) == 6 && (eh[2] -
-			tim->tm_mday) > 0)) ? formatdate(tmp, 1) : formatdate(tmp, 0);
+		tmp = ft_strsplit(ctime(&now), ' ');
+		now_time_i = ft_fill_date(tmp);
+		ft_strdl2(tmp);
+		tmp = ft_strsplit(ctime(&st.st_mtime), ' ');
+		cur_time_i = ft_fill_date(tmp);
+		new->print_date = ((now_time_i[0] > cur_time_i[0]) || ((now_time_i[1] -
+				cur_time_i[1]) > 6) || ((now_time_i[1] - cur_time_i[1]) == 6 && (now_time_i[2] -
+				cur_time_i[2]) > 0)) ? formatdate(tmp, 1) : formatdate(tmp, 0);
 		ft_strdl2(tmp);
 	}
 	return (0);

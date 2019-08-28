@@ -63,3 +63,31 @@ char	*formatdate(char **str, int check)
 	result[i] = '\0';
 	return (result);
 }
+
+int		*ft_fill_date(char **time)
+{
+	int	*result;
+
+	result = (int *)malloc(sizeof(int) * 3);
+	result[0] = ft_atoi(time[4]);
+	result[2] = ft_atoi(time[2]);
+	if (ft_strequ(time[1], "Jan") || ft_strequ(time[1], "Feb"))
+		result[1] = ft_strequ(time[1], "Jan") ? 1 : 2;
+	else if (ft_strequ(time[1], "Mar") || ft_strequ(time[1], "Apr"))
+		result[1] = ft_strequ(time[1], "Mar") ? 3 : 4;
+	else if (ft_strequ(time[1], "May") || ft_strequ(time[1], "Jun"))
+		result[1] = ft_strequ(time[1], "May") ? 5 : 6;
+	else if (ft_strequ(time[1], "Jul"))
+		result[1] = 7;
+	else if (ft_strequ(time[1], "Aug"))
+		result[1] = 8;
+	else if (ft_strequ(time[1], "Sept"))
+		result[1] = 9;
+	else if (ft_strequ(time[1], "Oct"))
+		result[1] = 10;
+	else if (ft_strequ(time[1], "Nov"))
+		result[1] = 11;
+	else
+		result[1] = 12;
+	return (result);
+}

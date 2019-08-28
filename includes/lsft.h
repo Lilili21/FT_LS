@@ -124,10 +124,11 @@ int		type_check(char c);
 void	ft_strdl2(char **tmp);
 int		ft_buff_size(t_curr *curr_dir, t_count *count);
 void	total(t_count *count);
+int		ft_print_column2(t_curr *curr, t_count *count);
 int		ft_fill_str1(t_curr *curr, t_count *count_col, int i, char *result);
 int		ft_fill_str2(t_curr *curr, t_count *count_col, int i, char *result);
-int		ft_print_column2(t_curr *curr, t_count *count);
 void 	ft_parse_flags_null(t_fl *fl);
+int		*ft_fill_date(char **time);
 #endif
 
 //man for dir stat https://www.ibm.com/developerworks/ru/library/au-unix-readdir/index.html
@@ -146,4 +147,6 @@ void 	ft_parse_flags_null(t_fl *fl);
  * t Сортировать по показываемому временному штампу.
  *
  * rt Обратная сортировка по времени
+ *
+ * c Вывод в 1 столбец
  */

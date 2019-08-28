@@ -88,7 +88,7 @@ int		ft_print_column(t_curr *curr, t_count *count)
 	if (!(result = (char *)malloc(sizeof(char) * (param[1] * param[2] + 1))))
 		return (-1);
 	ft_fill_result(result, new, param);
-	write(1, result, ft_strlen(result));
+	ft_putstr(result);
 	free(new);
 	free(result);
 	return (0);
