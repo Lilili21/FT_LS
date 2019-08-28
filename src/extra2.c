@@ -58,3 +58,9 @@ void	ft_parse_flags_null(t_fl *fl)
 	fl->c = 0;
 	fl->prev = 0;
 }
+
+void	ft_strdl2(char **tmp)
+{
+	ft_strdl(tmp);
+	free(tmp);
+}
