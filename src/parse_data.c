@@ -12,77 +12,65 @@
 
 #include "lsft.h"
 
-int		parse_rights(t_curr *new, char *d_name)
+int		parse_name(t_curr *new, char *d_name, char *p, t_fl **fl)
 {
-	struct stat	st;
+	char	*tmp;
+	char	*link;
+	int		status;
 
-	if (lstat(d_name, &st))
-		return (errno);
-	new->links = st.st_nlink;
-	new->size = type_check(new->type) ? minor(st.st_rdev) : st.st_size;
-	new->maj = type_check(new->type) ? major(st.st_rdev) : -1;
-	new->user = ft_strdup(getpwuid(st.st_uid)->pw_name);
-	new->groop = ft_strdup(getgrgid(st.st_gid)->gr_name);
-	new->s_total = st.st_blocks;
-	new->rights = (char *)malloc(sizeof(char) * 11);
-	new->rights[0] = (new->type == 'f') ? '-' : new->type;
-	new->rights[1] = (st.st_mode & S_IRUSR) ? 'r' : '-';
-	new->rights[2] = (st.st_mode & S_IWUSR) ? 'w' : '-';
-	new->rights[3] = (st.st_mode & S_IXUSR) ? 'x' : '-';
-	new->rights[4] = (st.st_mode & S_IRGRP) ? 'r' : '-';
-	new->rights[5] = (st.st_mode & S_IWGRP) ? 'w' : '-';
-	new->rights[6] = (st.st_mode & S_IXGRP) ? 'x' : '-';
-	new->rights[7] = (st.st_mode & S_IROTH) ? 'r' : '-';
-	new->rights[8] = (st.st_mode & S_IWOTH) ? 'w' : '-';
-	new->rights[9] = (st.st_mode & S_IXOTH) ? 'x' : '-';
-	new->rights[10] = '\0';
+	if (new->type != 'l' || (*fl)->l != 1)
+	{
+		if (!(new->name = ft_strdup(d_name)))
+			return (ft_er3(d_name, p, &new));
+		return (0);
+	}
+	if (!(tmp = ft_strjoin(d_name, " -> ")))
+		return (ft_er3(d_name, p, &new));
+	if (!(link = (char*)malloc(sizeof(char) * PATH_MAX)))
+	{
+		free(tmp);
+		return (ft_er3(d_name, p, &new));
+	}
+	if ((status = readlink(p, link, PATH_MAX - 1)) > 0)
+		link[status] = '\0';
+	new->name = ft_strjoin(tmp, link);
+	free(tmp);
+	free(link);
+	if (!new->name)
+		return (ft_er3(d_name, p, &new));
 	return (0);
 }
 
-int		parse_date(t_curr *new, char *d_name, t_fl **fl)
+int		parse_date(t_curr *new, t_fl **fl, struct stat st)
 {
-	struct stat	st;
 	char		**tmp;
 	time_t		now;
-	int			*cur_time_i;
-	int			*now_time_i;
+	int			*c_time;
+	int			*n_time;
 
-	if (lstat(d_name, &st))
-		return (errno);
 	if ((*fl)->t == 1)
 		new->compare_date = st.st_mtimespec.tv_sec;
-	if ((*fl)->l == 1)
-	{
-		now = time(0);
-		tmp = ft_strsplit(ctime(&now), ' ');
-		now_time_i = ft_fill_date(tmp);
-		ft_strdl2(tmp);
-		tmp = ft_strsplit(ctime(&st.st_mtime), ' ');
-		cur_time_i = ft_fill_date(tmp);
-		new->print_date = ((now_time_i[0] > cur_time_i[0]) || ((now_time_i[1] -
-				cur_time_i[1]) > 6) || ((now_time_i[1] - cur_time_i[1]) == 6 && (now_time_i[2] -
-				cur_time_i[2]) > 0)) ? formatdate(tmp, 1) : formatdate(tmp, 0);
-		ft_strdl2(tmp);
-		free(cur_time_i);
-		free(now_time_i);
-	}
+	if ((*fl)->l != 1)
+		return (0);
+	now = time(0);
+	CHECK(tmp = ft_strsplit(ctime(&now), ' '));
+	n_time = ft_fill_date(tmp);
+	ft_strdl2(tmp);
+	CHECK(tmp = ft_strsplit(ctime(&st.st_mtime), ' '));
+	c_time = ft_fill_date(tmp);
+	new->print_date = ((n_time[0] > c_time[0]) || ((n_time[1] - c_time[1]) > 6)
+			|| ((n_time[1] - c_time[1]) == 6 && (n_time[2] - c_time[2]) > 0)) ?
+			formatdate(tmp, 1) : formatdate(tmp, 0);
+	ft_strdl2(tmp);
+	free(c_time);
+	free(n_time);
 	return (0);
 }
 
-char	parse_type(t_curr *new, char *d_name)
+char	parse_type(struct stat	st)
 {
-	struct stat	st;
-
-	if (lstat(d_name, &st))
-	{
-		perror("ls: ");
-		return ('E');
-	}
-	new->check_folder = 0;
 	if (S_ISDIR(st.st_mode) == 1)
-	{
 		return ('d');
-	}
 	else if (S_ISLNK(st.st_mode) == 1)
 		return ('l');
 	else if (S_ISFIFO(st.st_mode) == 1)
@@ -119,63 +107,27 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 {
 	t_curr		*new;
 	char		*p;
-	char		*tmp;
-	int			status;
-	char		*link;
+	struct stat	st;
+	int			check;
 
-	p = NULL;
-	link = NULL;
-	if (!(new = (t_curr *)malloc(sizeof(t_curr))))
-		return (0);
-	if (path)
-	{
-		if (!(p = ft_strjoin(path, d_name)))
-			return (ft_clr(new, link, p, 0));
-	}
-	else
-		p = d_name;
-	new->type = parse_type(new, p);
-	if (new->type != 'l' || (*fl)->l != 1)
-	{
-		if (!(new->name = ft_strdup(d_name)))
-		{
-			free(new->name);
-			free(new);
-			if (path)
-				free(p);
-			return (-1);
-		}
-	}
-	else
-	{
-		tmp = ft_strjoin(d_name, " -> ");
-		link = (char*)malloc(sizeof(char) * PATH_MAX);
-		if ((status = readlink(p, link, PATH_MAX - 1)) > 0)
-			link[status] = '\0';
-		else
-		{
-			perror("ls: ");
-			if (path)
-				free(p);
-			free(new->name);
-			free(new);
-			free(link);
-			free(tmp);
-			return (-1);
-		}
-		new->name = ft_strjoin(tmp, link);
-		free(tmp);
-		free(link);
-	}
+	CHECK(new = (t_curr *)malloc(sizeof(t_curr)));
+	p = (path) ? ft_strjoin(path, d_name) : d_name;
+	if (path && !p)
+		return (ft_er1(&new));
+	if (lstat(p, &st))
+		return (er2(&new, path, p, 0));
+	new->type = parse_type(st);
 	new->symb = ((*fl)->l == 1 ? parse_symb(p) : ' ');
-	if (new->type == 'E')
-		return (0);
-	new->next = NULL;
-	((*fl)->l == 1) ? parse_rights(new, p) : ft_parse_null(new);
-	if ((*fl)->l == 1 || (*fl)->t == 1)
-		parse_date(new, p, fl);
-	if (path)
-		free(p);
+	if ((parse_name(new, d_name, p, fl)) == -1)
+		return (-1);
+	check = ((*fl)->l == 1) ? parse_else(new, st) : ft_parse_null(new);
+	if (check == -1)
+		return (er2(&new, path, p, 0));
+	if (((*fl)->l == 1 || (*fl)->t == 1))
+		check = parse_date(new, fl, st);
+	if (check == -1)
+		return ((*fl)->l == 1 ? er2(&new, path, p, 1) : er2(&new, path, p, 0));
+	CHECKM(path, free(p));
 	ft_lstaddcu(cur, new);
 	return (0);
 }

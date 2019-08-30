@@ -86,6 +86,7 @@ add_executable(ft_ls2
 		src/help_print3.c
 		src/help_print4.c
 		src/help_parse.c
+		src/help_parse2.c
         src/parse_data.c
 
         src/sort_merge.c

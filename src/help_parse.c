@@ -19,7 +19,7 @@ int		type_check(char c)
 	return (0);
 }
 
-void	ft_parse_null(t_curr *new)
+int		ft_parse_null(t_curr *new)
 {
 	new->rights = NULL;
 	new->links = 0;
@@ -29,6 +29,8 @@ void	ft_parse_null(t_curr *new)
 	new->maj = -1;
 	new->s_total = 0;
 	new->print_date = 0;
+	new->next = NULL;
+	return (0);
 }
 
 char	*formatdate(char **str, int check)
@@ -86,7 +88,17 @@ int		*ft_fill_date(char **time)
 	return (result);
 }
 
-int 	ft_new_curr_part()
+void	parse_rights(struct stat st, t_curr *new)
 {
-	return (-1)
+	new->rights[0] = (new->type == 'f') ? '-' : new->type;
+	new->rights[1] = (st.st_mode & S_IRUSR) ? 'r' : '-';
+	new->rights[2] = (st.st_mode & S_IWUSR) ? 'w' : '-';
+	new->rights[3] = (st.st_mode & S_IXUSR) ? 'x' : '-';
+	new->rights[4] = (st.st_mode & S_IRGRP) ? 'r' : '-';
+	new->rights[5] = (st.st_mode & S_IWGRP) ? 'w' : '-';
+	new->rights[6] = (st.st_mode & S_IXGRP) ? 'x' : '-';
+	new->rights[7] = (st.st_mode & S_IROTH) ? 'r' : '-';
+	new->rights[8] = (st.st_mode & S_IWOTH) ? 'w' : '-';
+	new->rights[9] = (st.st_mode & S_IXOTH) ? 'x' : '-';
+	new->rights[10] = '\0';
 }

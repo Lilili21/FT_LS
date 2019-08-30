@@ -56,6 +56,8 @@ void	ft_parse_flags_null(t_fl *fl)
 	fl->r = -1;
 	fl->t = 0;
 	fl->c = 0;
+	if (!isatty(1))
+		fl->c = 1;
 	fl->prev = 0;
 }
 
