@@ -134,7 +134,7 @@ int					ft_fill_str2(t_curr *curr, t_count *count_col, int i,
 void				ft_parse_flags_null(t_fl *fl);
 int					*ft_fill_date(char **time);
 int					ft_er1(t_curr **new);
-int					er2(t_curr **new, char *path, char *p, int check);
+int					er2(t_curr **new, char *path, char **p, int check);
 int					ft_er3(char *d_name, char *p, t_curr **new);
 int					parse_name(t_curr *new, char *d_name, char *p, t_fl **fl);
 int					parse_else(t_curr *new, struct stat st);

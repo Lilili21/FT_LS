@@ -44,7 +44,7 @@ int		ft_er1(t_curr **new)
 	return (-1);
 }
 
-int		er2(t_curr **new, char *path, char *p, int check)
+int		er2(t_curr **new, char *path, char **p, int check)
 {
 	if (check == 1)
 	{
@@ -52,7 +52,12 @@ int		er2(t_curr **new, char *path, char *p, int check)
 		free((*new)->user);
 		free((*new)->rights);
 	}
-	CHECKM(path, free(p));
+	CHECKM(path, free(*p));
+	if (check == 13)
+	{
+		free(*new);
+		return (0);
+	}
 	return (ft_er1(new));
 }
 

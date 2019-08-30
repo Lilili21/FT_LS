@@ -115,18 +115,18 @@ int		ft_new_curr(char *d_name, t_fl **fl, t_curr **cur, char *path)
 	if (path && !p)
 		return (ft_er1(&new));
 	if (lstat(p, &st))
-		return (er2(&new, path, p, 0));
+		return (er2(&new, path, &p, 13));
 	new->type = parse_type(st);
 	new->symb = ((*fl)->l == 1 ? parse_symb(p) : ' ');
 	if ((parse_name(new, d_name, p, fl)) == -1)
 		return (-1);
 	check = ((*fl)->l == 1) ? parse_else(new, st) : ft_parse_null(new);
 	if (check == -1)
-		return (er2(&new, path, p, 0));
+		return (er2(&new, path, &p, 0));
 	if (((*fl)->l == 1 || (*fl)->t == 1))
 		check = parse_date(new, fl, st);
 	if (check == -1)
-		return ((*fl)->l == 1 ? er2(&new, path, p, 1) : er2(&new, path, p, 0));
+		return ((*fl)->l == 1 ? er2(&new, path, &p, 1) : er2(&new, path, &p, 0));
 	CHECKM(path, free(p));
 	ft_lstaddcu(cur, new);
 	return (0);
