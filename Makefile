@@ -6,7 +6,7 @@
 #    By: gfoote <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/01 18:06:42 by gfoote            #+#    #+#              #
-#    Updated: 2019/08/28 19:38:16 by gfoote           ###   ########.fr        #
+#    Updated: 2019/08/30 14:36:53 by gfoote           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,13 +30,16 @@ $(NAME):
 	@mkdir -p $(OBJDIR);
 	@mv $(OBJ) $(OBJDIR)/
 	@gcc -g -L libft -lft $(OBJS) -o $(NAME)
+	@echo "Done!"
 
 clean:
-	@/bin/rm -rf $(OBJ)
+	@/bin/rm -rf $(OBJDIR)
 	@make -C libft clean
+	@echo "obj cleaned!"
 
 fclean: clean
 	@/bin/rm -rf $(NAME)
 	@make -C libft fclean
+	@echo "full cleaned!"
 
 re: fclean all

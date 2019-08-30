@@ -6,7 +6,7 @@
 /*   By: kkatelyn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:24:48 by kkatelyn          #+#    #+#             */
-/*   Updated: 2019/08/08 20:24:49 by kkatelyn         ###   ########.fr       */
+/*   Updated: 2019/08/30 14:27:07 by gfoote           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int		to_list(t_q **que, char *av)
 
 	if (!(qu = (t_q*)malloc(sizeof(t_q))))
 	{
-		ft_putendl_fd("ls: Cannot allocate memory.", 2);
+		ft_putendl_fd("ft_ls: Cannot allocate memory.", 2);
 		return (-1);
 	}
 	if (lstat(av, &st))
@@ -76,7 +76,7 @@ int		to_list(t_q **que, char *av)
 	qu->next = 0;
 	if (!(qu->abspath = ft_strdup(av)))
 	{
-		ft_putendl_fd("ls: Cannot allocate memory.", 2);
+		ft_putendl_fd("ft_ls: Cannot allocate memory.", 2);
 		free(qu);
 		return (-1);
 	}

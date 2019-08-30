@@ -6,7 +6,7 @@
 /*   By: kkatelyn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:22:32 by kkatelyn          #+#    #+#             */
-/*   Updated: 2019/08/08 20:22:34 by kkatelyn         ###   ########.fr       */
+/*   Updated: 2019/08/30 14:26:20 by gfoote           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	flags(char av, t_fl **fl, int i)
 	}
 	if (!((*fl) = (t_fl*)malloc(sizeof(t_fl))))
 	{
-		ft_putendl_fd("ls: Cannot allocate memory.", 2);
+		ft_putendl_fd("ft_ls: Cannot allocate memory.", 2);
 		exit(0);
 	}
 	ft_parse_flags_null(*fl);
@@ -56,9 +56,9 @@ int		flag_parse(int ac, int j, char **av, t_fl **fl)
 		}
 		if (av[ac][j])
 		{
-			ft_putstr_fd("ls: illegal option -- ", 2);
+			ft_putstr_fd("ft_ls: illegal option -- ", 2);
 			ft_putchar_fd(av[ac][j], 2);
-			ft_putendl_fd("\nusage: ls [-Ralrt] [file ...]", 2);
+			ft_putendl_fd("\nusage: ft_ls [-1Ralrt] [file ...]", 2);
 			free(*fl);
 			exit(1);
 		}
@@ -82,7 +82,7 @@ void	del_me(t_q **que, t_curr **cur, t_fl **fl, int err)
 	if (*fl)
 		free(*fl);
 	if (err == 12)
-		ft_putendl_fd("ls: Cannot allocate memory.", 2);
+		ft_putendl_fd("ft_ls: Cannot allocate memory.", 2);
 	exit(0);
 }
 

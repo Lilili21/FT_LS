@@ -6,7 +6,7 @@
 /*   By: kkatelyn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 19:15:42 by kkatelyn          #+#    #+#             */
-/*   Updated: 2019/08/08 19:16:03 by kkatelyn         ###   ########.fr       */
+/*   Updated: 2019/08/30 14:25:19 by gfoote           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		elswhile(char *av, t_curr **cur, t_fl **fl, DIR **d)
 	ft_merge_sort(cur, *fl);
 	if (ft_print(*cur, *fl))
 	{
-		ft_putendl_fd("ls: Cannot allocate memory, while printing.", 2);
+		ft_putendl_fd("ft_ls: Cannot allocate memory, while printing.", 2);
 		return (-1);
 	}
 	if (closedir(*d))
